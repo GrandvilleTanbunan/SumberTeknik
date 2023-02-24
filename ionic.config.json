@@ -1,0 +1,7 @@
+{
+  "name": "SumberTeknik",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
