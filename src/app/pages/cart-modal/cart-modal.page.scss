@@ -14,7 +14,7 @@
 }
 
 .inputbg{
-    width: 30px;
+    width: 40px;
     font-size: 15pt;
     display: inline-block;
     vertical-align: middle;
@@ -22,3 +22,9 @@
     color: #000000
 }
     
+.center {
+    margin-top:auto;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}

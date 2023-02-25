@@ -27,9 +27,9 @@
       
         <ion-button *ngIf="item.amount == 0" color="secondary"shape="round" fill="outline" (click)="addToCart(item)" >Add</ion-button>
         <ion-list *ngIf="item.amount != 0">
-          <ion-icon class="icondecrease" name="remove-circle" (click)="decreaseCartItem(item)"></ion-icon>
+          <ion-icon class="icondecrease" name="remove-circle-outline" (click)="decreaseCartItem(item)"></ion-icon>
           <ion-text style="font-size: 15pt" class="inputbg">{{item.amount}}</ion-text>
-          <ion-icon class="iconincrease" name="add-circle" (click)="increaseCartItem(item)"></ion-icon>
+          <ion-icon class="iconincrease" name="add-circle-outline" (click)="increaseCartItem(item)"></ion-icon>
         </ion-list>
 
       </ion-card>

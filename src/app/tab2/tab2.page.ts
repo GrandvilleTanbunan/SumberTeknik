@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-tab2',
@@ -6,7 +7,27 @@ import { Component } from '@angular/core';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
+  listData = [];
+  constructor(private dataService: DataService) {
+    this.loadData();
+  }
 
-  constructor() {}
+  async loadData()
+  {
+    this.listData = await this.dataService.getData();
+  }
+
+  async addData()
+  {
+    await this.dataService.addData(`grandville ${Math.floor(Math.random()*100)}`);
+    this.loadData();
+  }
+
+  async removeItem(index: any)
+  {
+    this.dataService.removeItem(index);
+    this.listData.splice(index, 1);
+  }
+
 
 }
