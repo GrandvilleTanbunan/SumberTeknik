@@ -29,13 +29,20 @@ export class Tab1Page {
     this.cartItemCount = this.cartService.getCartItemCount();
   }
 
-  increment () {
-    this.jumlahitem++;
-  }
+  // increment () {
+  //   this.jumlahitem++;
+  // }
   
-  decrement () {
-    this.jumlahitem--;
+  // decrement () {
+  //   this.jumlahitem--;
 
+  // }
+
+  decreaseCartItem(product: any){
+    this.cartService.decreaseProduct(product);
+  }
+  increaseCartItem(product: any){
+    this.cartService.addProduct(product);
   }
 
   addToCart(product: any){

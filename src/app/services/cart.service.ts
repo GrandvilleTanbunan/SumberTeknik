@@ -13,10 +13,10 @@ export interface Product {
 })
 export class CartService {
   data: Product[] = [
-    {id: 0, name: 'Pizza', price: 50000, amount: 1},
-    {id: 1, name: 'Hamburger', price: 25000, amount: 1},
-    {id: 2, name: 'Croissant', price: 10000, amount: 1},
-    {id: 3, name: 'Roti', price: 5000, amount: 1}
+    {id: 0, name: 'Pizza', price: 50000, amount: 0},
+    {id: 1, name: 'Hamburger', price: 25000, amount: 0},
+    {id: 2, name: 'Croissant', price: 10000, amount: 0},
+    {id: 3, name: 'Roti', price: 5000, amount: 0}
   ];
 
   private cart: any = [];
