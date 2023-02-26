@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "dessertie-ed623": {
+      "hosting": {
+        "app": [
+          "dessertie-ed623"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "dessertie-ed623"
+  }
+}
