@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { ToastController, ModalController } from '@ionic/angular';
+import { CartService } from '../services/cart.service';
+import { CartModalPage } from '../pages/cart-modal/cart-modal.page';
 
 @Component({
   selector: 'app-tabs',
@@ -7,6 +10,14 @@ import { Component } from '@angular/core';
 })
 export class TabsPage {
 
-  constructor() {}
+  constructor(private toastController: ToastController, private cartService: CartService, private modalCtrl: ModalController) {}
 
+
+  async openCart(){
+    let modal = await this.modalCtrl.create({
+      component: CartModalPage,
+      cssClass: 'cart-modal'
+    });
+    modal.present();
+  }
 }
