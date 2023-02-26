@@ -27,19 +27,11 @@ export class Tab2Page {
 
   async addData()
   {
-    console.log(this.tmpnama)
-    console.log(this.tmpharga)
-    console.log(this.tmpjumlah)
-
     this.tmpdata = [
       {nama: this.tmpnama,
       harga: this.tmpharga,
       jumlah: this.tmpjumlah}
     ];
-
-    console.log(this.tmpdata);
-
-    // await this.dataService.addData(`grandville ${Math.floor(Math.random()*100)}`);
     await this.dataService.addData(this.tmpdata);
 
     this.loadData();

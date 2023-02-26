@@ -18,21 +18,21 @@
   </ion-searchbar>
   
   <div class="ion-text-center">
-      <ion-card class="ion-text-center" id="menuitem" *ngFor="let item of products">
-          <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
-        <ion-card-header>
-          <ion-card-title>{{item.name}}</ion-card-title>
-          <ion-card-subtitle>Rp {{item.price | number}}</ion-card-subtitle>
-        </ion-card-header>
-      
-        <ion-button *ngIf="item.amount == 0" color="secondary"shape="round" fill="outline" (click)="addToCart(item)" >Add</ion-button>
-        <ion-list *ngIf="item.amount != 0">
-          <ion-icon class="icondecrease" name="remove-circle-outline" (click)="decreaseCartItem(item)"></ion-icon>
-          <ion-text style="font-size: 15pt" class="inputbg">{{item.amount}}</ion-text>
-          <ion-icon class="iconincrease" name="add-circle-outline" (click)="increaseCartItem(item)"></ion-icon>
-        </ion-list>
-
-      </ion-card>
+    <ion-card class="ion-text-center" id="menuitem" *ngFor="let item of products">
+      <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+      <ion-card-header class="ion-no-padding">
+        <ion-card-title style="font-size: 13pt; height: 40px;">{{item.name}}</ion-card-title>
+        <ion-card-subtitle>Rp {{item.price | number}}</ion-card-subtitle>
+      </ion-card-header>
+  
+      <ion-button *ngIf="item.amount == 0" color="secondary" shape="round" fill="outline" (click)="addToCart(item)">Add
+      </ion-button>
+      <ion-list *ngIf="item.amount != 0">
+        <ion-icon class="icondecrease" name="remove-circle-outline" (click)="decreaseCartItem(item)"></ion-icon>
+        <ion-text style="font-size: 15pt" class="inputbg">{{item.amount}}</ion-text>
+        <ion-icon class="iconincrease" name="add-circle-outline" (click)="increaseCartItem(item)"></ion-icon>
+      </ion-list>
+    </ion-card>
   </div>
 
 </ion-content>
