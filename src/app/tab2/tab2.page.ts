@@ -8,18 +8,40 @@ import { DataService } from '../services/data.service';
 })
 export class Tab2Page {
   listData = [];
+  tmpdata: any;
+  tmpnama:any;
+  tmpharga:any;
+  tmpjumlah:any;
   constructor(private dataService: DataService) {
     this.loadData();
   }
 
   async loadData()
   {
-    this.listData = await this.dataService.getData();
+    // this.listData = await this.dataService.getData();
+    this.dataService.getData().subscribe((res: any)=>{
+      this.listData = res;
+    })
+    console.log(this.listData);
   }
 
   async addData()
   {
-    await this.dataService.addData(`grandville ${Math.floor(Math.random()*100)}`);
+    console.log(this.tmpnama)
+    console.log(this.tmpharga)
+    console.log(this.tmpjumlah)
+
+    this.tmpdata = [
+      {nama: this.tmpnama,
+      harga: this.tmpharga,
+      jumlah: this.tmpjumlah}
+    ];
+
+    console.log(this.tmpdata);
+
+    // await this.dataService.addData(`grandville ${Math.floor(Math.random()*100)}`);
+    await this.dataService.addData(this.tmpdata);
+
     this.loadData();
   }
 
@@ -28,6 +50,5 @@ export class Tab2Page {
     this.dataService.removeItem(index);
     this.listData.splice(index, 1);
   }
-
 
 }
