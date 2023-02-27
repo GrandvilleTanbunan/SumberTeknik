@@ -1,10 +1,17 @@
 <ion-tabs>
-  <ion-fab vertical="bottom" horizontal="center" translucent="true">
+  <ion-fab vertical="bottom" horizontal="center" translucent="true" *ngIf="posisitab == 1">
     <ion-fab-button (click)="openCart()">
       <div class="cart-length">{{ cartItemCount | async }}</div>
       <ion-icon name="cart" class="cart-icon"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+
+  <ion-fab vertical="bottom" horizontal="center" translucent="true" *ngIf="posisitab == 2">
+    <ion-fab-button (click)="openAddMenu()">
+      <ion-icon name="add" class="cart-icon"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
   <ion-tab-bar slot="bottom">
     <ion-tab-button tab="tab1" (click)="PosisiTab(1)">
       <ion-icon aria-hidden="true" name="basket"></ion-icon>

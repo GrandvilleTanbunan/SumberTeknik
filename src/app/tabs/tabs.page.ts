@@ -3,6 +3,7 @@ import { ToastController, ModalController } from '@ionic/angular';
 import { CartService } from '../services/cart.service';
 import { CartModalPage } from '../pages/cart-modal/cart-modal.page';
 import { BehaviorSubject } from 'rxjs';
+import { AddMenuPage } from '../add-menu/add-menu.page';
 
 @Component({
   selector: 'app-tabs',
@@ -12,6 +13,7 @@ import { BehaviorSubject } from 'rxjs';
 export class TabsPage {
   cartItemCount!: BehaviorSubject<number>;
   posisitab = 1;
+
   constructor(private toastController: ToastController, private cartService: CartService, private modalCtrl: ModalController) {
     
   }
@@ -24,6 +26,14 @@ export class TabsPage {
     let modal = await this.modalCtrl.create({
       component: CartModalPage,
       cssClass: 'cart-modal'
+    });
+    modal.present();
+  }
+
+  async openAddMenu(){
+    let modal = await this.modalCtrl.create({
+      component: AddMenuPage,
+      cssClass: 'small-modal'
     });
     modal.present();
   }

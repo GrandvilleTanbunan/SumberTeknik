@@ -31,3 +31,13 @@
 //     --border-radius: 10px;
 //     padding: 25px;
 // }
+
+.small-modal{
+    &::part(content)
+    {
+      width: 80vh;
+      height: 40%;
+      margin: auto;
+      border-radius: 10px;
+    }
+}

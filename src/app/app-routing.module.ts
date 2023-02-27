@@ -30,7 +30,11 @@ const routes: Routes = [
     redirectTo:'',
     pathMatch:'full'
     
+  },  {
+    path: 'add-menu',
+    loadChildren: () => import('./add-menu/add-menu.module').then( m => m.AddMenuPageModule)
   },
+
   
 
 

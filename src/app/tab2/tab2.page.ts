@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { DataService } from '../services/data.service';
+import { ModalController } from '@ionic/angular';
+import { AddMenuPage } from '../add-menu/add-menu.page';
 
 @Component({
   selector: 'app-tab2',
@@ -12,7 +14,7 @@ export class Tab2Page {
   tmpnama:any;
   tmpharga:any;
   tmpjumlah:any;
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private modalCtrl: ModalController) {
     this.loadData();
   }
 
@@ -27,15 +29,28 @@ export class Tab2Page {
 
   async addData()
   {
-    this.tmpdata = [
-      {nama: this.tmpnama,
-      harga: this.tmpharga,
-      jumlah: this.tmpjumlah}
-    ];
-    await this.dataService.addData(this.tmpdata);
+    // this.tmpdata = [
+    //   {nama: this.tmpnama,
+    //   harga: this.tmpharga,
+    //   jumlah: this.tmpjumlah}
+    // ];
+    // await this.dataService.addData(this.tmpdata);
 
-    this.loadData();
+    // this.loadData();
+
+   
   }
+
+  async openAddMenu()
+  {
+    let modal = await this.modalCtrl.create({
+      component: AddMenuPage,
+      // cssClass: 'cart-modal'
+    });
+    modal.present();
+  }
+
+  
 
   async removeItem(index: any)
   {
