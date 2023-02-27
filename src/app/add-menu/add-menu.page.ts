@@ -3,6 +3,8 @@ import { ModalController, LoadingController, AlertController } from '@ionic/angu
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { DataService } from '../services/data.service';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-add-menu',
@@ -12,7 +14,10 @@ import { Router } from '@angular/router';
 export class AddMenuPage implements OnInit {
   credentials!: FormGroup;
   submitted = false;
-  constructor(private modalCtrl: ModalController, private fb: FormBuilder, private loadingController:LoadingController, private alertController:AlertController, private authService: AuthService, private router: Router) { }
+  tmpdata: any;
+  tmpnama:any;
+  tmpharga:any;
+  constructor(private cartService: CartService,private dataService: DataService, private modalCtrl: ModalController, private fb: FormBuilder, private loadingController:LoadingController, private alertController:AlertController, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
     this.credentials = this.fb.group({
@@ -29,9 +34,22 @@ export class AddMenuPage implements OnInit {
     return this.credentials.get('harga');
   }
 
-  saveItem()
+  async saveItem()
   {
+    console.log("masuk sini")
     this.submitted = true;
+    this.tmpdata = [
+      {nama: this.credentials.value.nama,
+      harga: this.credentials.value.harga
+      }
+    ];
+
+    console.log(this.tmpdata)
+    await this.dataService.addMenu(this.tmpdata).then(()=>{
+      this.cartService.clearCart();
+    });
+    // this.loadData();
+    this.dataService.getData();
   }
 
   close()

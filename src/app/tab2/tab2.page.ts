@@ -9,8 +9,8 @@ import { AddMenuPage } from '../add-menu/add-menu.page';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
-  listData = [];
-  tmpdata: any;
+  listData: any = [];
+  // tmpdata;
   tmpnama:any;
   tmpharga:any;
   tmpjumlah:any;
@@ -18,13 +18,14 @@ export class Tab2Page {
     this.loadData();
   }
 
-  async loadData()
+  public async loadData()
   {
     // this.listData = await this.dataService.getData();
     this.dataService.getData().subscribe((res: any)=>{
       this.listData = res;
-    })
-    console.log(this.listData);
+      console.log(this.listData);
+
+    });
   }
 
   async addData()
@@ -50,12 +51,12 @@ export class Tab2Page {
     modal.present();
   }
 
-  
-
-  async removeItem(index: any)
+  async removeItem(item: any)
   {
-    this.dataService.removeItem(index);
-    this.listData.splice(index, 1);
+    // this.dataService.removeItem(index);
+    // this.listData.splice(index, 1);
+
+    console.log(item)
   }
 
 }

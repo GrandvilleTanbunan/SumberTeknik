@@ -9,7 +9,7 @@ import { ModalController } from '@ionic/angular';
 })
 export class CartModalPage implements OnInit {
 
-  cart: Product[] = [];
+  cart: any[] = [];
 
   constructor(private cartService: CartService, private modalCtrl: ModalController) { }
 
@@ -27,7 +27,7 @@ export class CartModalPage implements OnInit {
     this.cartService.removeProduct(product);
   }
   getTotal(){
-    return this.cart.reduce((i, j)=> i + j.price * j.amount, 0);
+    return this.cart.reduce((i, j)=> i + j.harga * j.amount, 0);
   }
   close(){
     this.modalCtrl.dismiss();

@@ -3,6 +3,7 @@ import { ToastController, ModalController } from '@ionic/angular';
 import { CartService } from '../services/cart.service';
 import { BehaviorSubject } from 'rxjs';
 import { CartModalPage } from '../pages/cart-modal/cart-modal.page';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-tab1',
@@ -15,18 +16,30 @@ export class Tab1Page {
   ctritem = 0;
   itemkembar = false;
   // cart: any[] = [];
-  products: any[] = [];
+  products: any;
   cart = [];
   cartItemCount!: BehaviorSubject<number>;
 
-  constructor(private toastController: ToastController, private cartService: CartService, private modalCtrl: ModalController) {
+  constructor(private dataService: DataService, private toastController: ToastController, private cartService: CartService, private modalCtrl: ModalController) {
+    // window.screen.orientation.lock('portrait');
     
   }
 
   ngOnInit() {
-    this.products = this.cartService.getProducts();
-    this.cart = this.cartService.getCart();
-    this.cartItemCount = this.cartService.getCartItemCount();
+    // this.products = this.cartService.getProducts();
+    // this.products = this.cartService.getProducts();
+
+    this.dataService.getData().subscribe((res: any)=>{
+      this.products = res;
+      console.log(this.products);
+      this.cart = this.cartService.getCart();
+      this.cartItemCount = this.cartService.getCartItemCount();
+    });
+
+
+    console.log(this.products)
+    // this.cart = this.cartService.getCart();
+    // this.cartItemCount = this.cartService.getCartItemCount();
   }
 
   // increment () {
