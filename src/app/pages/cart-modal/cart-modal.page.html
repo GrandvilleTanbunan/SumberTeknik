@@ -53,7 +53,7 @@
                     </ion-grid> -->
     
           <ion-label>
-            <p style="font-size: 15pt; padding-bottom: 5px" class="ion-text-wrap">{{p.name}}</p>
+            <p style="font-size: 15pt; padding-bottom: 5px; color: black" class="ion-text-wrap">{{p.name}}</p>
             <p>
               {{ p.amount * p.price | number }}
             </p>
@@ -76,11 +76,11 @@
     </ion-list>
 </ion-content>
 <ion-footer>
-  <ion-item *ngIf="getTotal() != 0">
-    <ion-label slot="start" style="font-size: 15pt">
+  <ion-item *ngIf="getTotal() != 0" lines="none">
+    <ion-label slot="start" style="font-size: 15pt" class="fixedLabel">
       Grand Total
     </ion-label>
-    <ion-label slot="end" style="font-size: 15pt">
+    <ion-label slot="end" style="font-size: 15pt" lines="none">
       Rp {{getTotal() | number}}
     </ion-label>
   </ion-item>

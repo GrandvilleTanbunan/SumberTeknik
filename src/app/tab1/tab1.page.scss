@@ -41,3 +41,27 @@ display: inline-block;
 vertical-align: middle;
 color: #000000
 }
+
+ion-fab {
+  margin-bottom: env(safe-area-inset-bottom); /* fix notch ios*/
+  ion-fab-button {
+    --box-shadow: none;
+  --background: var(--ion-color-secondary);
+    
+  }
+}
+
+.cart-icon{
+  font-size: 40px;
+}
+
+.cart-length {
+  color: black;
+  position: absolute;
+  top: 16.5px;
+  left: 18px;
+  font-weight: 600;
+  font-size: 0.9em;
+  min-width: 25px;
+  z-index: 10;
+}
