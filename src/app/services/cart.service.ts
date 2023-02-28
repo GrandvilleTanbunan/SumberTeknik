@@ -79,7 +79,7 @@ export class CartService {
   }
 
   addProduct(product: any){
-    console.log(product)
+    // console.log(product)
     let added = false;
     for (let p of this.cart) {
       if (p.MenuID === product.MenuID) {
@@ -93,6 +93,7 @@ export class CartService {
       this.cart.push(product);
     }
     this.cartItemCount.next(this.cartItemCount.value + 1);
+    console.log(this.cart)
   }
 
   decreaseProduct(product: any){
@@ -109,6 +110,7 @@ export class CartService {
       }
     }
     this.cartItemCount.next(this.cartItemCount.value - 1);
+    console.log(this.cart)
   }
 
   removeProduct(product: any){

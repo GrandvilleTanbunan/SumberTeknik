@@ -19,7 +19,10 @@
         </ion-item>
           
         <ion-item-options side="end">
-          <ion-item-option (click)="removeItem(item)">
+            <ion-item-option (click)="editItem(item)" color="success">
+                <ion-icon name="create" slot="icon-only"></ion-icon>
+              </ion-item-option>
+          <ion-item-option (click)="removeItem(item)" color="danger">
             <ion-icon name="trash" slot="icon-only"></ion-icon>
           </ion-item-option>
         </ion-item-options>

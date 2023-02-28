@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { DataService } from '../services/data.service';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { AddMenuPage } from '../add-menu/add-menu.page';
+import { EdititemPage } from '../edititem/edititem.page';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-tab2',
@@ -14,7 +16,7 @@ export class Tab2Page {
   tmpnama:any;
   tmpharga:any;
   tmpjumlah:any;
-  constructor(private dataService: DataService, private modalCtrl: ModalController) {
+  constructor(private toastController: ToastController,private db: AngularFirestore, private alertCtrl: AlertController, private dataService: DataService, private modalCtrl: ModalController, private loadingCtrl: LoadingController) {
     this.loadData();
   }
 
@@ -53,10 +55,55 @@ export class Tab2Page {
 
   async removeItem(item: any)
   {
-    // this.dataService.removeItem(index);
-    // this.listData.splice(index, 1);
+    let alert = await this.alertCtrl.create({
 
+      subHeader: 'Anda yakin ingin menghapus menu?',
+      buttons: [
+        {
+          text: 'Tidak',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'YA',
+          handler: async () => {
+            const loading = await this.loadingCtrl.create({
+              message: 'Mohon tunggu...',
+            });
+        
+            loading.present().then(async () => {
+              this.dataService.deleteMenu(item.MenuID).then(async ()=>{
+                  loading.dismiss();
+                  const toast = await this.toastController.create({
+                    message: 'Item berhasil dihapus',
+                    duration: 700,
+                    position: 'bottom'
+                  });
+                  await toast.present();
+              });
+              
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
     console.log(item)
+  }
+
+  async editItem(item: any)
+  {
+    // console.log(item);
+    let modal = await this.modalCtrl.create({
+      component: EdititemPage,
+      cssClass: 'small-modal',
+      componentProps: {
+        item: item
+      }
+    });
+    modal.present();
   }
 
 }

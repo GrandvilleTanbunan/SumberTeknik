@@ -34,6 +34,10 @@ const routes: Routes = [
     path: 'add-menu',
     loadChildren: () => import('./add-menu/add-menu.module').then( m => m.AddMenuPageModule)
   },
+  {
+    path: 'edititem',
+    loadChildren: () => import('./edititem/edititem.module').then( m => m.EdititemPageModule)
+  },
 
   
 

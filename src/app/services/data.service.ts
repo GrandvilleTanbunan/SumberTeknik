@@ -55,5 +55,18 @@ export class DataService {
     return addDoc(BrandRef, tmpmenu);
   }
 
+  async EditHarga(MenuID: any, item : any)
+  {
+    const UpdateHarga = this.db.collection(`Menu`).doc(`${MenuID}`);
+    
+    const res1 = await UpdateHarga.update({harga: item.harga, nama:item.nama});
+    
+  }
+
+  deleteMenu(MenuID: any)
+  {
+    const TypeRef = doc(this.firestore, `Menu/${MenuID}`);
+    return deleteDoc(TypeRef);
+  }
 
 }
