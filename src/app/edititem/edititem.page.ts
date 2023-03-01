@@ -54,7 +54,7 @@ export class EdititemPage implements OnInit {
             });
         
             loading.present().then(async () => {
-              this.dataService.EditHarga(this.item.MenuID, this.credentials.value).then(async ()=>{
+              this.dataService.EditMenu(this.item.MenuID, this.credentials.value).then(async ()=>{
                   loading.dismiss();
                   const toast = await this.toastController.create({
                     message: 'Item berhasil diupdate',

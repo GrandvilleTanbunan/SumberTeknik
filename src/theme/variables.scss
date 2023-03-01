@@ -13,7 +13,10 @@
   font-family: LatoBold;
   src: url('../assets/fonts/Lato-Bold.ttf');
   }
-
+  @font-face {   
+    font-family: 'Greycliff';    //This is what we are going to call
+    src: url('../assets/fonts/GreycliffCF-ExtraBold.ttf');
+  }
 
 /** Ionic CSS Variables **/
 :root {

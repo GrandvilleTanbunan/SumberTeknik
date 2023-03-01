@@ -25,20 +25,18 @@ export class DataService {
     console.log("masuk get data")
     const MenuRef = collection(this.firestore, 'Menu');
     return collectionData(MenuRef,{idField: 'MenuID'});
-  }
 
-  async addData(item: any)
-  {
-    // const storedData = await this.storage.get(STORAGE_KEY) || [];
-    // storedData.push(item);
-    // return this.storage.set(STORAGE_KEY,storedData);
-  }
+    // this.db.collection(`Menu`, ref => ref.orderBy('nama', 'asc'))
+    //     .valueChanges()
+    //     .subscribe((data:any) => {
+    //         this.menu = data;
+    //         console.log(this.menu)
+    //         // return of(this.tmptype);
+    //     }
+        
+    // );
+    // return of(this.menu);
 
-  async removeItem(index: any)
-  {
-    // const storedData = await this.storage.get(STORAGE_KEY) || [];
-    // storedData.splice(index, 1);
-    // return this.storage.set(STORAGE_KEY,storedData);
   }
 
   addMenu(data:any) 
@@ -55,7 +53,7 @@ export class DataService {
     return addDoc(BrandRef, tmpmenu);
   }
 
-  async EditHarga(MenuID: any, item : any)
+  async EditMenu(MenuID: any, item : any)
   {
     const UpdateHarga = this.db.collection(`Menu`).doc(`${MenuID}`);
     

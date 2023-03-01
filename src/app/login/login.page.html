@@ -1,11 +1,11 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar>
     <ion-title>Login</ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
-<ion-content class="ion-padding">
-	<form (ngSubmit)="login()" [formGroup]="credentials">
+<ion-content>
+	<!-- <form (ngSubmit)="login()" [formGroup]="credentials">
 		<ion-item fill="solid" class="ion-margin-bottom">
 			<ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
 			<ion-note slot="error" *ngIf="(email?.dirty || email?.touched) && email?.errors?.['required']">Email is invalid</ion-note>
@@ -19,5 +19,88 @@
 		<ion-button type="button" expand="block" color="secondary" (click)="register()"
 			>Create account</ion-button
 		>
-	</form>
+	</form> -->
+	<!-- <ion-grid class="grid1">
+		<ion-row class="row1"> -->
+			<!-- <ion-col>
+							<ion-row class="rowperson">
+									<ion-col class="img-container">
+											<img width="105" height="150" src="assets/images/PERSON.png">
+									</ion-col>
+							</ion-row>
+					 </ion-col> -->
+		<!-- </ion-row>
+
+		<ion-row class="row2">
+			<ion-col>
+
+			</ion-col>
+		</ion-row>
+
+	</ion-grid> -->
+
+	<!-- <ion-slide>
+		<div class="contaier-login">
+			<ion-grid>
+				<ion-row>
+					<ion-col>
+						<h1>Login</h1>
+					</ion-col>
+				</ion-row>
+				<ion-row>
+					<ion-col>
+						<form [formGroup]="credentials" (ngSubmit)="login()">
+							<ion-item fill="solid" class="ion-margin-bottom">
+								<ion-input type="text" placeholder="Username" formControlName="email"></ion-input>
+							</ion-item> -->
+
+							<!-- <ion-item fill="solid" class="ion-margin-bottom">
+								<ion-input type="password" placeholder="Password" formControlName="password">
+								</ion-input> -->
+								<!-- <ion-note slot="error" *ngIf="(password.dirty || password.touched) && password.errors">Password minimal 5 karakter!</ion-note> -->
+							<!-- </ion-item> -->
+
+							<!-- <ion-button fill="solid" color="secondary" expand="block" size="large" type="submit"
+								[disabled]="!credentials.valid">Login</ion-button>
+						</form>
+					</ion-col>
+				</ion-row>
+
+			</ion-grid>
+		</div> -->
+
+		<!-- <div class="contaier-login2">
+			<ion-img style="width: 400px; height: 400px;" class="center" src="../assets/LOGO DESSERTIE.png"></ion-img>
+		</div> -->
+	<!-- </ion-slide> -->
+	<ion-img style="width: 250px; height: 250px; margin-left: auto; margin-right: auto; margin-top:20px" class="logo-icon" src="../assets/LOGO DESSERTIE WHITE.png"></ion-img>
+
+		<div class="login-section ion-padding">
+			<div class="heading ion-padding">
+				<h1>Sign In</h1>
+				<!-- <p>Sign in to continue</p> -->
+			</div>
+			<div class="login-form ion-padding">
+				<form [formGroup]="credentials" (ngSubmit)="login()">
+					<ion-label style="margin-bottom:20px; margin-left:10px; color: grey">Email</ion-label>
+			
+					<ion-input type="email" formControlName="email" class="ion-input-style">
+						<ion-icon name="mail-outline" slot="start" class="ion-icon-style"></ion-icon>
+					</ion-input>
+					<ion-label style="margin-bottom:20px; margin-left:10px; color: grey" >Password</ion-label>
+					<ion-input type="password" formControlName="password" class="ion-input-style">
+						<ion-icon name="lock-closed-outline" slot="start" class="ion-icon-style"></ion-icon>
+					</ion-input>
+					<div class="action-buttons ion-padding">
+						<ion-button shape="round" size="large" class="login-button" type="submit" [disabled]="!credentials.valid">
+							Log in
+						</ion-button>
+						<!-- <ion-button size="large" class="signup-button" fill="outline"  type="submit" [disabled]="!credentials.valid">
+										Sign up
+									</ion-button> -->
+					</div>
+				</form>
+			
+			</div>
+		</div>
 </ion-content>

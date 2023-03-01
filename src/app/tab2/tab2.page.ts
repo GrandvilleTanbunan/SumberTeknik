@@ -20,14 +20,24 @@ export class Tab2Page {
     this.loadData();
   }
 
-  public async loadData()
+  loadData()
   {
     // this.listData = await this.dataService.getData();
-    this.dataService.getData().subscribe((res: any)=>{
-      this.listData = res;
-      console.log(this.listData);
+    // this.dataService.getData().subscribe((res: any)=>{
+    //   this.listData = res;
+    //   console.log(this.listData);
 
-    });
+    // });
+
+    this.db.collection(`Menu`, ref => ref.orderBy('nama', 'asc'))
+        .valueChanges({idField: 'MenuID'})
+        .subscribe((data:any) => {
+            this.listData = data;
+            console.log(this.listData)
+            // return of(this.tmptype);
+        }
+        
+    );
   }
 
   async addData()

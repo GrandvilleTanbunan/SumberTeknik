@@ -4,6 +4,7 @@ import { CartService } from '../services/cart.service';
 import { BehaviorSubject } from 'rxjs';
 import { CartModalPage } from '../pages/cart-modal/cart-modal.page';
 import { DataService } from '../services/data.service';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-tab1',
@@ -20,26 +21,41 @@ export class Tab1Page {
   cart = [];
   cartItemCount!: BehaviorSubject<number>;
 
-  constructor(private dataService: DataService, private toastController: ToastController, private cartService: CartService, private modalCtrl: ModalController) {
+  constructor(private db: AngularFirestore, private dataService: DataService, private toastController: ToastController, private cartService: CartService, private modalCtrl: ModalController) {
     // window.screen.orientation.lock('portrait');
-    
+    this.loadData();
   }
 
   ngOnInit() {
     // this.products = this.cartService.getProducts();
     // this.products = this.cartService.getProducts();
 
-    this.dataService.getData().subscribe((res: any)=>{
-      this.products = res;
-      console.log(this.products);
-      this.cart = this.cartService.getCart();
-      this.cartItemCount = this.cartService.getCartItemCount();
-    });
+    // this.dataService.getData().subscribe((res: any)=>{
+    //   this.products = res;
+    //   console.log(this.products);
+    //   this.cart = this.cartService.getCart();
+    //   this.cartItemCount = this.cartService.getCartItemCount();
+    // });
+    
 
 
     console.log(this.products)
     // this.cart = this.cartService.getCart();
     // this.cartItemCount = this.cartService.getCartItemCount();
+  }
+
+  loadData()
+  {
+    this.db.collection(`Menu`, ref => ref.orderBy('nama', 'asc'))
+    .valueChanges({idField: 'MenuID'})
+    .subscribe((data:any) => {
+        this.products = data;
+        console.log(this.products)
+        this.cart = this.cartService.getCart();
+        this.cartItemCount = this.cartService.getCartItemCount();
+    }
+    
+);
   }
 
   // increment () {
