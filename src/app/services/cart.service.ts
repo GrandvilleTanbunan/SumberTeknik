@@ -75,7 +75,7 @@ export class CartService {
   clearCart()
   {
     this.cart = [];
-    this.cartItemCount = new BehaviorSubject(0);
+    this.cartItemCount.next(0);
   }
 
   addProduct(product: any){

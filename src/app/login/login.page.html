@@ -87,10 +87,14 @@
 					<ion-input type="email" formControlName="email" class="ion-input-style">
 						<ion-icon name="mail-outline" slot="start" class="ion-icon-style"></ion-icon>
 					</ion-input>
+					<!-- <ion-note slot="error" *ngIf="submitted && email?.errors?.['required']">Masukkan email!</ion-note> -->
+
 					<ion-label style="margin-bottom:20px; margin-left:10px; color: grey" >Password</ion-label>
 					<ion-input type="password" formControlName="password" class="ion-input-style">
 						<ion-icon name="lock-closed-outline" slot="start" class="ion-icon-style"></ion-icon>
 					</ion-input>
+					<!-- <ion-note slot="error" *ngIf="submitted && password?.errors?.['required']">Password minimal 6 karakter!</ion-note> -->
+
 					<div class="action-buttons ion-padding">
 						<ion-button shape="round" size="large" class="login-button" type="submit" [disabled]="!credentials.valid">
 							Log in

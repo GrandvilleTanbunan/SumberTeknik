@@ -10,7 +10,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  credentials!: FormGroup;
+	credentials!: FormGroup;
+	submitted = false;
   constructor(private fb: FormBuilder, private loadingController:LoadingController, private alertController:AlertController, private authService: AuthService, private router: Router) {
 
    }
@@ -45,6 +46,7 @@ export class LoginPage implements OnInit {
 	}
 
 	async login() {
+		this.submitted = true;
 		const loading = await this.loadingController.create();
 		await loading.present();
 

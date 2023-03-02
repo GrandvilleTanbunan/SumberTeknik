@@ -67,7 +67,7 @@ export class Tab2Page {
   {
     let alert = await this.alertCtrl.create({
 
-      subHeader: 'Anda yakin ingin menghapus menu?',
+      subHeader: `Anda yakin ingin menghapus menu ${item.nama}?`,
       buttons: [
         {
           text: 'Tidak',
