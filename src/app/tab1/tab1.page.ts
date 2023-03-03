@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { CartModalPage } from '../pages/cart-modal/cart-modal.page';
 import { DataService } from '../services/data.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-
+declare var window : any;
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -18,12 +18,13 @@ export class Tab1Page {
   itemkembar = false;
   // cart: any[] = [];
   products: any;
-  cart = [];
+  cart: any[] = [];
   cartItemCount!: BehaviorSubject<number>;
 
   constructor(private db: AngularFirestore, private dataService: DataService, private toastController: ToastController, private cartService: CartService, private modalCtrl: ModalController) {
     // window.screen.orientation.lock('portrait');
     this.loadData();
+    window.tab1 = this;
   }
 
   ngOnInit() {

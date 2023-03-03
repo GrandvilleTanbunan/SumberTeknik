@@ -39,6 +39,7 @@ export class DataService {
 
   }
 
+
   addMenu(data:any) 
   {
     // this.addnotif(`${loggeduser} menambah brand '${namabrandku}'`);

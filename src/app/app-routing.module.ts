@@ -18,7 +18,7 @@ const routes: Routes = [
     ...canActivate(redirectUnauthorizedToLogin)
   },
   {
-    path: 'cart-modal',
+    path: 'cart-modal', 
     loadChildren: () => import('./pages/cart-modal/cart-modal.module').then( m => m.CartModalPageModule)
   },
   {
@@ -30,14 +30,19 @@ const routes: Routes = [
     redirectTo:'',
     pathMatch:'full'
     
-  },  {
+  },
+  {
     path: 'add-menu',
     loadChildren: () => import('./add-menu/add-menu.module').then( m => m.AddMenuPageModule)
   },
   {
     path: 'edititem',
     loadChildren: () => import('./edititem/edititem.module').then( m => m.EdititemPageModule)
+  },  {
+    path: 'checkout',
+    loadChildren: () => import('./checkout/checkout.module').then( m => m.CheckoutPageModule)
   },
+
 
   
 

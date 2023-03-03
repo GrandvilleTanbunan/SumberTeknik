@@ -5,7 +5,9 @@ import { InvoiceGeneratorService } from 'src/app/services/invoice-generator.serv
 import * as moment from 'moment';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { DataService } from 'src/app/services/data.service';
-
+import { Router } from "@angular/router";
+import { CheckoutPage } from 'src/app/checkout/checkout.page';
+declare var window:any;
 @Component({
   selector: 'app-cart-modal',
   templateUrl: './cart-modal.page.html',
@@ -44,27 +46,31 @@ export class CartModalPage implements OnInit {
     this.invoicenumber = this.invoicegenerator.generateinvoice();
   }
 
-  checkout(){
+  async checkout(){
     this.generateInvoice();
     console.log(this.invoicenumber)
     console.log(this.cart)
-
-    this.db.collection(`Transaksi`).doc(`${this.invoicenumber}`).set({
-      InvoiceID : this.invoicenumber,
-      tanggal: moment().format('L'),
-      hari: moment().format('dddd'),  
-      waktu: moment().format('LTS'),
-      timestamp: moment().format(),
-      grandtotal: this.getTotal()
-    }).then(()=>{
-      for (let i = 0; i < this.cart.length; i++) {
-        this.db.collection(`Transaksi/${this.invoicenumber}/Item`).add(this.cart[i]);
+    
+    let modal = await this.modalCtrl.create({
+      component: CheckoutPage,
+      // cssClass: 'cart-modal'
+      componentProps: {
+        cart: this.cart,
+        grandtotal:this.getTotal(),
+        invoicenumber: this.invoicenumber
       }
-
-      this.cartService.clearCart();
-      this.dataService.getData();
-
     });
+
+    modal.onDidDismiss().then(()=>{
+      // this.cartService.clearCart();
+      // this.dataService.getData();
+      this.ngOnInit();
+      this.modalCtrl.dismiss();
+
+    })
+    modal.present();
+    
+
 
     
   }

@@ -6,10 +6,46 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">laporan</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" >
+  <!-- <h1 class="title">Report Chart</h1> -->
+  <!-- <div class="box box2">
+    <apx-chart
+      [chart]="barOptions.chart"
+      [series]="barOptions.series"
+      [labels]="barOptions.labels"
+      [grid]="barOptions.grid"
+      [xaxis]="barOptions.xaxis"
+      [yaxis]="barOptions.yaxis"
+      [title]="barOptions.title"
+      [legend]="barOptions.legend"
+      [dataLabels]="barOptions.dataLabels"
+    ></apx-chart>
+  </div> -->
+  <!-- <div class="box box3">
+    <apx-chart
+      [chart]="areaOptions.chart"
+      [series]="areaOptions.series"
+      [stroke]="areaOptions.stroke"
+      [xaxis]="areaOptions.xaxis"
+      [title]="areaOptions.title"
+      [subtitle]="areaOptions.subtitle"
+      [fill]="areaOptions.fill"
+      [tooltip]="areaOptions.tooltip"
+      [colors]="areaOptions.colors"
+    ></apx-chart>
+  </div> -->
+
+  <div class="box box2" *ngIf="transaksi">
+    <apx-chart
+      [chart]="chartOptions.chart"
+      [series]="chartOptions.series"
+      [labels]="chartOptions.labels"
+      [grid]="chartOptions.grid"
+      [xaxis]="chartOptions.xaxis"
+      [yaxis]="chartOptions.yaxis"
+      [title]="chartOptions.title"
+      [legend]="chartOptions.legend"
+      [dataLabels]="chartOptions.dataLabels"
+    ></apx-chart>
+  </div>
 </ion-content>
