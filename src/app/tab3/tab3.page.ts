@@ -354,7 +354,7 @@ export class Tab3Page {
       console.log("tanggal: " + this.tmptanggal)
       //seletah ini jumlahkan jumlah itemnya bisa tanggal sama
 
-    }
+    };
     this.barChart();
   }
 
