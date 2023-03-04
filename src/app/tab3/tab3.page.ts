@@ -47,7 +47,7 @@ export class Tab3Page {
   public barOptions: Partial<ChartOptions> | any;
   public areaOptions: Partial<ChartOptions> | any;
   public chartOptions: Partial<ChartOptions> | any;
-  selectedtimeline : any = "Bulan Ini";
+  selectedtimeline : any;
   transaksi: any[] = [];
   dataFinal: any[] = [];
   bulanini : any;
@@ -55,11 +55,12 @@ export class Tab3Page {
   tanggalkembar = true;
 
   constructor(private dataService: DataService, private db: AngularFirestore) {
-    // this.barChart();
+    this.barChart();
     // this.areaChart();
-    this.bulanini = moment().format('MM');
+    this.bulanini = moment().format('MM/YYYY');
     this.getTransaksi();
     moment.locale('id');
+    // this.LineChart();
 
 
   }
@@ -71,7 +72,7 @@ export class Tab3Page {
     .subscribe((data:any) => {
         this.transaksi = data;
         console.log(this.transaksi)
-        this.LineChart();
+        // this.LineChart();
 
     });
   }
@@ -79,8 +80,8 @@ export class Tab3Page {
   barChart() {
     this.barOptions = {
       chart: {
-        type: 'line',
-        height: 350,
+        type: 'bar',
+        height: 275,
         width: '100%',
         stacked: true,
         toolbar: {
@@ -90,14 +91,16 @@ export class Tab3Page {
       series: [
         {
           name: 'Penjualan',
-          data: [42, 52, 16, 55, 59, 51, 45, 32, 26, 33, 44, 51,42, 52, 16, 55, 59, 51, 45, 32, 26, 33, 44, 51,45, 32, 26, 33, 44, 51],
+          // data: [42, 52, 16, 55, 59, 51, 45, 32, 26, 33, 44, 51,42, 52, 16, 55, 59, 51, 45, 32, 26, 33, 44, 51,45, 32, 26, 33, 44, 51],
+          data: this.dataFinal
+
         },
         // {
         //   name: 'Foods',
         //   data: [6, 12, 4, 7, 5, 3, 6, 4, 3, 3, 5, 6],
         // },
       ],
-      labels: ["Tanggal 1",2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],
+      labels: this.tmptanggal,
       grid: {
         borderColor: '#343E59',
         padding: {
@@ -259,7 +262,7 @@ export class Tab3Page {
 
     if(this.selectedtimeline == "Bulan Ini")
     {
-      this.getData("Bulan Ini")
+      // this.getData("Bulan Ini")
 
       this.chartOptions = {
         series: [
@@ -306,64 +309,53 @@ export class Tab3Page {
     
   }
 
-  getData(timeline:any)
-  {
-    // console.log("bulan ini adalah: ", this.bulanini)
-    // console.log(this.transaksi.length)
-
-    // for(let i=0; i<this.transaksi.length; i++)
-    // {
-    //   console.log("bulan ini dalam for: ", moment(this.transaksi[i].tanggal).format('MM'))
-    // }
-
-    if(timeline == "Bulan Ini")
-    {
+  getData() {
+    this.dataFinal = [];
+    this.tmptanggal = [];
+    let tmpcountitem = 0;;
+    console.log(this.selectedtimeline)
+    if (this.selectedtimeline == "Bulan Ini") {
       this.tmptanggal = [];
-      for(let i=0; i<this.transaksi.length; i++)
-      {
+      for (let i = 0; i < this.transaksi.length; i++) {
         this.tanggalkembar = false;
-
-        // console.log("tanggal transaksi: ", moment(this.transaksi[i].tanggal,"DD/MM/YYYY").format('DD'));
-        // console.log("tanggal transaksi: ",this.transaksi[i].tanggal);
-        if(moment(this.transaksi[i].tanggal,"DD/MM/YYYY").format('MM') == this.bulanini)
-        {
-          this.dataFinal.push(this.transaksi[i].jumlahitem);
+        if (moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('MM/YYYY') == this.bulanini) {
           //for tmp tanggalnya supaya ada pengecekan tanggal kembar
-          if(this.tmptanggal.length == 0)
-          {
-            // console.log("MAsuk if")
-            // console.log("isi if")
-
-            this.tmptanggal.push(moment(this.transaksi[i].tanggal,"DD/MM/YYYY").format('DD'))
+          if (this.tmptanggal.length == 0) {
+            tmpcountitem = this.transaksi[i].jumlahitem;
+            this.tmptanggal.push(moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('DD/MM/YYYY'))
           }
-          else
-          {
-            // console.log("MAsuk else")
-
-            for(let j=0; j<this.tmptanggal.length; j++)
-            {
-              // console.log("tmptanggal ke: ", j +" adalah " + this.tmptanggal[j])
-              // console.log("dan tanggal transaksi ke: ",i +" adalah " + moment(this.transaksi[i].tanggal,"DD/MM/YYYY").format('DD'))
-              if(this.tmptanggal[j] == moment(this.transaksi[i].tanggal,"DD/MM/YYYY").format('DD'))
-              {
+          else {
+            for (let j = 0; j < this.tmptanggal.length; j++) {
+              if (this.tmptanggal[j] == moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('DD/MM/YYYY')) {
                 // console.log("masuk kembar tidak boleh isi")
                 this.tanggalkembar = true;
-                
+              }
+              else {
+                this.tanggalkembar = false;
               }
             }
-            if(this.tanggalkembar == false)
-            {
-              // console.log("isi")
-              this.tmptanggal.push(moment(this.transaksi[i].tanggal,"DD/MM/YYYY").format('DD'))
+            if (this.tanggalkembar == false) {
+              this.dataFinal.push(tmpcountitem);
+              tmpcountitem = 0;
+              tmpcountitem = tmpcountitem + this.transaksi[i].jumlahitem;
+              this.tmptanggal.push(moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('DD/MM/YYYY'))
               this.tanggalkembar = true;
+            }
+            else {
+              tmpcountitem = tmpcountitem + this.transaksi[i].jumlahitem;
+            }
+            if (i == (this.transaksi.length - 1)) {
+              this.dataFinal.push(tmpcountitem);
             }
           }
         }
       }
       console.log(this.dataFinal)
-      console.log("tanggal:"+this.tmptanggal)
+      console.log("tanggal: " + this.tmptanggal)
+      //seletah ini jumlahkan jumlah itemnya bisa tanggal sama
 
     }
+    this.barChart();
   }
 
 }
