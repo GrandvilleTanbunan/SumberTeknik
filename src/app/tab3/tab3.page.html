@@ -27,6 +27,8 @@
       [title]="barOptions.title"
       [legend]="barOptions.legend"
       [dataLabels]="barOptions.dataLabels"
+      [colors]="barOptions.colors"
+
     ></apx-chart>
   </div>
   <!-- <div class="box box3">
@@ -65,4 +67,30 @@
       <!-- <ion-select-option value="bananas">Bananas</ion-select-option> -->
     </ion-select>
   </ion-item>
+<!-- 
+  <div *ngIf="dataFinal.length > 0">
+    <ion-card *ngFor="let item of transaksibulanini">
+      <ion-card-header>
+        <ion-card-title style="font-size: 20pt; font-family:LatoBold">
+          Rp {{item.grandtotal | number}}
+        </ion-card-title>
+        <ion-card-subtitle>Order ID: {{item.TransaksiID}} </ion-card-subtitle>
+        <ion-icon className="center-right" name="chevron-forward-outline"></ion-icon> 
+        <ion-icon color="primary" style="float:right" name="arrow-back"></ion-icon>
+
+      </ion-card-header>
+
+    </ion-card>
+
+  </div> -->
+
+  <ion-list *ngFor="let item of transaksibulanini">
+      <ion-item detail lines="none"  style="padding-left: 20px; padding-right: 20px; background-color: white">
+        <ion-label>
+          <h1>Rp {{item.grandtotal| number}}</h1>
+          <p>Tanggal: {{item.tanggal}} </p>
+        </ion-label>    
+      </ion-item>
+    </ion-list>
+  
 </ion-content>

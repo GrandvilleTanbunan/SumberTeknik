@@ -52,6 +52,7 @@ export class Tab3Page {
   dataFinal: any[] = [];
   bulanini : any;
   tmptanggal : any[] = [];
+  transaksibulanini : any[] = [];
   tanggalkembar = true;
 
   constructor(private dataService: DataService, private db: AngularFirestore) {
@@ -85,15 +86,14 @@ export class Tab3Page {
         width: '100%',
         stacked: true,
         toolbar: {
-          show: false,
+          show: true,
         },
       },
       series: [
         {
           name: 'Penjualan',
           // data: [42, 52, 16, 55, 59, 51, 45, 32, 26, 33, 44, 51,42, 52, 16, 55, 59, 51, 45, 32, 26, 33, 44, 51,45, 32, 26, 33, 44, 51],
-          data: this.dataFinal
-
+          data: this.dataFinal,
         },
         // {
         //   name: 'Foods',
@@ -148,6 +148,7 @@ export class Tab3Page {
           colors: '#78909c',
         },
       },
+      colors:['#fc5603', '#E91E63', '#9C27B0']
     };
   }
 
@@ -304,6 +305,8 @@ export class Tab3Page {
             text:"Tanggal"
           }
         }
+      
+
       };
     }
     
@@ -312,7 +315,9 @@ export class Tab3Page {
   getData() {
     this.dataFinal = [];
     this.tmptanggal = [];
-    let tmpcountitem = 0;;
+    let tmpcountitem = 0;
+    let tmpcountgrandtotal = 0;
+    this.transaksibulanini = [];
     console.log(this.selectedtimeline)
     if (this.selectedtimeline == "Bulan Ini") {
       this.tmptanggal = [];
@@ -322,6 +327,7 @@ export class Tab3Page {
           //for tmp tanggalnya supaya ada pengecekan tanggal kembar
           if (this.tmptanggal.length == 0) {
             tmpcountitem = this.transaksi[i].jumlahitem;
+            tmpcountgrandtotal = this.transaksi[i].grandtotal;
             this.tmptanggal.push(moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('DD/MM/YYYY'))
           }
           else {
@@ -336,22 +342,44 @@ export class Tab3Page {
             }
             if (this.tanggalkembar == false) {
               this.dataFinal.push(tmpcountitem);
+              this.transaksibulanini.push({
+                grandtotal: tmpcountgrandtotal,
+                tanggal: moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('DD/MM/YYYY')
+              });
+
               tmpcountitem = 0;
+              tmpcountgrandtotal = 0;
               tmpcountitem = tmpcountitem + this.transaksi[i].jumlahitem;
+              tmpcountgrandtotal = tmpcountgrandtotal + this.transaksi[i].grandtotal;
               this.tmptanggal.push(moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('DD/MM/YYYY'))
               this.tanggalkembar = true;
             }
             else {
               tmpcountitem = tmpcountitem + this.transaksi[i].jumlahitem;
+              tmpcountgrandtotal = tmpcountgrandtotal + this.transaksi[i].grandtotal;
+
             }
+            //last item
             if (i == (this.transaksi.length - 1)) {
               this.dataFinal.push(tmpcountitem);
+              this.transaksibulanini.push({
+                grandtotal: tmpcountgrandtotal,
+                tanggal: moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('DD/MM/YYYY')
+              });
             }
           }
         }
       }
       console.log(this.dataFinal)
       console.log("tanggal: " + this.tmptanggal)
+
+      for(let i=0; i<this.tmptanggal.length; i++)
+      {
+        this.transaksibulanini[i].tanggal = this.tmptanggal[i];
+      }
+
+      console.log(this.transaksibulanini)
+
       //seletah ini jumlahkan jumlah itemnya bisa tanggal sama
 
     };
