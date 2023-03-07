@@ -498,7 +498,8 @@ export class Tab3Page {
     
   }
 
-  getData() {
+  getData(selectedtimeline: any) {
+    this.selectedtimeline = selectedtimeline;
     this.dataFinal = [];
     this.tmptanggal = [];
     this.tmpbulan = [];
@@ -507,8 +508,8 @@ export class Tab3Page {
     this.transaksibulanini = [];
     this.totalpendapatan = 0;
     this.grandtotal = [];
-    console.log(this.selectedtimeline)
-    if (this.selectedtimeline == "Bulan Ini") {
+    console.log(selectedtimeline)
+    if (selectedtimeline == "Bulan Ini") {
       this.tmptanggal = [];
       for (let i = 0; i < this.transaksi.length; i++) {
         this.tanggalkembar = false;
@@ -583,7 +584,7 @@ export class Tab3Page {
 
     };
 
-    if(this.selectedtimeline == "Tahun Ini")
+    if(selectedtimeline == "Tahun Ini")
     {
       this.tmpbulan = [];
       this.tmptanggal = [];
