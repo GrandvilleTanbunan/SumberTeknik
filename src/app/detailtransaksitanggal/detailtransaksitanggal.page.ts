@@ -37,9 +37,9 @@ export class DetailtransaksitanggalPage implements OnInit {
 
     if(this.selectedtimeline == "Tahun Ini")
     {
-      this.title = moment(this.item.tanggal, 'MM/YYYY').format("MMMM YYYY");
+      this.title = moment(this.item.tanggal, 'MMMM YYYY').format("MMMM YYYY");
       console.log(this.title)
-      this.db.collection(`Transaksi`, ref => ref.where('bulan', '==', `${moment(this.item.tanggal, 'MM/YYYY').format("MM")}`))
+      this.db.collection(`Transaksi`, ref => ref.where('bulan', '==', `${moment(this.item.tanggal, 'MMMM YYYY').format("MM")}`))
       .valueChanges({idField: 'MenuID'})
       .subscribe((data:any) => {
           this.allitem = data;

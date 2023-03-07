@@ -141,7 +141,7 @@ export class Tab3Page {
         },
       },
       title: {
-        text: 'Penjualan Dalam Sebulan',
+        // text: 'Penjualan Dalam Sebulan',
         align: 'left',
         style: {
           fontSize: '16px',
@@ -167,6 +167,175 @@ export class Tab3Page {
       },
       colors:['#8D5B4C', '#E91E63', '#9C27B0']
     };
+
+    if(this.selectedtimeline == "Bulan Ini")
+    {
+      this.barOptions = {
+        chart: {
+          type: 'bar',
+          height: 200,
+          width: '100%',
+          stacked: true,
+          toolbar: {
+            show: true,
+          },
+        },
+        series: [
+          {
+            name: 'Penjualan',
+            // data: [42, 52, 16, 55, 59, 51, 45, 32, 26, 33, 44, 51,42, 52, 16, 55, 59, 51, 45, 32, 26, 33, 44, 51,45, 32, 26, 33, 44, 51],
+            data: this.dataFinal
+          },
+          // {
+          //   name: 'Foods',
+          //   data: [6, 12, 4, 7, 5, 3, 6, 4, 3, 3, 5, 6],
+          // },
+        ],
+        labels: this.tmptanggal,
+        grid: {
+          borderColor: '#343E59',
+          padding: {
+            right: 0,
+            left: 0,
+          },
+        },
+        xaxis: {
+          labels: {
+            show: false,
+          },
+          axisBorder: {
+            show: false,
+          },
+          axisTicks: {
+            show: false,
+          },
+        },
+        yaxis: {
+          axisBorder: {
+            show: false,
+          },
+          axisTicks: {
+            show: false,
+          },
+          labels: {
+            style: {
+              colors: '#78909c',
+            },
+          },
+        },
+        title: {
+          text: 'Penjualan Dalam Bulan Ini',
+          align: 'left',
+          style: {
+            fontSize: '16px',
+            color: '#78909c',
+          },
+        },
+        dataLabels: {
+          enabled: true,
+        },
+        legend: {
+          labels: {
+            colors: '#00E396',
+          },
+        },
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            distributed: false,
+          },
+        },
+        theme: {
+          palette: 'palette9'
+        },
+        colors:['#8D5B4C', '#E91E63', '#9C27B0']
+      };
+    }
+
+    if(this.selectedtimeline == "Tahun Ini")
+    {
+      this.barOptions = {
+        chart: {
+          type: 'bar',
+          height: 200,
+          width: '100%',
+          stacked: true,
+          toolbar: {
+            show: true,
+          },
+        },
+        series: [
+          {
+            name: 'Penjualan',
+            // data: [42, 52, 16, 55, 59, 51, 45, 32, 26, 33, 44, 51,42, 52, 16, 55, 59, 51, 45, 32, 26, 33, 44, 51,45, 32, 26, 33, 44, 51],
+            data: this.dataFinal
+          },
+          // {
+          //   name: 'Foods',
+          //   data: [6, 12, 4, 7, 5, 3, 6, 4, 3, 3, 5, 6],
+          // },
+        ],
+        labels: this.tmpbulan,
+        grid: {
+          borderColor: '#343E59',
+          padding: {
+            right: 0,
+            left: 0,
+          },
+        },
+        xaxis: {
+          labels: {
+            show: false,
+          },
+          axisBorder: {
+            show: false,
+          },
+          axisTicks: {
+            show: false,
+          },
+        },
+        yaxis: {
+          axisBorder: {
+            show: false,
+          },
+          axisTicks: {
+            show: false,
+          },
+          labels: {
+            style: {
+              colors: '#78909c',
+            },
+          },
+        },
+        title: {
+          text: 'Penjualan Dalam Tahun Ini',
+          align: 'left',
+          style: {
+            fontSize: '16px',
+            color: '#78909c',
+          },
+        },
+        dataLabels: {
+          enabled: true,
+        },
+        legend: {
+          labels: {
+            colors: '#00E396',
+          },
+        },
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            distributed: false,
+          },
+        },
+        theme: {
+          palette: 'palette9'
+        },
+        colors:['#8D5B4C', '#E91E63', '#9C27B0']
+      };
+    }
+    
   }
 
   areaChart() {
@@ -404,6 +573,8 @@ export class Tab3Page {
         this.totalpendapatan = this.totalpendapatan + this.transaksibulanini[i].grandtotal;
       }
 
+      this.transaksibulanini = this.transaksibulanini.reverse();
+
       console.log(this.transaksibulanini)
       console.log(this.grandtotal)
 
@@ -425,11 +596,11 @@ export class Tab3Page {
           if (this.tmpbulan.length == 0) {
             tmpcountitem = this.transaksi[i].jumlahitem;
             tmpcountgrandtotal = this.transaksi[i].grandtotal;
-            this.tmpbulan.push(moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('MM/YYYY'))
+            this.tmpbulan.push(moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('MMMM YYYY'))
           }
           else {
             for (let j = 0; j < this.tmpbulan.length; j++) {
-              if (this.tmpbulan[j] == moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('MM/YYYY')) {
+              if (this.tmpbulan[j] == moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('MMMM YYYY')) {
                 // console.log("masuk kembar tidak boleh isi")
                 this.bulankembar = true;
               }
@@ -442,14 +613,14 @@ export class Tab3Page {
               this.grandtotal.push(tmpcountgrandtotal)
               this.transaksibulanini.push({
                 grandtotal: tmpcountgrandtotal,
-                tanggal: moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('MM/YYYY')
+                tanggal: moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('MMMM YYYY')
               });
 
               tmpcountitem = 0;
               tmpcountgrandtotal = 0;
               tmpcountitem = tmpcountitem + this.transaksi[i].jumlahitem;
               tmpcountgrandtotal = tmpcountgrandtotal + this.transaksi[i].grandtotal;
-              this.tmpbulan.push(moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('MM/YYYY'))
+              this.tmpbulan.push(moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('MMMM YYYY'))
               this.bulankembar = true;
             }
             else {
@@ -467,7 +638,7 @@ export class Tab3Page {
 
           this.transaksibulanini.push({
             grandtotal: tmpcountgrandtotal,
-            tanggal: moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('MM/YYYY')
+            tanggal: moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('MMMM YYYY')
           });
         }
       }
@@ -477,6 +648,9 @@ export class Tab3Page {
         this.transaksibulanini[i].tanggal = this.tmpbulan[i];
         this.totalpendapatan = this.totalpendapatan + this.transaksibulanini[i].grandtotal;
       }
+
+      this.transaksibulanini = this.transaksibulanini.reverse();
+
     }
     this.barChart();
   }
