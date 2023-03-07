@@ -42,6 +42,14 @@ const routes: Routes = [
     path: 'checkout',
     loadChildren: () => import('./checkout/checkout.module').then( m => m.CheckoutPageModule)
   },
+  {
+    path: 'detailtransaksitanggal',
+    loadChildren: () => import('./detailtransaksitanggal/detailtransaksitanggal.module').then( m => m.DetailtransaksitanggalPageModule)
+  },
+  {
+    path: 'detail-seluruh-pesanan',
+    loadChildren: () => import('./detail-seluruh-pesanan/detail-seluruh-pesanan.module').then( m => m.DetailSeluruhPesananPageModule)
+  },
 
 
   

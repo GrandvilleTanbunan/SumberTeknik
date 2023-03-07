@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar color="secondary" mode="ios">
+    <ion-title class="ion-text-center">{{item.InvoiceID}}</ion-title>
+    <ion-button slot="start" fill="clear" color="light" (click)="close()">
+      <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Grand total</ion-card-subtitle>
+
+      <ion-card-title style="font-size: 20pt; font-family:LatoBold">Rp {{item.grandtotal | number}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+        Tanggal: {{item.tanggal}} <br>
+        Waktu: {{waktu}}
+    </ion-card-content>
+  </ion-card>
+  <ion-item *ngFor="let item of detailitem">
+    <ion-label class="amount">{{item.amount}} x</ion-label>
+    <ion-label>{{item.nama}}</ion-label>
+    <ion-label slot="end">Rp {{ item.amount * item.harga | number }}</ion-label>
+
+  </ion-item>
+</ion-content>

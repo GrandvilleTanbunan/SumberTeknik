@@ -65,7 +65,7 @@ export class CartModalPage implements OnInit {
       // this.cartService.clearCart();
       // this.dataService.getData();
       this.ngOnInit();
-      this.modalCtrl.dismiss();
+      // this.modalCtrl.dismiss();
 
     })
     modal.present();

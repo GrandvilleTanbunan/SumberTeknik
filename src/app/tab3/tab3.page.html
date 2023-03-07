@@ -1,36 +1,52 @@
-<ion-header [translucent]="true">
+<ion-header style="background-color: white">
   <ion-toolbar color="secondary">
     <ion-title class="ion-text-center">
       Laporan
     </ion-title>
   </ion-toolbar>
+
+  <ion-card>
+    <ion-card-header>
+        <ion-card-subtitle>Total Pendapatan {{selectedtimeline}}</ion-card-subtitle>
+
+      <ion-card-title style="font-size: 16pt; font-family:LatoBold">Rp {{totalpendapatan | number}}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+<!-- <h1 class="title">Report Chart</h1> -->
+
+<div style="color: black">
+  <apx-chart
+    [chart]="barOptions.chart"
+    [series]="barOptions.series"
+    [labels]="barOptions.labels"
+    [grid]="barOptions.grid"
+    [xaxis]="barOptions.xaxis"
+    [yaxis]="barOptions.yaxis"
+    [title]="barOptions.title"
+    [legend]="barOptions.legend"
+    [dataLabels]="barOptions.dataLabels"
+    [colors]="barOptions.colors"
+    [plotOptions]="barOptions.plotOptions"
+    [theme]="barOptions.theme"
+
+
+  ></apx-chart>
+</div>
+
+
+<ion-item lines="none">
+  <ion-label style="font-size: 16pt; font-family: LatoBold">Transaksi</ion-label>
+  <ion-select [(ngModel)]="selectedtimeline" interface="popover" placeholder="Pilih Periode" (ionChange)="getData()">
+    <ion-select-option value="Bulan Ini">Bulan Ini</ion-select-option>
+    <ion-select-option value="Tahun Ini">Tahun Ini</ion-select-option>
+    <!-- <ion-select-option value="bananas">Bananas</ion-select-option> -->
+  </ion-select>
+</ion-item>
 </ion-header>
 
 <ion-content [fullscreen]="true" >
 
-    <ion-card>
-      <ion-card-header>
-          <ion-card-subtitle>Total Pendapatan</ion-card-subtitle>
 
-        <ion-card-title style="font-size: 20pt; font-family:LatoBold">Rp 5.000.000</ion-card-title>
-      </ion-card-header>
-    </ion-card>
-  <!-- <h1 class="title">Report Chart</h1> -->
-  <div>
-    <apx-chart
-      [chart]="barOptions.chart"
-      [series]="barOptions.series"
-      [labels]="barOptions.labels"
-      [grid]="barOptions.grid"
-      [xaxis]="barOptions.xaxis"
-      [yaxis]="barOptions.yaxis"
-      [title]="barOptions.title"
-      [legend]="barOptions.legend"
-      [dataLabels]="barOptions.dataLabels"
-      [colors]="barOptions.colors"
-
-    ></apx-chart>
-  </div>
   <!-- <div class="box box3">
     <apx-chart
       [chart]="areaOptions.chart"
@@ -59,15 +75,23 @@
     ></apx-chart>
   </div> -->
 
-  <ion-item>
-    <ion-label style="font-size: 16pt; font-family: LatoBold">Transaksi</ion-label>
-    <ion-select [(ngModel)]="selectedtimeline" interface="popover" placeholder="Pilih Periode" (ionChange)="getData()">
-      <ion-select-option value="Bulan Ini">Bulan Ini</ion-select-option>
-      <ion-select-option value="Tahun Ini">Tahun Ini</ion-select-option>
-      <!-- <ion-select-option value="bananas">Bananas</ion-select-option> -->
-    </ion-select>
-  </ion-item>
-<!-- 
+<div style="margin-bottom:70px">
+  <ion-list *ngFor="let item of transaksibulanini" style="padding-bottom: 5px;" >
+    <ion-item detail lines="none" style="padding-left: 15px; padding-right:15px;" class="ion-item-style" (click)="pilihtransaksi(item)">
+      <ion-label>
+        <h1>Rp {{item.grandtotal| number}}</h1>
+        <p *ngIf="selectedtimeline == 'Bulan Ini'">Tanggal: {{item.tanggal}} </p>
+        <p *ngIf="selectedtimeline == 'Tahun Ini'">Bulan: {{item.tanggal}} </p>
+
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+</div>
+
+
+
+  <!-- 
   <div *ngIf="dataFinal.length > 0">
     <ion-card *ngFor="let item of transaksibulanini">
       <ion-card-header>
@@ -83,14 +107,4 @@
     </ion-card>
 
   </div> -->
-
-  <ion-list *ngFor="let item of transaksibulanini">
-      <ion-item detail lines="none"  style="padding-left: 20px; padding-right: 20px; background-color: white">
-        <ion-label>
-          <h1>Rp {{item.grandtotal| number}}</h1>
-          <p>Tanggal: {{item.tanggal}} </p>
-        </ion-label>    
-      </ion-item>
-    </ion-list>
-  
 </ion-content>

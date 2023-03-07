@@ -1,3 +1,4 @@
+<!-- 
 <ion-tabs>
   <ion-fab vertical="bottom" horizontal="center" translucent="true" *ngIf="posisitab == 1">
     <ion-fab-button (click)="openCart()">
@@ -20,7 +21,7 @@
 
     <ion-tab-button tab="tab2" (click)="PosisiTab(2)">
       <ion-icon aria-hidden="true" name="reader"></ion-icon>
-      <!-- <ion-img style="width: 30px; height: 30px;" slot="start" [src]='/assets/images/transaction.png'></ion-img> -->
+      <ion-img style="width: 30px; height: 30px;" slot="start" [src]='/assets/images/transaction.png'></ion-img>
       <ion-label>Menu</ion-label>
     </ion-tab-button>
 
@@ -37,4 +38,58 @@
     </ion-tab-button>
   </ion-tab-bar>
 
+</ion-tabs>
+ -->
+
+ <ion-tabs>  
+
+  <!-- <ion-fab vertical="bottom" horizontal="center" translucent="true">
+    <ion-fab-button>
+      <ion-icon name="cart"></ion-icon>
+    </ion-fab-button>
+  </ion-fab> -->
+  <ion-fab vertical="bottom" horizontal="center" translucent="true" *ngIf="posisitab == 1">
+    <ion-fab-button (click)="openCart()">
+      <div class="cart-length">{{ cartItemCount | async }}</div>
+      <ion-icon name="cart" class="cart-icon"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab vertical="bottom" horizontal="center" translucent="true" *ngIf="posisitab == 2">
+    <ion-fab-button (click)="openAddMenu()">
+      <ion-icon name="add" class="cart-icon"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
+
+  
+  <ion-tab-bar slot="bottom" class="ion-no-border">
+    <ion-tab-button tab="tab1" (click)="PosisiTab(1)">
+      <ion-icon name="basket-outline" *ngIf="posisitab !=1"></ion-icon>
+      <ion-icon name="basket" *ngIf="posisitab ==1"></ion-icon>
+
+    </ion-tab-button>
+
+    <ion-tab-button tab="tab2" class="comments" (click)="PosisiTab(2)">
+      <ion-icon name="reader-outline" *ngIf="posisitab !=2"></ion-icon>
+      <ion-icon name="reader" *ngIf="posisitab ==2"></ion-icon>
+
+      <!-- <ion-badge *ngIf="new_message">{{new_message}}</ion-badge> -->
+    </ion-tab-button>
+
+    <svg height="50" viewBox="0 0 100 50" width="100" xmlns="http://www.w3.org/2000/svg"><path d="M100 0v50H0V0c.543 27.153 22.72 49 50 49S99.457 27.153 99.99 0h.01z" fill="red" fill-rule="evenodd"></path></svg>
+
+    <ion-tab-button tab="tab3" class="notifs"  (click)="PosisiTab(3)">
+      <ion-icon name="newspaper-outline" *ngIf="posisitab !=3"></ion-icon>
+      <ion-icon name="newspaper" *ngIf="posisitab ==3"></ion-icon>
+
+      <!-- <ion-badge *ngIf="new_activities">{{new_activities}}</ion-badge> -->
+    </ion-tab-button>
+
+    <ion-tab-button tab="profil" (click)="PosisiTab(4)">
+      <ion-icon name="person-outline" *ngIf="posisitab !=4"></ion-icon>
+      <ion-icon name="person" *ngIf="posisitab ==4"></ion-icon>
+
+    </ion-tab-button>
+  </ion-tab-bar>
 </ion-tabs>

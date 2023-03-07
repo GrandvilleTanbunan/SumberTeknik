@@ -21,9 +21,9 @@ export class CheckoutPage implements OnInit {
   constructor(private loadingCtrl: LoadingController,private alertCtrl: AlertController,private toastController: ToastController,private cartService:CartService,private dataService:DataService,private db: AngularFirestore, private modalCtrl: ModalController) { }
 
   ngOnInit() {
-    console.log("ini di modal: " , this.invoicenumber)
-    console.log("ini di modal: " , this.grandtotal)
-    console.log("ini di modal: " , this.cart)
+    // console.log("ini di modal: " , this.invoicenumber)
+    // console.log("ini di modal: " , this.grandtotal)
+    // console.log("ini di modal: " , this.cart)
     moment.locale('id');
 
     this.hitungjumlahitem();
@@ -58,6 +58,8 @@ export class CheckoutPage implements OnInit {
                   InvoiceID: this.invoicenumber,
                   tanggal: moment().format('DD/MM/YYYY'),
                   hari: moment().format('dddd'),
+                  bulan: moment().format('MM'),
+                  tahun: moment().format('yyyy'),
                   waktu: moment().format('LTS'),
                   timestamp: moment().format(),
                   grandtotal: this.grandtotal,

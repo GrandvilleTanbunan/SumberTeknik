@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar color="secondary" mode="ios">
+    <ion-title class="ion-text-center">
+      {{title}}
+    </ion-title>
+    <ion-button slot="start" fill="clear" color="light" (click)="close()">
+      <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+        <ion-card-subtitle>Total Pendapatan pada {{item.tanggal}}</ion-card-subtitle>
+
+      <ion-card-title style="font-size: 20pt; font-family:LatoBold">Rp {{item.grandtotal | number}}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <!-- <div style="margin-left:2%">
+    <ion-label style="font-size: 16pt">
+      Daftar Transaksi
+    </ion-label>
+  </div> -->
+
+  <ion-list *ngFor="let item of allitem" style="padding-bottom: 5px;" >
+    <ion-item detail lines="full" style="padding-left: 15px; padding-right:15px;" class="ion-item-style" (click)="pilihtransaksi(item)">
+      <ion-label>
+        <ion-label style="font-size: 14pt">Rp {{item.grandtotal| number}}</ion-label>
+        <p>Order No. {{item.InvoiceID}} </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  
+</ion-content>

@@ -45,18 +45,17 @@ export class Tab1Page {
     // this.cartItemCount = this.cartService.getCartItemCount();
   }
 
-  loadData()
-  {
+  loadData() {
     this.db.collection(`Menu`, ref => ref.orderBy('nama', 'asc'))
-    .valueChanges({idField: 'MenuID'})
-    .subscribe((data:any) => {
+      .valueChanges({ idField: 'MenuID' })
+      .subscribe((data: any) => {
         this.products = data;
         console.log(this.products)
         this.cart = this.cartService.getCart();
         this.cartItemCount = this.cartService.getCartItemCount();
-    }
-    
-);
+      }
+
+      );
   }
 
   // increment () {
