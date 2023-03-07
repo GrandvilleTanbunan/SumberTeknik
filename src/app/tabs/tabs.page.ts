@@ -43,6 +43,14 @@ export class TabsPage {
     modal.present();
   }
 
+  async openExport(){
+    let modal = await this.modalCtrl.create({
+      component: AddMenuPage,
+      cssClass: 'small-modal'
+    });
+    modal.present();
+  }
+
   PosisiTab(tab : any)
   {
     // console.log(tab)

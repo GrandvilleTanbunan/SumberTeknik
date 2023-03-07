@@ -61,6 +61,8 @@ export class Tab3Page {
   bulankembar = true;
   totalpendapatan: any = 0;
   grandtotal : any[] = [];
+  tmpselectedMonth: any;
+  tmpselectedYear: any;
   constructor(private dataService: DataService, private db: AngularFirestore, private modalCtrl: ModalController) {
     this.barChart();
     // this.areaChart();
@@ -168,7 +170,7 @@ export class Tab3Page {
       colors:['#8D5B4C', '#E91E63', '#9C27B0']
     };
 
-    if(this.selectedtimeline == "Bulan Ini")
+    if(this.selectedtimeline == "Bulan Ini" || this.selectedtimeline == "Pilih Bulan")
     {
       this.barOptions = {
         chart: {
@@ -252,7 +254,7 @@ export class Tab3Page {
       };
     }
 
-    if(this.selectedtimeline == "Tahun Ini")
+    if(this.selectedtimeline == "Tahun Ini" || this.selectedtimeline == "Pilih Tahun")
     {
       this.barOptions = {
         chart: {
@@ -593,6 +595,155 @@ export class Tab3Page {
       {
         this.bulankembar = false;
         if(moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('YYYY') == this.tahunini)
+        {
+          if (this.tmpbulan.length == 0) {
+            tmpcountitem = this.transaksi[i].jumlahitem;
+            tmpcountgrandtotal = this.transaksi[i].grandtotal;
+            this.tmpbulan.push(moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('MMMM YYYY'))
+          }
+          else {
+            for (let j = 0; j < this.tmpbulan.length; j++) {
+              if (this.tmpbulan[j] == moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('MMMM YYYY')) {
+                // console.log("masuk kembar tidak boleh isi")
+                this.bulankembar = true;
+              }
+              else {
+                this.bulankembar = false;
+              }
+            }
+            if (this.bulankembar == false) {
+              this.dataFinal.push(tmpcountitem);
+              this.grandtotal.push(tmpcountgrandtotal)
+              this.transaksibulanini.push({
+                grandtotal: tmpcountgrandtotal,
+                tanggal: moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('MMMM YYYY')
+              });
+
+              tmpcountitem = 0;
+              tmpcountgrandtotal = 0;
+              tmpcountitem = tmpcountitem + this.transaksi[i].jumlahitem;
+              tmpcountgrandtotal = tmpcountgrandtotal + this.transaksi[i].grandtotal;
+              this.tmpbulan.push(moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('MMMM YYYY'))
+              this.bulankembar = true;
+            }
+            else {
+              tmpcountitem = tmpcountitem + this.transaksi[i].jumlahitem;
+              tmpcountgrandtotal = tmpcountgrandtotal + this.transaksi[i].grandtotal;
+
+            }
+            
+          }
+        }
+        //last item
+        if (i == (this.transaksi.length - 1)) {
+          this.dataFinal.push(tmpcountitem);
+          this.grandtotal.push(tmpcountgrandtotal)
+
+          this.transaksibulanini.push({
+            grandtotal: tmpcountgrandtotal,
+            tanggal: moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('MMMM YYYY')
+          });
+        }
+      }
+
+      for(let i=0; i<this.transaksibulanini.length; i++)
+      {
+        this.transaksibulanini[i].tanggal = this.tmpbulan[i];
+        this.totalpendapatan = this.totalpendapatan + this.transaksibulanini[i].grandtotal;
+      }
+
+      this.transaksibulanini = this.transaksibulanini.reverse();
+
+    }
+
+    if(selectedtimeline == "Pilih Bulan"){
+      // console.log(this.tmpselectedMonth);
+      const formateddate = moment(this.tmpselectedMonth).format('MM/YYYY')
+      console.log(formateddate);
+
+      this.tmptanggal = [];
+      for (let i = 0; i < this.transaksi.length; i++) {
+        this.tanggalkembar = false;
+        if (moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('MM/YYYY') == formateddate) {
+          //for tmp tanggalnya supaya ada pengecekan tanggal kembar
+          if (this.tmptanggal.length == 0) {
+            tmpcountitem = this.transaksi[i].jumlahitem;
+            tmpcountgrandtotal = this.transaksi[i].grandtotal;
+            this.tmptanggal.push(moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('DD/MM/YYYY'))
+          }
+          else {
+            for (let j = 0; j < this.tmptanggal.length; j++) {
+              if (this.tmptanggal[j] == moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('DD/MM/YYYY')) {
+                // console.log("masuk kembar tidak boleh isi")
+                this.tanggalkembar = true;
+              }
+              else {
+                this.tanggalkembar = false;
+              }
+            }
+            if (this.tanggalkembar == false) {
+              this.dataFinal.push(tmpcountitem);
+              this.grandtotal.push(tmpcountgrandtotal)
+              this.transaksibulanini.push({
+                grandtotal: tmpcountgrandtotal,
+                tanggal: moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('DD/MM/YYYY')
+              });
+
+              tmpcountitem = 0;
+              tmpcountgrandtotal = 0;
+              tmpcountitem = tmpcountitem + this.transaksi[i].jumlahitem;
+              tmpcountgrandtotal = tmpcountgrandtotal + this.transaksi[i].grandtotal;
+              this.tmptanggal.push(moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('DD/MM/YYYY'))
+              this.tanggalkembar = true;
+            }
+            else {
+              tmpcountitem = tmpcountitem + this.transaksi[i].jumlahitem;
+              tmpcountgrandtotal = tmpcountgrandtotal + this.transaksi[i].grandtotal;
+
+            }
+            
+          }
+        }
+        //last item
+
+        if (i == (this.transaksi.length - 1)) {
+          this.dataFinal.push(tmpcountitem);
+          this.grandtotal.push(tmpcountgrandtotal)
+
+          this.transaksibulanini.push({
+            grandtotal: tmpcountgrandtotal,
+            tanggal: moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('DD/MM/YYYY')
+          });
+        }
+      }
+      console.log(this.dataFinal)
+      console.log("tanggal: " + this.tmptanggal)
+
+      for(let i=0; i<this.transaksibulanini.length; i++)
+      {
+        this.transaksibulanini[i].tanggal = this.tmptanggal[i];
+        this.totalpendapatan = this.totalpendapatan + this.transaksibulanini[i].grandtotal;
+      }
+
+      this.transaksibulanini = this.transaksibulanini.reverse();
+
+      console.log(this.transaksibulanini)
+      console.log(this.grandtotal)
+
+    }
+
+    if(selectedtimeline == "Pilih Tahun")
+    {
+      this.tmpbulan = [];
+      this.tmptanggal = [];
+      console.log(this.tmpselectedYear)
+      const formateddate = moment(this.tmpselectedYear).format('YYYY')
+      console.log(formateddate);
+
+      for(let i=0; i<this.transaksi.length; i++)
+      {
+        this.bulankembar = false;
+        if(moment(this.transaksi[i].tanggal, "DD/MM/YYYY").format('YYYY') == formateddate)
         {
           if (this.tmpbulan.length == 0) {
             tmpcountitem = this.transaksi[i].jumlahitem;

@@ -54,7 +54,7 @@
         <ion-item [button]="true" [detail]="false" id="nested-trigger2">Pilih Bulan</ion-item>
         <ion-popover trigger="nested-trigger2" side="left">
           <ng-template>
-            <ion-datetime  [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="month-year">
+            <ion-datetime [(ngModel)]="tmpselectedMonth"  [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="month-year" (ionChange)="getData('Pilih Bulan')">
             </ion-datetime>
           </ng-template>
         </ion-popover>
@@ -62,7 +62,7 @@
         <ion-item [button]="true" [detail]="false" id="nested-trigger3">Pilih Tahun</ion-item>
         <ion-popover trigger="nested-trigger3" side="left">
           <ng-template>
-            <ion-datetime [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="year">
+            <ion-datetime [(ngModel)]="tmpselectedYear" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="year" (ionChange)="getData('Pilih Tahun')">
             </ion-datetime>
           </ng-template>
         </ion-popover>
@@ -107,18 +107,17 @@
     ></apx-chart>
   </div> -->
 
-<div style="margin-bottom:70px">
+<div style="margin-bottom:70px" *ngIf="grandtotal[0] != 0"> 
   <ion-list *ngFor="let item of transaksibulanini" style="padding-bottom: 5px;" >
     <ion-item detail lines="none" style="padding-left: 15px; padding-right:15px;" class="ion-item-style" (click)="pilihtransaksi(item)">
       <ion-label>
         <h1>Rp {{item.grandtotal| number}}</h1>
-        <p *ngIf="selectedtimeline == 'Bulan Ini'">Tanggal: {{item.tanggal}} </p>
-        <p *ngIf="selectedtimeline == 'Tahun Ini'">Bulan: {{item.tanggal}} </p>
+        <p *ngIf="selectedtimeline == 'Bulan Ini' || selectedtimeline == 'Pilih Bulan' ">Tanggal: {{item.tanggal}} </p>
+        <p *ngIf="selectedtimeline == 'Tahun Ini' || selectedtimeline == 'Pilih Tahun' ">Bulan: {{item.tanggal}} </p>
 
       </ion-label>
     </ion-item>
   </ion-list>
-
 </div>
 
 

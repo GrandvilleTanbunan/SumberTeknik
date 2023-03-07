@@ -24,7 +24,7 @@ export class DetailtransaksitanggalPage implements OnInit {
     console.log("ini di modal: " , this.item);
     console.log("ini di modal: " , this.selectedtimeline);
 
-    if(this.selectedtimeline == "Bulan Ini")
+    if(this.selectedtimeline == "Bulan Ini" || this.selectedtimeline == "Pilih Bulan")
     {
       this.title = this.item.tanggal;
       this.db.collection(`Transaksi`, ref => ref.where('tanggal', '==', `${this.item.tanggal}`))
@@ -35,11 +35,11 @@ export class DetailtransaksitanggalPage implements OnInit {
       });
     }
 
-    if(this.selectedtimeline == "Tahun Ini")
+    if(this.selectedtimeline == "Tahun Ini" || this.selectedtimeline == "Pilih Tahun")
     {
       this.title = moment(this.item.tanggal, 'MMMM YYYY').format("MMMM YYYY");
       console.log(this.title)
-      this.db.collection(`Transaksi`, ref => ref.where('bulan', '==', `${moment(this.item.tanggal, 'MMMM YYYY').format("MM")}`))
+      this.db.collection(`Transaksi`, ref => ref.where('bulan', '==', `${moment(this.item.tanggal, 'MMMM YYYY').format("MM")}`).where('tahun', '==', `${moment(this.item.tanggal, 'MMMM YYYY').format("YYYY")}`))
       .valueChanges({idField: 'MenuID'})
       .subscribe((data:any) => {
           this.allitem = data;

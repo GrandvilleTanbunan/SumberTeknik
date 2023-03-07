@@ -61,6 +61,11 @@
     </ion-fab-button>
   </ion-fab>
   
+  <ion-fab vertical="bottom" horizontal="center" translucent="true" *ngIf="posisitab == 3">
+    <ion-fab-button (click)="openExport()">
+      <ion-icon name="download" class="cart-icon-kecil"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
   
   <ion-tab-bar slot="bottom" class="ion-no-border">
