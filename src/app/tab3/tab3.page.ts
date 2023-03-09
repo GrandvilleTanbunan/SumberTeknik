@@ -150,49 +150,6 @@ export class Tab3Page {
     this.generatePDF.downloadPdf();
   }
 
-  // exporttoexcel()
-  // {
-  //   let sheet = XLSX.utils.json_to_sheet(this.transaksibulanini);
-
-  //     let book = {
-  //       SheetNames: ["export"],
-  //       Sheets: {
-  //           "export": sheet
-  //       }
-  //     };
-
-  //     let wbout = XLSX.write(book, {
-  //       bookType: 'xlsx',
-  //       bookSST: false,
-  //       type: 'binary'
-  //     });
-
-  //     function s2ab(s:any) {
-  //       let buf = new ArrayBuffer(s.length);
-  //       let view = new Uint8Array(buf);
-  //       for (let i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
-  //       return buf;
-  //     }
-
-  //     let blob = new Blob([s2ab(wbout)], {type: 'application/octet-stream'});
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       const result = reader.result as string;
-  //       const base64Data = result.split(',')[1];
-
-        
-  //     }
-  //     // this.file.writeFile(this.file.dataDirectory, "ABC.xlsx", blob, {replace: true}).then(async res =>{
-  //         // this.socialSharing.share("abc", "abc", res.nativeURL, "abc");
-  //         // await Share.share({
-  //         //   title:"XLS",
-  //         //   text:'Belajar XLS',
-  //         //   url: res.nativeURL
-  //         // })
-  //       // });
-  // }
-
-
   getTransaksi()
   {
     this.db.collection(`Transaksi`)

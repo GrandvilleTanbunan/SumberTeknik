@@ -102,6 +102,7 @@ export class EdititemPage implements OnInit {
 
   async share()
   {
+    // console.log(this.selectedImage.path)
     await Share.share({
       title: 'Share Picture',
       text:'ABC',

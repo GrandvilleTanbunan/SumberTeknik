@@ -16,7 +16,7 @@ const STORAGE_KEY = "menu";
 export class DataService {
   private storageReady = new BehaviorSubject(false);
   public menu: any = [];
-
+  public MenuIDNew : any;
   constructor(private db: AngularFirestore, private storage: Storage, private firestore: Firestore) {
     // this.init();
   }
@@ -40,7 +40,7 @@ export class DataService {
   }
 
 
-  addMenu(data:any) 
+  async addMenu(data:any) 
   {
     // this.addnotif(`${loggeduser} menambah brand '${namabrandku}'`);
     console.log(data);
@@ -50,8 +50,12 @@ export class DataService {
       amount: 0
     }
 
-    const BrandRef = collection(this.firestore, 'Menu');
-    return addDoc(BrandRef, tmpmenu);
+    const res = await this.db.collection(`Menu`).add(tmpmenu);
+    this.MenuIDNew = res.id;
+    console.log(this.MenuIDNew);
+
+    // const BrandRef = collection(this.firestore, 'Menu');
+    // return addDoc(BrandRef, tmpmenu);
   }
 
   async EditMenu(MenuID: any, item : any)

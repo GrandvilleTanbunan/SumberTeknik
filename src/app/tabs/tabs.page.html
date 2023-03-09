@@ -62,9 +62,19 @@
   </ion-fab>
   
   <ion-fab vertical="bottom" horizontal="center" translucent="true" *ngIf="posisitab == 3">
-    <ion-fab-button (click)="openExport()">
+    <ion-fab-button>
       <ion-icon name="download" class="cart-icon-kecil"></ion-icon>
     </ion-fab-button>
+    <ion-fab-list side="top">
+        <ion-fab-button (click)="openExport()">
+          <!-- <ion-icon name="color-palette"></ion-icon> -->
+          <img style="width: 32px" src="../assets/pdf.png">
+        </ion-fab-button>
+        <ion-fab-button (click)="openXLS()">
+          <!-- <ion-icon name="globe"></ion-icon> -->
+          <img style="width: 28px" src="../assets/excel.png">
+        </ion-fab-button>
+      </ion-fab-list>
   </ion-fab>
 
   

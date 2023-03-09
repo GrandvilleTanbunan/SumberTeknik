@@ -44,6 +44,7 @@
     "@types/pdfmake": "^0.2.2",
     "animate.css": "^4.1.1",
     "apexcharts": "^3.37.1",
+    "capacitor-blob-writer": "^1.1.9",
     "cordova-pdf-generator": "^2.1.1",
     "cordova-plugin-file-opener2": "^4.0.0",
     "cordova-plugin-screen-orientation": "^3.0.3",

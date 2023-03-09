@@ -8,15 +8,20 @@
 </ion-header>
 
 <ion-content>
-  <div style="text-align: center;">
-    <img style="width: 50%; height: 50%;" class="center" [src]="selectedImage?.webPath" />
+  <div style="text-align: center;height: 200px;" >
+    <img style="width: 100%; height: 100%;" class="center" *ngIf="selectedImage" [src]="selectedImage?.webPath" />
+    <img style="width: 100%; height: 100%;" class="center" *ngIf="!selectedImage" src="../assets/LOGO DESSERTIE BLACK.png" />
+
   </div>
-  <ion-button expand="block" (click)="getPicture()">
-    Pilih Foto
-  </ion-button>
-  <ion-button *ngIf="selectedImage" expand="block" (click)="share()">
+  <div style="text-align: center;">
+    <ion-button (click)="getPicture()" color="secondary" shape="round" style="margin-top:5%">
+      Pilih Foto
+    </ion-button>
+  </div>
+  
+  <!-- <ion-button *ngIf="selectedImage" expand="block" (click)="share()">
     Share Via WA
-  </ion-button>
+  </ion-button> -->
 
   <div class="container">
     <form [formGroup]="credentials">

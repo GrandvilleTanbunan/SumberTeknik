@@ -5,6 +5,15 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { DataService } from '../services/data.service';
 import { CartService } from '../services/cart.service';
+import { Capacitor } from '@capacitor/core';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { collectionData, docData, Firestore, doc, addDoc, deleteDoc, setDoc} from '@angular/fire/firestore';
+
+import { Share } from '@capacitor/share';
+import { Storage, ref } from '@angular/fire/storage';
+import { uploadString } from 'rxfire/storage';
+import { getDownloadURL } from '@firebase/storage';
+// import * as firebase from "firebase";
 
 @Component({
   selector: 'app-add-menu',
@@ -17,7 +26,9 @@ export class AddMenuPage implements OnInit {
   tmpdata: any;
   tmpnama:any;
   tmpharga:any;
-  constructor(private cartService: CartService,private dataService: DataService, private modalCtrl: ModalController, private fb: FormBuilder, private loadingController:LoadingController, private alertController:AlertController, private authService: AuthService, private router: Router) { }
+  selectedImage:any;
+
+  constructor(private firestore: Firestore, private storage:Storage, private cartService: CartService,private dataService: DataService, private modalCtrl: ModalController, private fb: FormBuilder, private loadingController:LoadingController, private alertController:AlertController, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
     this.credentials = this.fb.group({
@@ -50,7 +61,61 @@ export class AddMenuPage implements OnInit {
     });
     // this.loadData();
     this.dataService.getData();
+
+    console.log(this.dataService.MenuIDNew);
+
+    const path = `FoodImage/${this.dataService.MenuIDNew}.jpeg`;
+    const storageRef = ref(this.storage, path);
+
+    try{
+      await uploadString(storageRef, this.selectedImage.base64String, 'base64');
+
+      // const imageUrl = await getDownloadURL(storageRef);
+
+      // const userDocRef = doc(this.firestore, `Menu/${this.dataService.MenuIDNew}`);
+      // await setDoc(userDocRef, {
+      //   imageUrl
+      // });
+      return true;
+
+    }
+    catch(e){
+      return null;
+    }
   }
+
+  checkPlatformForWeb()
+  {
+    if(Capacitor.getPlatform() == 'web') return true;
+    return false;
+  }
+
+
+  async getPicture() {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      // allowEditing: true,
+      resultType: this.checkPlatformForWeb() ? CameraResultType.DataUrl : CameraResultType.Uri,
+      source: CameraSource.Prompt,
+      width:600
+    });
+    console.log('image: ', image);
+    this.selectedImage = image;
+    if(this.checkPlatformForWeb()) this.selectedImage.webPath = image.dataUrl;
+  }
+
+  async share()
+  {
+    // console.log(this.selectedImage.path)
+    await Share.share({
+      title: 'Share Picture',
+      text:'ABC',
+      url: this.selectedImage.path
+    })
+  }
+
+
+  
 
   close()
   {

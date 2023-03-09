@@ -126,7 +126,7 @@ export class GeneratePDFService {
     {
       this.pdfobj.getBase64(async(data:any)=>{
         try{
-          let path = `pdf/Laporan Keuangan_${this.selectedtimeline}.pdf`;
+          let path = `pdf/Laporan Keuangan_${this.keteranganwaktu}.pdf`;
           const result = await Filesystem.writeFile({
             path,
             data,
