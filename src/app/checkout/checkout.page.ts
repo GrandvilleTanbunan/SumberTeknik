@@ -47,7 +47,7 @@ export class CheckoutPage implements OnInit {
         {
           text: 'YA',
           handler: async () => {
-            if(this.kembalian != 0)
+            if(this.kembalian != 0 || this.grandtotal - this.jumlahbayar == 0)
             {
               const loading = await this.loadingCtrl.create({
                 message: 'Mohon tunggu...',

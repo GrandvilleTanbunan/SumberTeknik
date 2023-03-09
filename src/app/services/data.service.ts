@@ -47,7 +47,8 @@ export class DataService {
     let tmpmenu = {
       nama : data[0].nama,
       harga: data[0].harga,
-      amount: 0
+      amount: 0,
+      imageUrl: ""
     }
 
     const res = await this.db.collection(`Menu`).add(tmpmenu);
@@ -58,11 +59,11 @@ export class DataService {
     // return addDoc(BrandRef, tmpmenu);
   }
 
-  async EditMenu(MenuID: any, item : any)
+  async EditMenu(MenuID: any, item : any, image: any)
   {
     const UpdateHarga = this.db.collection(`Menu`).doc(`${MenuID}`);
     
-    const res1 = await UpdateHarga.update({harga: item.harga, nama:item.nama});
+    const res1 = await UpdateHarga.update({harga: item.harga, nama:item.nama, imageUrl:image});
     
   }
 

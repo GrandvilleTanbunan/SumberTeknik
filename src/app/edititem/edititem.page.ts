@@ -31,7 +31,7 @@ export class EdititemPage implements OnInit {
 			nama: ['', [Validators.required]],
 			harga: ['', [Validators.required]]
     });
-
+    this.selectedImage = this.item.imageUrl;
     this.credentials.patchValue({nama: this.item.nama, harga: this.item.harga})
 
   }
@@ -62,7 +62,7 @@ export class EdititemPage implements OnInit {
             });
         
             loading.present().then(async () => {
-              this.dataService.EditMenu(this.item.MenuID, this.credentials.value).then(async ()=>{
+              this.dataService.EditMenu(this.item.MenuID, this.credentials.value, this.selectedImage).then(async ()=>{
                   loading.dismiss();
                   const toast = await this.toastController.create({
                     message: 'Item berhasil diupdate',
@@ -91,13 +91,12 @@ export class EdititemPage implements OnInit {
     const image = await Camera.getPhoto({
       quality: 90,
       // allowEditing: true,
-      resultType: this.checkPlatformForWeb() ? CameraResultType.DataUrl : CameraResultType.Uri,
-      source: CameraSource.Prompt,
-      width:600
-    });
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Prompt
+    }).then((image:any) => {
+      this.selectedImage = image.dataUrl; // VAR TO DISPLAY IN HTML
+    })
     console.log('image: ', image);
-    this.selectedImage = image;
-    if(this.checkPlatformForWeb()) this.selectedImage.webPath = image.dataUrl;
   }
 
   async share()

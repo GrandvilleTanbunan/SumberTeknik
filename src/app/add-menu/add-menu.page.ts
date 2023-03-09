@@ -10,10 +10,11 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { collectionData, docData, Firestore, doc, addDoc, deleteDoc, setDoc} from '@angular/fire/firestore';
 
 import { Share } from '@capacitor/share';
-import { Storage, ref } from '@angular/fire/storage';
+import { Storage, ref, getDownloadURL } from '@angular/fire/storage';
 import { uploadString } from 'rxfire/storage';
-import { getDownloadURL } from '@firebase/storage';
+// import { getDownloadURL } from '@firebase/storage';
 // import * as firebase from "firebase";
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-add-menu',
@@ -28,7 +29,7 @@ export class AddMenuPage implements OnInit {
   tmpharga:any;
   selectedImage:any;
 
-  constructor(private firestore: Firestore, private storage:Storage, private cartService: CartService,private dataService: DataService, private modalCtrl: ModalController, private fb: FormBuilder, private loadingController:LoadingController, private alertController:AlertController, private authService: AuthService, private router: Router) { }
+  constructor(private db: AngularFirestore, private firestore: Firestore, private storage:Storage, private cartService: CartService,private dataService: DataService, private modalCtrl: ModalController, private fb: FormBuilder, private loadingController:LoadingController, private alertController:AlertController, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
     this.credentials = this.fb.group({
@@ -47,11 +48,12 @@ export class AddMenuPage implements OnInit {
 
   async saveItem()
   {
-    console.log("masuk sini")
-    this.submitted = true;
+
     this.tmpdata = [
-      {nama: this.credentials.value.nama,
-      harga: this.credentials.value.harga
+      {
+        nama: this.credentials.value.nama,
+        harga: this.credentials.value.harga,
+        imageUrl: ""
       }
     ];
 
@@ -60,29 +62,36 @@ export class AddMenuPage implements OnInit {
       this.cartService.clearCart();
     });
     // this.loadData();
-    this.dataService.getData();
 
     console.log(this.dataService.MenuIDNew);
 
+    this.submitted = true;
     const path = `FoodImage/${this.dataService.MenuIDNew}.jpeg`;
     const storageRef = ref(this.storage, path);
-
+    // console.log(this.storage)
     try{
-      await uploadString(storageRef, this.selectedImage.base64String, 'base64');
-
-      // const imageUrl = await getDownloadURL(storageRef);
-
-      // const userDocRef = doc(this.firestore, `Menu/${this.dataService.MenuIDNew}`);
-      // await setDoc(userDocRef, {
-      //   imageUrl
-      // });
+      await uploadString(storageRef, this.selectedImage, 'data_url').toPromise().then((snapshot:any) => {
+        console.log('Uploaded a raw string!');
+        this.getURL(storageRef);
+      });
       return true;
-
     }
     catch(e){
       return null;
     }
   }
+
+  async getURL(storageRef: any)
+  {
+    const imageUrl = await getDownloadURL(storageRef);
+    console.log(imageUrl)
+    // console.log(this.selectedImage)
+    console.log("masuk sini")
+
+    this.db.doc(`Menu/${this.dataService.MenuIDNew}`).update({imageUrl:imageUrl}); //<-- $rating is dynamic
+  }
+
+
 
   checkPlatformForWeb()
   {
@@ -92,16 +101,21 @@ export class AddMenuPage implements OnInit {
 
 
   async getPicture() {
+    this.selectedImage = undefined;
     const image = await Camera.getPhoto({
       quality: 90,
       // allowEditing: true,
-      resultType: this.checkPlatformForWeb() ? CameraResultType.DataUrl : CameraResultType.Uri,
-      source: CameraSource.Prompt,
-      width:600
-    });
+      // resultType: this.checkPlatformForWeb() ? CameraResultType.DataUrl : CameraResultType.Uri,
+      // resultType: CameraResultType.Base64,
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Prompt
+    })
+      .then((image:any) => {
+        this.selectedImage = image.dataUrl; // VAR TO DISPLAY IN HTML
+      })
     console.log('image: ', image);
-    this.selectedImage = image;
-    if(this.checkPlatformForWeb()) this.selectedImage.webPath = image.dataUrl;
+    // this.selectedImage = image;
+    // if(this.checkPlatformForWeb()) this.selectedImage.webPath = image.dataUrl;
   }
 
   async share()
