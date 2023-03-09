@@ -12,12 +12,24 @@
         <ion-list>
             <ion-item-sliding *ngFor="let item of listData; let i = index">
               <ion-item class="ion-text-wrap">
-                <ion-label>
+                  <ion-thumbnail slot="start">
+                    <img [src]="item.imageUrl" />
+                  </ion-thumbnail>
+                <!-- <ion-label>
                   <p style="font-size: 15pt; padding-bottom: 5px; color: black" class="ion-text-wrap">{{item.nama}}</p>
                 </ion-label>
                 <ion-label slot="end">
                   Rp {{ item.harga | number }}
-                </ion-label>
+                </ion-label> -->
+
+                <ion-label>
+                    <p style="font-size: 15pt; padding-bottom: 5px; color: black" class="ion-text-wrap">{{item.nama}}</p>
+                    <p>
+                        Rp {{ item.harga | number }}
+                    </p>
+            
+                  </ion-label>
+
               </ion-item>
                 
               <ion-item-options side="end">
