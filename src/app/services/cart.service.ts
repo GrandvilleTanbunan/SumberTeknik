@@ -115,11 +115,16 @@ export class CartService {
 
   removeProduct(product: any){
     for(let [index, p] of this.cart.entries()){
-      if(p.id === product.id)
+      if(p.MenuID === product.MenuID)
       {
+        p.amount = 0;
         this.cartItemCount.next(this.cartItemCount.value - p.amount);
         this.cart.splice(index, 1);
+        console.log("Masuk Sini")
+        
       }
     }
+    console.log(this.cart)
+
   }
 }
