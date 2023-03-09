@@ -117,10 +117,11 @@ export class CartService {
     for(let [index, p] of this.cart.entries()){
       if(p.MenuID === product.MenuID)
       {
-        p.amount = 0;
         this.cartItemCount.next(this.cartItemCount.value - p.amount);
         this.cart.splice(index, 1);
         console.log("Masuk Sini")
+        p.amount = 0;
+
         
       }
     }
