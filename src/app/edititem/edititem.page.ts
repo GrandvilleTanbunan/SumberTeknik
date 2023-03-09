@@ -65,7 +65,7 @@ export class EdititemPage implements OnInit {
               this.dataService.EditMenu(this.item.MenuID, this.credentials.value, this.selectedImage).then(async ()=>{
                   loading.dismiss();
                   const toast = await this.toastController.create({
-                    message: 'Item berhasil diupdate',
+                    message: 'Menu berhasil diupdate',
                     duration: 700,
                     position: 'bottom'
                   });
@@ -95,8 +95,9 @@ export class EdititemPage implements OnInit {
       source: CameraSource.Prompt
     }).then((image:any) => {
       this.selectedImage = image.dataUrl; // VAR TO DISPLAY IN HTML
+      console.log('image: ', image);
+
     })
-    console.log('image: ', image);
   }
 
   async share()
