@@ -15,9 +15,37 @@ import { ApexAxisChartSeries,
 import { DataService } from '../services/data.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import * as moment from 'moment';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import { DetailtransaksitanggalPage } from '../detailtransaksitanggal/detailtransaksitanggal.page';
+import {PDFGenerator, PDFGeneratorOptions} from '@ionic-native/pdf-generator/ngx';
+import { HttpClient } from '@angular/common/http';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
+import {Plugins} from '@capacitor/core';
+import { Camera, CameraResultType, CameraSource, Photo,} from '@capacitor/camera';
+import { Margins } from 'pdfmake/interfaces';
+import {registerLocaleData} from '@angular/common';
+import {Pipe, PipeTransform} from '@angular/core';
+import * as XLSX from 'xlsx';
+// import { SocialSharing } from '@ionic-native/social-sharing';
+// import { File } from '@ionic-native/file/ngx';
+import { Share } from '@capacitor/share';
+// const {Share} = Plugins;
 
+
+// import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Filesystem, Directory, Encoding, FilesystemDirectory } from '@capacitor/filesystem';
+// import { Preferences } from '@capacitor/preferences';
+
+// const {Camera, Filesystem} = Plugins;
+
+// import * as pdfMake from "pdfmake/build/pdfmake";
+const pdfMake = require('pdfmake/build/pdfmake.js');
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { async } from '@firebase/util';
+import { GeneratePDFService } from '../generate-pdf.service';
+(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
+// import { CurrencyPipe } from '@angular/common';
+declare var window:any;
 
 export type ChartOptions = {
   chart: ApexChart;
@@ -44,11 +72,19 @@ export type ChartOptions = {
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss']
 })
+
+
+
 export class Tab3Page {
   public options!: Partial<ChartOptions> | any;
   public barOptions: Partial<ChartOptions> | any;
   public areaOptions: Partial<ChartOptions> | any;
   public chartOptions: Partial<ChartOptions> | any;
+  logoData: any = null;
+  pdfobj : any = null;
+  base64Image: any = null;
+  photoPreview: any = null;
+
   selectedtimeline : any;
   transaksi: any[] = [];
   dataFinal: any[] = [];
@@ -63,7 +99,7 @@ export class Tab3Page {
   grandtotal : any[] = [];
   tmpselectedMonth: any;
   tmpselectedYear: any;
-  constructor(private dataService: DataService, private db: AngularFirestore, private modalCtrl: ModalController) {
+  constructor(private generatePDF:GeneratePDFService,private plt: Platform,private http: HttpClient,private fileOpener:FileOpener,private dataService: DataService, private db: AngularFirestore, private modalCtrl: ModalController, private pdf: PDFGenerator) {
     this.barChart();
     // this.areaChart();
     this.bulanini = moment().format('MM/YYYY');
@@ -72,9 +108,90 @@ export class Tab3Page {
     this.getTransaksi();
     moment.locale('id');
     // this.LineChart();
+    window.tab3 = this;
 
 
   }
+
+  ngOnInit()
+  {
+    this.loadLocalAssetToBase64();
+    registerLocaleData('es');
+  }
+
+  loadLocalAssetToBase64(){
+    this.http.get('./assets/LOGO DESSERTIE.png', {responseType:'blob'})
+    .subscribe((res: any) => {
+      const reader = new FileReader();
+      reader.onloadend=() =>{
+        this.logoData = reader.result;
+      }
+      reader.readAsDataURL(res);
+    })
+  }
+
+  async takePicture(){
+    const image = await Camera.getPhoto({
+      quality: 100,
+      allowEditing: false,
+      resultType: CameraResultType.Base64,
+      source: CameraSource.Camera
+    });
+    console.log('image');
+    this.photoPreview = `data:image/jpeg;base64, ${image.base64String}`;
+  }
+  createPdf()
+  {
+    this.generatePDF.createPdf();
+  }
+
+  downloadPdf()
+  {
+    this.generatePDF.downloadPdf();
+  }
+
+  // exporttoexcel()
+  // {
+  //   let sheet = XLSX.utils.json_to_sheet(this.transaksibulanini);
+
+  //     let book = {
+  //       SheetNames: ["export"],
+  //       Sheets: {
+  //           "export": sheet
+  //       }
+  //     };
+
+  //     let wbout = XLSX.write(book, {
+  //       bookType: 'xlsx',
+  //       bookSST: false,
+  //       type: 'binary'
+  //     });
+
+  //     function s2ab(s:any) {
+  //       let buf = new ArrayBuffer(s.length);
+  //       let view = new Uint8Array(buf);
+  //       for (let i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+  //       return buf;
+  //     }
+
+  //     let blob = new Blob([s2ab(wbout)], {type: 'application/octet-stream'});
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       const result = reader.result as string;
+  //       const base64Data = result.split(',')[1];
+
+        
+  //     }
+  //     // this.file.writeFile(this.file.dataDirectory, "ABC.xlsx", blob, {replace: true}).then(async res =>{
+  //         // this.socialSharing.share("abc", "abc", res.nativeURL, "abc");
+  //         // await Share.share({
+  //         //   title:"XLS",
+  //         //   text:'Belajar XLS',
+  //         //   url: res.nativeURL
+  //         // })
+  //       // });
+  // }
+
 
   getTransaksi()
   {
@@ -92,11 +209,11 @@ export class Tab3Page {
     this.barOptions = {
       chart: {
         type: 'bar',
-        height: 200,
+        height: 170,
         width: '100%',
         stacked: true,
         toolbar: {
-          show: true,
+          show: false,
         },
       },
       series: [
@@ -175,11 +292,11 @@ export class Tab3Page {
       this.barOptions = {
         chart: {
           type: 'bar',
-          height: 200,
+          height: 170,
           width: '100%',
           stacked: true,
           toolbar: {
-            show: true,
+            show: false,
           },
         },
         series: [
@@ -259,11 +376,11 @@ export class Tab3Page {
       this.barOptions = {
         chart: {
           type: 'bar',
-          height: 200,
+          height: 170,
           width: '100%',
           stacked: true,
           toolbar: {
-            show: true,
+            show: false,
           },
         },
         series: [
@@ -340,165 +457,6 @@ export class Tab3Page {
     
   }
 
-  areaChart() {
-    this.areaOptions = {
-      chart: {
-        type: 'area',
-        height: 180,
-        sparkline: {
-          enabled: true,
-        },
-      },
-      series: [
-        {
-          name: 'Penjualan',
-          data: [
-            47, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93,
-            53, 61, 27, 54, 43, 19, 46,
-          ],
-        },
-      ],
-      labels: ["Tanggal 1",2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],
-      stroke: {
-        width: 2,
-        colors: ['#ffd3a5'],
-      },
-      fill: {
-        colors: ['#ffd3a5'],
-        gradient: {
-          gradientToColors: ['#2b2d3e'],
-          opacityTo: 0.2,
-        },
-      },
-      tooltip: {
-        theme: 'dark',
-        x: {
-          show: false,
-        },
-      },
-      colors: ['#DCE6EC'],
-      title: {
-        text: '$424,652',
-        offsetX: 30,
-        style: {
-          fontSize: '24px',
-          color: '#78909c',
-        },
-      },
-      subtitle: {
-        text: 'Sales',
-        offsetX: 30,
-        style: {
-          fontSize: '14px',
-          color: '#78909c',
-        },
-      },
-    };
-  }
-
-  LineChart()
-  {
-    if(this.selectedtimeline == "Tahun Ini")
-    {
-      this.chartOptions = {
-        series: [
-          {
-            name: "Penjualan",
-            data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
-          }
-        ],
-        chart: {
-          height: 275,
-          type: "line",
-          zoom: {
-            enabled: false
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: "straight"
-        },
-        title: {
-          text: "Penjualan Dalam Tahun Ini",
-          align: "left"
-        },
-        grid: {
-          row: {
-            colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
-            opacity: 0.5
-          }
-        },
-        xaxis: {
-          categories: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep"
-          ],
-          title:{
-            text:"Tanggal"
-          }
-        }
-      };
-    }
-
-    if(this.selectedtimeline == "Bulan Ini")
-    {
-      // this.getData("Bulan Ini")
-
-      this.chartOptions = {
-        series: [
-          {
-            name: "Penjualan",
-            
-            data: this.dataFinal
-          }
-        ],
-        chart: {
-          height: 275,
-          type: "line",
-          zoom: {
-            enabled: false
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: "straight"
-        },
-        title: {
-          text: "Penjualan Dalam Bulan Ini",
-          align: "left"
-        },
-        grid: {
-          row: {
-            colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
-            opacity: 0.5
-          }
-        },
-        xaxis: {
-          categories: [
-            "1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25",
-            "26","27","28","29","30","31",
-          ],
-          title:{
-            text:"Tanggal"
-          }
-        }
-      
-
-      };
-    }
-    
-  }
 
   getData(selectedtimeline: any) {
     this.selectedtimeline = selectedtimeline;
@@ -657,7 +615,7 @@ export class Tab3Page {
     }
 
     if(selectedtimeline == "Pilih Bulan"){
-      // console.log(this.tmpselectedMonth);
+      console.log(this.tmpselectedMonth);
       const formateddate = moment(this.tmpselectedMonth).format('MM/YYYY')
       console.log(formateddate);
 

@@ -6,6 +6,12 @@ import { Router } from '@angular/router';
 import { DataService } from '../services/data.service';
 import { CartService } from '../services/cart.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Capacitor } from '@capacitor/core';
+import { Share } from '@capacitor/share';
+// import { Camera, CameraResultType, CameraOptions } from '@capacitor/camera';
+// import { Camera, CameraOptions} from '@ionic-native/camera';
+
 @Component({
   selector: 'app-edititem',
   templateUrl: './edititem.page.html',
@@ -13,6 +19,8 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 })
 export class EdititemPage implements OnInit {
   item: any;
+  captureDataUrl: string;
+  selectedImage:any;
   constructor(private fb: FormBuilder, private toastController: ToastController,private db: AngularFirestore, private alertCtrl: AlertController, private dataService: DataService, private modalCtrl: ModalController, private loadingCtrl: LoadingController) { }
   
   credentials!: FormGroup;
@@ -70,6 +78,35 @@ export class EdititemPage implements OnInit {
       ]
     });
     await alert.present();
+  }
+
+  checkPlatformForWeb()
+  {
+    if(Capacitor.getPlatform() == 'web') return true;
+    return false;
+  }
+
+
+  async getPicture() {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      // allowEditing: true,
+      resultType: this.checkPlatformForWeb() ? CameraResultType.DataUrl : CameraResultType.Uri,
+      source: CameraSource.Prompt,
+      width:600
+    });
+    console.log('image: ', image);
+    this.selectedImage = image;
+    if(this.checkPlatformForWeb()) this.selectedImage.webPath = image.dataUrl;
+  }
+
+  async share()
+  {
+    await Share.share({
+      title: 'Share Picture',
+      text:'ABC',
+      url: this.selectedImage.path
+    })
   }
 
 }

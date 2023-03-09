@@ -8,22 +8,33 @@
 </ion-header>
 
 <ion-content>
-    <div class="container">
-        <form [formGroup]="credentials">
-            <ion-item class="ion-margin-bottom" fill="outline">
-              <ion-label position="floating" style="color: grey">Nama Item</ion-label>
-              <ion-input type="text" formControlName="nama" class="inputStyle"></ion-input>
-              <!-- <ion-note slot="error" *ngIf="nama?.errors?.['required'] && submitted == true">Masukan nama item</ion-note> -->
-            </ion-item>
-            <ion-item class="ion-margin-bottom" fill="outline">
-              <ion-label position="floating" style="color: grey">Harga</ion-label>
-              <ion-input type="number" formControlName="harga" class="inputStyle"></ion-input>
-              <!-- <ion-note slot="error" *ngIf="harga?.errors?.['required'] && submitted == true">Masukan harga</ion-note> -->
-            </ion-item>
-        
-            <ion-button type="submit" expand="block" [disabled]="!credentials.valid" (click)="update()" color="secondary" shape="round" >Update</ion-button>
-            <!-- <ion-button type="button" expand="block" color="secondary" (click)="register()"	>Create account</ion-button> -->
-            
-          </form>
-    </div>
+  <div style="text-align: center;">
+    <img style="width: 50%; height: 50%;" class="center" [src]="selectedImage?.webPath" />
+  </div>
+  <ion-button expand="block" (click)="getPicture()">
+    Pilih Foto
+  </ion-button>
+  <ion-button *ngIf="selectedImage" expand="block" (click)="share()">
+    Share Via WA
+  </ion-button>
+
+  <div class="container">
+    <form [formGroup]="credentials">
+      <ion-item class="ion-margin-bottom" fill="outline">
+        <ion-label position="floating" style="color: grey">Nama Item</ion-label>
+        <ion-input type="text" formControlName="nama" class="inputStyle"></ion-input>
+        <!-- <ion-note slot="error" *ngIf="nama?.errors?.['required'] && submitted == true">Masukan nama item</ion-note> -->
+      </ion-item>
+      <ion-item class="ion-margin-bottom" fill="outline">
+        <ion-label position="floating" style="color: grey">Harga</ion-label>
+        <ion-input type="number" formControlName="harga" class="inputStyle"></ion-input>
+        <!-- <ion-note slot="error" *ngIf="harga?.errors?.['required'] && submitted == true">Masukan harga</ion-note> -->
+      </ion-item>
+
+      <ion-button type="submit" expand="block" [disabled]="!credentials.valid" (click)="update()" color="secondary"
+        shape="round">Update</ion-button>
+      <!-- <ion-button type="button" expand="block" color="secondary" (click)="register()"	>Create account</ion-button> -->
+
+    </form>
+  </div>
 </ion-content>
