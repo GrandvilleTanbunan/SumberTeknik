@@ -48,8 +48,8 @@ export class SharexlsService {
         console.log(this.keteranganwaktu);
       }
   
-  
-      const EXCEL_TYPE  = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8";
+      console.log(window.tab3.transaksibulanini)
+      const EXCEL_TYPE  = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
       const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(window.tab3.transaksibulanini);
   
       const workbook: XLSX.WorkBook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
@@ -60,7 +60,7 @@ export class SharexlsService {
       });
   
       write_blob({
-        path: `Laporan Dessertie ${this.keteranganwaktu} .xlsx`,
+        path: `Laporan Dessertie ${this.keteranganwaktu + " " + moment().format('LTS')}.xlsx`,
         directory: Directory.Documents,
         blob: excelData
       }).then(async function(x){
