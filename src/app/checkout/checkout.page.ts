@@ -67,8 +67,10 @@ export class CheckoutPage implements OnInit {
         {
           text: 'YA',
           handler: async () => {
-            if(this.kembalian != 0 || this.grandtotal - this.jumlahbayar == 0)
+            if(this.kembalian != 0 || this.jumlahbayar >= this.grandtotal)
             {
+              this.printNota();
+
               const loading = await this.loadingCtrl.create({
                 message: 'Mohon tunggu...',
               });
@@ -89,6 +91,7 @@ export class CheckoutPage implements OnInit {
                   for (let i = 0; i < this.cart.length; i++) {
                     this.db.collection(`Transaksi/${this.invoicenumber}/Item`).add(this.cart[i]);
                   }
+
                   // this.bluetoothSerial.write('hello world')
                   loading.dismiss();
                 
@@ -126,7 +129,7 @@ export class CheckoutPage implements OnInit {
   }
 
   listDevices(){
-    console.log("LIST DEVICES");
+    console.log("LIST DEVICES ");
     this.bluetoothSerial.list().then(function(devices) {
       devices.forEach(function(device: any) {
         console.log("Device id: ", device.id);
@@ -137,7 +140,7 @@ export class CheckoutPage implements OnInit {
     });
   }
   
-  demoPrint(){
+  printNota(){
     const encoder = new EscPosEncoder();
     const result = encoder.initialize();
     this.img = new Image();
@@ -150,7 +153,7 @@ export class CheckoutPage implements OnInit {
       console.log("kanan: ", right.length);
       let pengurangan = lineWidth-left.length-right.length;
       console.log("pengurangan: ", pengurangan);
-      return left + space.repeat(pengurangan) + "Rp "+ right;
+      return left + space.repeat(pengurangan) + "Rp "+right;
     }
 
     function alightLeftRightItem(left:any, right:any){
@@ -162,6 +165,27 @@ export class CheckoutPage implements OnInit {
       console.log("pengurangan: ", pengurangan);
       return left + space.repeat(pengurangan)+ right;
     }
+
+    function alignLeftRightBayar(left:any, right:any){
+      let lineWidth = 29;
+      let space = " ";
+      console.log("kiri: ",left.length);
+      console.log("kanan: ", right.length);
+      let pengurangan = lineWidth-left.length-right.length;
+      console.log("pengurangan: ", pengurangan);
+      return left + space.repeat(pengurangan)+"Rp "+ right;
+    }
+
+    function alignLeftRightKembalian(left:any, right:any){
+      let lineWidth = 29;
+      let space = " ";
+      console.log("kiri: ",left.length);
+      console.log("kanan: ", right.length);
+      let pengurangan = lineWidth-left.length-right.length;
+      console.log("pengurangan: ", pengurangan);
+      return left + space.repeat(pengurangan)+"Rp "+ right;
+    }
+
 
     result
     
@@ -186,7 +210,9 @@ export class CheckoutPage implements OnInit {
       .line('Total Item: ' + this.totalamount)
       // .text('Total Belanja:        ')
       // .line("Rp " + formatNumber(this.grandtotal, 'en-US'))
-      .text(alignLeftRight('Total Belanja', formatNumber(this.grandtotal, 'en-US')))
+      .line(alignLeftRight('Total Belanja', formatNumber(this.grandtotal, 'en-US')))
+      .line(alignLeftRightBayar('Bayar', formatNumber(parseInt(this.jumlahbayar), 'en-US')))
+      .line(alignLeftRightKembalian('Kembalian', formatNumber(this.kembalian, 'en-US')))
       .newline()
       .newline()
       .newline()
@@ -198,10 +224,22 @@ export class CheckoutPage implements OnInit {
     // send byte code into the printer
     this.bluetoothSerial.connect(this.MAC_ADDRESS).subscribe(() => {
       this.bluetoothSerial.write(resultByte)
-        .then(() => {
+        .then(async () => {
           this.bluetoothSerial.clear();
           this.bluetoothSerial.disconnect();
           console.log('Print success');
+          // this.cartService.clearCart();
+          // this.dataService.getData();
+          // window.tab1.loadData();
+          // const toast = await this.toastController.create({
+          //   message: 'Checkout berhasil!',
+          //   duration: 700,
+          //   position: 'bottom'
+          // });
+          // await toast.present().then(() => {
+          //   // this.modalCtrl.dismiss();
+          // });
+
         })
         .catch((err) => {
           console.error(err);
