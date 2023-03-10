@@ -18,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import {PDFGenerator} from '@ionic-native/pdf-generator/ngx';
 import {FileOpener} from '@ionic-native/file-opener/ngx';
+import { BluetoothSerial } from '@awesome-cordova-plugins/bluetooth-serial/ngx';
 // import { Camera } from '@ionic-native/camera';
 
 // import { Camera, CameraResultType } from '@capacitor/camera';
@@ -30,7 +31,7 @@ import {FileOpener} from '@ionic-native/file-opener/ngx';
     name:"mydatabase",
     driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB, Drivers.LocalStorage]
   }), provideFirebaseApp(() => initializeApp(environment.firebase)), provideAuth(() => getAuth()), provideFirestore(() => getFirestore()), provideStorage(() => getStorage())],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, { provide: FIREBASE_OPTIONS, useValue: environment.firebase }, PDFGenerator, FileOpener ],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, { provide: FIREBASE_OPTIONS, useValue: environment.firebase }, PDFGenerator, FileOpener, BluetoothSerial ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

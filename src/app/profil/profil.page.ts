@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { FormBuilder } from '@angular/forms';
 import { LoadingController, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-profil',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class ProfilPage implements OnInit {
 
-  constructor(private authService: AuthService, private fb: FormBuilder, private loadingController:LoadingController, private alertController:AlertController, private router: Router) { }
+  constructor(private cartService:CartService,private authService: AuthService, private fb: FormBuilder, private loadingController:LoadingController, private alertController:AlertController, private router: Router) { }
 
   ngOnInit() {
   }
@@ -19,6 +20,7 @@ export class ProfilPage implements OnInit {
   logout()
   {
     this.authService.logout().then(()=>{
+      this.cartService.clearCart();
       this.router.navigateByUrl("/", {replaceUrl: true});
     });
   }

@@ -20,7 +20,7 @@ dependencies {
     implementation project(':capacitor-blob-writer')
 
 }
-
+apply from: "../../node_modules/thermal-printer-cordova-plugin/src/android/build.gradle"
 
 if (hasProperty('postBuildExtras')) {
   postBuildExtras()

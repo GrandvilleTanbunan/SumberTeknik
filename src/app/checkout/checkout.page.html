@@ -10,7 +10,7 @@
 <ion-content>
   <ion-item *ngFor="let item of cart">
     <ion-label class="amount">{{item.amount}} x</ion-label>
-    <ion-label>{{item.nama}}</ion-label>
+    <ion-label text-wrap>{{item.nama}}</ion-label>
     <ion-label slot="end">Rp {{ item.amount * item.harga | number }}</ion-label>
 
   </ion-item>
@@ -25,7 +25,7 @@
 
   <ion-item lines="none">
     
-    <ion-label slot="start" style="font-size: 15pt" class="fixedLabel">
+    <ion-label slot="start" style="font-size: 15pt" class="fixedLabelgt">
       Grand Total
     </ion-label>
     <ion-label slot="end" style="font-size: 15pt" lines="none">
@@ -37,10 +37,17 @@
     <ion-input type="number" style="font-size:15pt; text-align: right" placeholder="Input"  [(ngModel)]="jumlahbayar" (ionChange)="HitungKembalian()"></ion-input>
   </ion-item>
   <ion-item lines="none">
-    <ion-label slot="start" style="font-size: 15pt" class="fixedLabel"> Kembalian </ion-label>
+    <ion-label slot="start" style="font-size: 15pt" class="fixedLabelgt"> Kembalian </ion-label>
     <ion-label slot="end" style="font-size: 15pt" class="fixedLabel"> Rp {{kembalian | number}} </ion-label>
 
   </ion-item>
+
+  <ion-button (click)="listDevices()">
+    List Device
+  </ion-button>
+  <ion-button (click)="demoPrint()">
+    Demo Print
+  </ion-button>
   <ion-button color="secondary" shape="round" expand="full" (click)="checkout()">
     Checkout
   </ion-button>

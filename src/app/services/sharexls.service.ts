@@ -14,7 +14,9 @@ export class SharexlsService {
   selectedtimeline :any;
   keteranganwaktu: any;
   transaksibulanini:any;
-  constructor(private toastController: ToastController) { }
+  constructor(private toastController: ToastController) { 
+    moment().locale('id');
+  }
 
   async createXLS()
   {

@@ -11,6 +11,7 @@ import { Filesystem, Directory, Encoding, FilesystemDirectory } from '@capacitor
 import { ModalController, Platform, ToastController } from '@ionic/angular';
 declare var window:any;
 import * as moment from 'moment';
+import {registerLocaleData, formatNumber} from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -58,7 +59,7 @@ export class GeneratePDFService {
       const docDefinition = {
         // watermark: { text: 'DESSERTEA', color: 'black', opacity: 0.2, bold: true },
         content: [
-          { text: `Laporan Keuangan Dessertie ${this.keteranganwaktu}`, style: 'header', alignment: 'center' },
+          { text: `Laporan Keuangan Dessertie ${this.keteranganwaktu} `, style: 'header', alignment: 'center' },
           // 'You can declare how many rows should be treated as a header. Headers are automatically repeated on the following pages',
 
           {
@@ -68,8 +69,8 @@ export class GeneratePDFService {
               widths: ['*', '*'],
               body: [
                 [{ text: 'Tanggal/Bulan', alignment: 'center',style:'boldandbig' }, { text: 'Total (IDR)', alignment: 'center',style:'boldandbig' }],
-                ...this.transaksibulanini.map((p: any) => ([{text: p.tanggal,alignment:'center'}, {text: p.grandtotal, alignment:'center'}])),
-                [{text: 'Grand Total', alignment:'center', style:'boldandbig'}, {text: 'Rp ' +  window.tab3.totalpendapatan,alignment:'center',style:'boldandbig'}],
+                ...this.transaksibulanini.map((p: any) => ([{text: p.tanggal,alignment:'center'}, {text: formatNumber(parseInt(p.grandtotal),"en-US"), alignment:'center'}])),
+                [{text: 'Grand Total', alignment:'center', style:'boldandbig'}, {text: 'Rp ' +  formatNumber(parseInt(window.tab3.totalpendapatan), "en-US"),alignment:'center',style:'boldandbig'}],
               ]
             }
           },
@@ -126,7 +127,7 @@ export class GeneratePDFService {
     {
       this.pdfobj.getBase64(async(data:any)=>{
         try{
-          let path = `pdf/Laporan Keuangan_${this.keteranganwaktu}.pdf`;
+          let path = `pdf/Laporan Keuangan_${this.keteranganwaktu + " " + moment().format('LTS')}.pdf`;
           const result = await Filesystem.writeFile({
             path,
             data,
