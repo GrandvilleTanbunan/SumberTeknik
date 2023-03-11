@@ -7,6 +7,8 @@ import { AddMenuPage } from '../add-menu/add-menu.page';
 import { DataService } from '../services/data.service';
 import { GeneratePDFService } from '../generate-pdf.service';
 import { SharexlsService } from '../services/sharexls.service';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tabs',
@@ -17,7 +19,7 @@ export class TabsPage {
   cartItemCount!: BehaviorSubject<number>;
   posisitab = 1;
 
-  constructor(private shareXLS: SharexlsService,private alertCtrl:AlertController,private loadingCtrl: LoadingController,private generatePDF: GeneratePDFService,private dataService: DataService, private toastController: ToastController, private cartService: CartService, private modalCtrl: ModalController) {
+  constructor(private router: Router, private authService: AuthService, private shareXLS: SharexlsService,private alertCtrl:AlertController,private loadingCtrl: LoadingController,private generatePDF: GeneratePDFService,private dataService: DataService, private toastController: ToastController, private cartService: CartService, private modalCtrl: ModalController) {
     
     this.dataService.getData().subscribe((res: any)=>{
       this.cartItemCount = this.cartService.getCartItemCount();
@@ -126,6 +128,54 @@ export class TabsPage {
     });
     await alert.present();
 
+  }
+
+  async logout()
+  {
+
+
+    let alert = await this.alertCtrl.create({
+
+      subHeader: 'Anda yakin ingin keluar?',
+      buttons: [
+        {
+          text: 'Tidak',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'YA',
+          handler: async () => {
+
+            this.authService.logout().then(()=>{
+              this.cartService.clearCart();
+              this.router.navigateByUrl("/", {replaceUrl: true});
+            });
+
+            // const loading = await this.loadingCtrl.create({
+            //   message: 'Mohon tunggu...',
+            // });
+        
+            // loading.present().then(async () => {
+            //   loading.dismiss();
+            //   // const toast = await this.toastController.create({
+            //   //   message: 'Menu berhasil diupdate',
+            //   //   duration: 700,
+            //   //   position: 'bottom'
+            //   // });
+            //   // await toast.present();
+
+            // });
+          }
+        }
+      ]
+    });
+    await alert.present();
+
+
+    
   }
 
   PosisiTab(tab : any)

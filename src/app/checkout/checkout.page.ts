@@ -41,7 +41,7 @@ export class CheckoutPage implements OnInit {
   }
 
   ngOnInit() {
-    // console.log("ini di modal: " , this.invoicenumber)
+    console.log("ini di modal: " , this.invoicenumber)
     // console.log("ini di modal: " , this.grandtotal)
     // console.log("ini di modal: " , this.cart)
     moment.locale('id');
@@ -145,7 +145,9 @@ export class CheckoutPage implements OnInit {
     const result = encoder.initialize();
     this.img = new Image();
     this.img.src = "../assets/LOGO DESSERTIE.png";
-
+    const tanggal = moment().format("DD/MM/YYYY");
+    const waktu = moment().format("HH:mm:ss");
+    const invoiceID = this.invoicenumber;
     function alignLeftRight(left:any, right:any) {
       let lineWidth = 29;
       let space = " ";
@@ -195,7 +197,18 @@ export class CheckoutPage implements OnInit {
       .line("DESSERTIE")
       .line("Jl. Jenderal Sudirman")
       .newline()
-      .line("--------------------------------")
+      .line("================================")
+      .align('left')
+      .text("Invoice ID: ")
+      .text(invoiceID)
+      .newline()
+      .text("Tanggal   : ")
+      .text(tanggal)
+      .newline()
+      .text("Waktu     : ")
+      .text(waktu)
+      .newline()
+      .line("================================")
       .align('left')
       for(let i=0; i<this.cart.length; i++)
       {
@@ -214,7 +227,7 @@ export class CheckoutPage implements OnInit {
       .line(alignLeftRightBayar('Bayar', formatNumber(parseInt(this.jumlahbayar), 'en-US')))
       .line(alignLeftRightKembalian('Kembalian', formatNumber(this.kembalian, 'en-US')))
       .newline()
-      .newline()
+      .line("================================")
       .newline()
       .newline()
       .cut();

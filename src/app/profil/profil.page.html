@@ -1,11 +1,55 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>profil</ion-title>
+<!-- <ion-header>
+  <ion-toolbar color="secondary" mode="ios">
+    <ion-title>Profil</ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content>
-  <ion-button (click)="logout()">
+  <!-- <ion-item class="ion-text-center" lines="none">
+    <ion-label style="color: white; font-size: 16pt">Profil</ion-label>
+  </ion-item> -->
+  <!-- <ion-button (click)="logout()">
     logout
-  </ion-button>
+  </ion-button> -->
+  <div class="preview">
+    <ion-avatar>
+      <!-- <img *ngIf = "profile?.imageUrl; else placeholder_avatar;" [src]="profile.imageUrl"/> -->
+      <img  src="../assets/defaultprofile.png"/>
+
+      <ng-template #placeholder_avatar>
+        <div class= "fallback">
+          <p>Select Avatar</p>
+        </div>
+      </ng-template>
+    </ion-avatar>
+  </div>
+
+  <div class="login-section ion-padding">
+    <!-- <div class="heading ion-padding">
+      <h1>Sign In</h1>
+      <p>Sign in to continue</p>
+    </div> -->
+    <!-- <div>
+
+    </div> -->
+    <ion-item detail lines="full" class="ion-item-style" (click)="addUser()">
+      <ion-icon name="person-add" slot="start"></ion-icon>
+      <ion-label  style="font-size: 14pt">
+        Tambah User
+      </ion-label>
+    </ion-item >
+    <ion-item detail lines="full" class="ion-item-style">
+      <ion-icon name="create" slot="start"></ion-icon>
+      <ion-label style="font-size: 14pt">
+        Edit PPN
+      </ion-label>
+    </ion-item>
+    <ion-item detail lines="full" class="ion-item-style">
+      <ion-icon name="receipt" slot="start"></ion-icon>
+      <ion-label style="font-size: 14pt">
+        Edit Struk
+      </ion-label>
+    </ion-item>
+
+  </div>
 </ion-content>

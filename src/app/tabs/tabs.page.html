@@ -77,6 +77,11 @@
       </ion-fab-list>
   </ion-fab>
 
+  <ion-fab vertical="bottom" horizontal="center" translucent="true" *ngIf="posisitab == 4">
+    <ion-fab-button (click)="logout()">
+      <ion-icon name="log-out" class="cart-icon-kecil"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
   
   <ion-tab-bar slot="bottom" class="ion-no-border">
     <ion-tab-button tab="tab1" (click)="PosisiTab(1)">

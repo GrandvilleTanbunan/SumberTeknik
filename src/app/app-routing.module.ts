@@ -50,6 +50,10 @@ const routes: Routes = [
     path: 'detail-seluruh-pesanan',
     loadChildren: () => import('./detail-seluruh-pesanan/detail-seluruh-pesanan.module').then( m => m.DetailSeluruhPesananPageModule)
   },
+  {
+    path: 'add-user',
+    loadChildren: () => import('./add-user/add-user.module').then( m => m.AddUserPageModule)
+  },
 
 
   

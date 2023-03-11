@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { FormBuilder } from '@angular/forms';
-import { LoadingController, AlertController } from '@ionic/angular';
+import { LoadingController, AlertController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { CartService } from '../services/cart.service';
+import { AddUserPage } from '../add-user/add-user.page';
 
 @Component({
   selector: 'app-profil',
@@ -11,8 +12,8 @@ import { CartService } from '../services/cart.service';
   styleUrls: ['./profil.page.scss'],
 })
 export class ProfilPage implements OnInit {
-
-  constructor(private cartService:CartService,private authService: AuthService, private fb: FormBuilder, private loadingController:LoadingController, private alertController:AlertController, private router: Router) { }
+  profile = null;
+  constructor(private modalCtrl:ModalController,private cartService:CartService,private authService: AuthService, private fb: FormBuilder, private loadingController:LoadingController, private alertController:AlertController, private router: Router) { }
 
   ngOnInit() {
   }
@@ -23,6 +24,15 @@ export class ProfilPage implements OnInit {
       this.cartService.clearCart();
       this.router.navigateByUrl("/", {replaceUrl: true});
     });
+  }
+
+  async addUser()
+  {
+    let modal = await this.modalCtrl.create({
+      component: AddUserPage,
+      cssClass: 'small-modal'
+    });
+    modal.present();
   }
 
 }
