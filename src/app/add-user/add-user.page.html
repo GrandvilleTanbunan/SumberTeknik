@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar mode="ios" color="secondary">
-      <ion-title>Tambah Pengguna</ion-title>
+      <ion-title>Tambah User</ion-title>
       <ion-button slot="start" fill="clear" color="light" (click)="close()">
         <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
       </ion-button>
@@ -8,5 +8,46 @@
   </ion-header>
   
 <ion-content>
+
+  <div class="preview">
+    <!-- <img class="center" *ngIf="selectedImage" [src]="selectedImage" />
+    <img class="center" *ngIf="!selectedImage" src="../assets/defaultprofile2.png" /> -->
   
+    <ion-avatar>
+      <img *ngIf="selectedImage" [src]="selectedImage" />
+      <img *ngIf="!selectedImage" src="../assets/defaultprofile2.png" />
+    </ion-avatar>
+  </div>
+
+  <div style="text-align: center;">
+    <ion-button (click)="getPicture()" color="secondary" shape="round" style="margin-top:5%">
+      Pilih Foto
+    </ion-button>
+  </div>
+
+
+  <div class="container">
+    <form [formGroup]="credentials">
+      <ion-item class="ion-margin-bottom" fill="outline">
+        <ion-label position="floating" style="color: grey">Email</ion-label>
+        <ion-input type="text" formControlName="email" class="inputStyle"></ion-input>
+        <!-- <ion-note slot="error" *ngIf="nama?.errors?.['required'] && submitted == true">Masukan nama item</ion-note> -->
+      </ion-item>
+      <ion-item class="ion-margin-bottom" fill="outline">
+        <ion-label position="floating" style="color: grey">Password</ion-label>
+        <ion-input type="password" formControlName="password" class="inputStyle"></ion-input>
+        <!-- <ion-note slot="error" *ngIf="harga?.errors?.['required'] && submitted == true">Masukan harga</ion-note> -->
+      </ion-item>
+      <ion-item lines="none">
+          <ion-label>Admin</ion-label>
+          <ion-toggle  color="secondary" [enableOnOffLabels]="true" formControlName="admin"></ion-toggle>
+        </ion-item>
+      <ion-button type="submit" expand="block" [disabled]="!credentials.valid" (click)="register()" color="secondary"
+        shape="round">Register</ion-button>
+      <!-- <ion-button type="button" expand="block" color="secondary" (click)="register()"	>Create account</ion-button> -->
+
+    </form>
+
+  </div>
+
 </ion-content>

@@ -1,0 +1,60 @@
+
+.inputStyle{
+    width: 100%;
+    height: 100px;
+    // font-size: 20pt;
+    margin-top:auto;
+}
+
+.container {
+    width: 100%; 
+    margin-left:auto; 
+    margin-right: auto;
+    padding-left:5%;
+    padding-right:5%; 
+
+    margin-top: 7%; 
+
+}
+
+
+.parentContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    // background: red;
+    height: 100px;
+    width: 100px;
+
+}
+
+ion-avatar {
+    width: 128px;
+    height: 128px;
+  }
+  
+  .preview {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .fallback {
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    background: #bfbfbf;
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+  }
+
