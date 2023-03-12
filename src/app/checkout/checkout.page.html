@@ -24,13 +24,16 @@
     </ion-item>
 
   <ion-item lines="none">
-    
     <ion-label slot="start" style="font-size: 15pt" class="fixedLabelgt">
       Grand Total
     </ion-label>
     <ion-label slot="end" style="font-size: 15pt" lines="none">
       Rp {{grandtotal| number}}
     </ion-label>
+  </ion-item>
+  <ion-item lines="none">
+    <ion-label style="font-size: 14pt">PPN 11%</ion-label>
+    <ion-toggle color="secondary" [enableOnOffLabels]="true" (ionChange)="hitungPPN()" [(ngModel)]="pakaiPPN"></ion-toggle>
   </ion-item>
   <ion-item lines="none">
     <ion-label slot="start" style="font-size: 15pt" class="fixedLabel">Jumlah Bayar</ion-label>

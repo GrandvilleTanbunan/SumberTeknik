@@ -18,6 +18,7 @@ export class ProfilPage implements OnInit {
   profile: any;
   loggeduser: any;
   selectedImage:any;
+  admin: any;
   constructor(private dataService: DataService,private db: AngularFirestore, private modalCtrl:ModalController,private cartService:CartService,private authService: AuthService, private fb: FormBuilder, private loadingController:LoadingController, private alertController:AlertController, private router: Router) { 
 
   }
@@ -29,6 +30,10 @@ export class ProfilPage implements OnInit {
       this.getDP();
     });
 
+    this.authService.observeadmin.subscribe((admin:any) => {
+      this.admin = admin;
+      console.log("Apakah admin: ", this.admin);
+    });
 
   }
 

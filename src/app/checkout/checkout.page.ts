@@ -5,6 +5,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { CartService } from '../services/cart.service';
 import { DataService } from '../services/data.service';
 import {registerLocaleData, formatNumber} from '@angular/common';
+import { collection, orderBy, where} from '@firebase/firestore';
 
 import { BluetoothSerial } from '@awesome-cordova-plugins/bluetooth-serial/ngx';
 // import EscPosEncoder from 'esc-pos-encoder-ionic';
@@ -19,13 +20,16 @@ declare var window:any;
 export class CheckoutPage implements OnInit {
   invoicenumber :any;
   grandtotal: any;
+  grandtotalkonstan: any;
   cart:any;
   kembalian = 0;
   jumlahbayar: any;
   totalamount = 0;
   MAC_ADDRESS: any;
   img : any;
-  ThermalPrinterEncoder: any
+  pakaiPPN = false;
+  ThermalPrinterEncoder: any;
+  PPN:any;
   constructor(private bluetoothSerial: BluetoothSerial, private loadingCtrl: LoadingController,private alertCtrl: AlertController,private toastController: ToastController,private cartService:CartService,private dataService:DataService,private db: AngularFirestore, private modalCtrl: ModalController) { 
     let encoder = new EscPosEncoder();
     this.img = new Image();
@@ -37,17 +41,33 @@ export class CheckoutPage implements OnInit {
     .qrcode('https://nielsleenheer.com')
     .encode();
 
+    this.getPPN();
 
   }
 
   ngOnInit() {
     console.log("ini di modal: " , this.invoicenumber)
+    this.grandtotalkonstan = this.grandtotal;
     // console.log("ini di modal: " , this.grandtotal)
     // console.log("ini di modal: " , this.cart)
     moment.locale('id');
 
     this.hitungjumlahitem();
 
+  }
+
+  getPPN()
+  {
+    
+    this.db.collection(`PPN`)
+        .valueChanges()
+        .subscribe((data:any) => {
+            this.PPN = data[0].PPN;
+            console.log('PPN: '+this.PPN)
+            // return of(this.tmptype);
+        }
+        
+    );
   }
 
   async checkout()
@@ -86,7 +106,8 @@ export class CheckoutPage implements OnInit {
                   timestamp: moment().format(),
                   grandtotal: this.grandtotal,
                   jumlahbayar: this.jumlahbayar,
-                  jumlahitem:this.totalamount
+                  jumlahitem:this.totalamount,
+                  PPN: this.pakaiPPN
                 }).then(async () => {
                   for (let i = 0; i < this.cart.length; i++) {
                     this.db.collection(`Transaksi/${this.invoicenumber}/Item`).add(this.cart[i]);
@@ -148,6 +169,7 @@ export class CheckoutPage implements OnInit {
     const tanggal = moment().format("DD/MM/YYYY");
     const waktu = moment().format("HH:mm:ss");
     const invoiceID = this.invoicenumber;
+    let jumlahppn = 0;
     function alignLeftRight(left:any, right:any) {
       let lineWidth = 29;
       let space = " ";
@@ -187,7 +209,22 @@ export class CheckoutPage implements OnInit {
       console.log("pengurangan: ", pengurangan);
       return left + space.repeat(pengurangan)+"Rp "+ right;
     }
+    
+    function alignLeftRightPPN(left:any, right:any){
+      let lineWidth = 29;
+      let space = " ";
+      console.log("kiri: ",left.length);
+      console.log("kanan: ", right.length);
+      let pengurangan = lineWidth-left.length-right.length;
+      console.log("pengurangan: ", pengurangan);
+      return left + space.repeat(pengurangan)+"Rp "+ right;
+    }
 
+
+    if(this.pakaiPPN == true)
+    {
+      jumlahppn = ((this.grandtotalkonstan * this.PPN)/100)
+    }
 
     result
     
@@ -223,7 +260,10 @@ export class CheckoutPage implements OnInit {
       .line('Total Item: ' + this.totalamount)
       // .text('Total Belanja:        ')
       // .line("Rp " + formatNumber(this.grandtotal, 'en-US'))
+      .line(alignLeftRight('Grand Total', formatNumber(this.grandtotalkonstan, 'en-US')))
+      .line(alignLeftRightPPN('PPN', formatNumber(jumlahppn, 'en-US')))
       .line(alignLeftRight('Total Belanja', formatNumber(this.grandtotal, 'en-US')))
+
       .line(alignLeftRightBayar('Bayar', formatNumber(parseInt(this.jumlahbayar), 'en-US')))
       .line(alignLeftRightKembalian('Kembalian', formatNumber(this.kembalian, 'en-US')))
       .newline()
@@ -282,6 +322,21 @@ export class CheckoutPage implements OnInit {
       this.kembalian = 0;
     }
 
+  }
+
+  hitungPPN()
+  {
+    // console.log(this.grandtotalkonstan)
+    
+    if(this.pakaiPPN)
+    {
+      this.grandtotal = this.grandtotalkonstan + ((this.grandtotalkonstan * this.PPN)/100)
+    }
+    else{
+      this.grandtotal = this.grandtotalkonstan;
+    }
+    console.log(this.grandtotal)
+    this.HitungKembalian();
   }
 
   close()

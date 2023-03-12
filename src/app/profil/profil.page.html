@@ -40,22 +40,29 @@
     <!-- <div>
 
     </div> -->
-    <ion-item detail lines="full" class="ion-item-style" (click)="addUser()">
+    <ion-item detail lines="full" class="ion-item-style" (click)="addUser()" *ngIf="admin">
       <ion-icon name="person-add" slot="start"></ion-icon>
       <ion-label  style="font-size: 14pt">
         Tambah User
       </ion-label>
     </ion-item >
-    <ion-item detail lines="full" class="ion-item-style">
+    <ion-item detail lines="full" class="ion-item-style" *ngIf="admin">
       <ion-icon name="create" slot="start"></ion-icon>
       <ion-label style="font-size: 14pt">
         Edit PPN
       </ion-label>
     </ion-item>
-    <ion-item detail lines="full" class="ion-item-style">
+    <!-- <ion-item detail lines="full" class="ion-item-style" *ngIf="admin">
       <ion-icon name="receipt" slot="start"></ion-icon>
       <ion-label style="font-size: 14pt">
         Edit Struk
+      </ion-label>
+    </ion-item> -->
+
+    <ion-item detail lines="full" class="ion-item-style">
+      <ion-icon name="key" slot="start"></ion-icon>
+      <ion-label style="font-size: 14pt">
+        Ganti Password
       </ion-label>
     </ion-item>
 
