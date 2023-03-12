@@ -62,6 +62,14 @@ const routes: Routes = [
     path: 'edit-diskon',
     loadChildren: () => import('./edit-diskon/edit-diskon.module').then( m => m.EditDiskonPageModule)
   },
+  {
+    path: 'history',
+    loadChildren: () => import('./history/history.module').then( m => m.HistoryPageModule)
+  },
+  {
+    path: 'detailtransaksihariini',
+    loadChildren: () => import('./detailtransaksihariini/detailtransaksihariini.module').then( m => m.DetailtransaksihariiniPageModule)
+  },
 
 
   

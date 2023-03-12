@@ -109,14 +109,14 @@ export class CheckoutPage implements OnInit {
         {
           text: 'YA',
           handler: async () => {
-            if(this.pakaiPPN == true)
-            {
-              this.jumlahppn = ((this.grandtotalkonstan * this.PPN)/100)
-            }
-            if(this.pakaiDisc == true)
-            {
-              this.jumlahdisc = ((this.grandtotalkonstan * this.diskon)/100)
-            }
+            // if(this.pakaiPPN == true)
+            // {
+            //   this.jumlahppn = ((this.grandtotalkonstan * this.PPN)/100)
+            // }
+            // if(this.pakaiDisc == true)
+            // {
+            //   this.jumlahdisc = ((this.grandtotalkonstan * this.diskon)/100)
+            // }
             if(this.kembalian != 0 || this.jumlahbayar >= this.grandtotal)
             {
               this.printNota();
@@ -134,12 +134,14 @@ export class CheckoutPage implements OnInit {
                   tahun: moment().format('yyyy'),
                   waktu: moment().format('LTS'),
                   timestamp: moment().format(),
-                  grandtotal: this.grandtotal,
+                  grandtotal: this.grandtotalkonstan,
+                  totalbelanja:this.grandtotal,
                   jumlahbayar: this.jumlahbayar,
                   jumlahitem:this.totalamount,
                   PPN: this.pakaiPPN,
                   jumlahPPN: this.jumlahppn,
-                  jumlahDisc: this.jumlahdisc
+                  jumlahDisc: this.jumlahdisc,
+                  kembalian: this.kembalian
                 }).then(async () => {
                   for (let i = 0; i < this.cart.length; i++) {
                     this.db.collection(`Transaksi/${this.invoicenumber}/Item`).add(this.cart[i]);
@@ -309,17 +311,6 @@ export class CheckoutPage implements OnInit {
           this.bluetoothSerial.clear();
           this.bluetoothSerial.disconnect();
           console.log('Print success');
-          // this.cartService.clearCart();
-          // this.dataService.getData();
-          // window.tab1.loadData();
-          // const toast = await this.toastController.create({
-          //   message: 'Checkout berhasil!',
-          //   duration: 700,
-          //   position: 'bottom'
-          // });
-          // await toast.present().then(() => {
-          //   // this.modalCtrl.dismiss();
-          // });
 
         })
         .catch((err) => {

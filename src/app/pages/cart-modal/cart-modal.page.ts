@@ -7,6 +7,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { DataService } from 'src/app/services/data.service';
 import { Router } from "@angular/router";
 import { CheckoutPage } from 'src/app/checkout/checkout.page';
+import { HistoryPage } from 'src/app/history/history.page';
 declare var window:any;
 @Component({
   selector: 'app-cart-modal',
@@ -37,6 +38,18 @@ export class CartModalPage implements OnInit {
   getTotal(){
     return this.cart.reduce((i, j)=> i + j.harga * j.amount, 0);
   }
+
+  async openHistory()
+  {
+    let modal = await this.modalCtrl.create({
+      component: HistoryPage,
+      // cssClass: 'cart-modal'
+  
+    });
+    modal.present();
+
+
+  } 
   close(){
     this.modalCtrl.dismiss();
   }

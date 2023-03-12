@@ -102,8 +102,6 @@ export class ProfilPage implements OnInit {
     modal.present();
   }
 
-  
-
   isiprofile(data:any)
   {
     for(let i=0; i<data.length; i++)
