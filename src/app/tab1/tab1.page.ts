@@ -1,8 +1,9 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { ToastController, ModalController } from '@ionic/angular';
+import { ToastController, ModalController, Platform, IonRouterOutlet, AlertController } from '@ionic/angular';
 import { CartService } from '../services/cart.service';
 import { BehaviorSubject } from 'rxjs';
 import { CartModalPage } from '../pages/cart-modal/cart-modal.page';
+import { App } from '@capacitor/app';
 import { DataService } from '../services/data.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 declare var window : any;
@@ -21,8 +22,16 @@ export class Tab1Page {
   cart: any[] = [];
   cartItemCount!: BehaviorSubject<number>;
 
-  constructor(private db: AngularFirestore, private dataService: DataService, private toastController: ToastController, private cartService: CartService, private modalCtrl: ModalController) {
+  constructor(private alertCtrl: AlertController,private routerOutlet: IonRouterOutlet, public platform: Platform, private db: AngularFirestore, private dataService: DataService, private toastController: ToastController, private cartService: CartService, private modalCtrl: ModalController) {
     // window.screen.orientation.lock('portrait');
+    this.platform.backButton.subscribeWithPriority(-1, () => {
+      if (!this.routerOutlet.canGoBack()) {
+        this.presentConfirm();
+        // App.exitApp();
+        
+      }
+    });
+
     this.loadData();
     window.tab1 = this;
   }
@@ -43,6 +52,29 @@ export class Tab1Page {
     console.log(this.products)
     // this.cart = this.cartService.getCart();
     // this.cartItemCount = this.cartService.getCartItemCount();
+  }
+
+  async presentConfirm() {
+    let alert = await this.alertCtrl.create({
+      
+      subHeader: 'Anda yakin ingin keluar aplikasi?',
+      buttons: [
+        {
+          text: 'Tidak',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'YA',
+          handler: () => {
+            App.exitApp();
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   loadData() {

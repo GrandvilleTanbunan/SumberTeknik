@@ -12,10 +12,11 @@ import { ApexAxisChartSeries,
   ApexTooltip,
   ApexXAxis,
   ApexYAxis,} from 'ng-apexcharts';
+import { App } from '@capacitor/app';
 import { DataService } from '../services/data.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import * as moment from 'moment';
-import { ModalController, Platform } from '@ionic/angular';
+import { ModalController, Platform, IonRouterOutlet, AlertController } from '@ionic/angular';
 import { DetailtransaksitanggalPage } from '../detailtransaksitanggal/detailtransaksitanggal.page';
 import {PDFGenerator, PDFGeneratorOptions} from '@ionic-native/pdf-generator/ngx';
 import { HttpClient } from '@angular/common/http';
@@ -99,7 +100,7 @@ export class Tab3Page {
   grandtotal : any[] = [];
   tmpselectedMonth: any;
   tmpselectedYear: any;
-  constructor(private generatePDF:GeneratePDFService,private plt: Platform,private http: HttpClient,private fileOpener:FileOpener,private dataService: DataService, private db: AngularFirestore, private modalCtrl: ModalController, private pdf: PDFGenerator) {
+  constructor(private alertCtrl: AlertController,private routerOutlet: IonRouterOutlet, private generatePDF:GeneratePDFService,private plt: Platform,private http: HttpClient,private fileOpener:FileOpener,private dataService: DataService, private db: AngularFirestore, private modalCtrl: ModalController, private pdf: PDFGenerator) {
     this.barChart();
     // this.areaChart();
     this.bulanini = moment().format('MM/YYYY');
@@ -110,6 +111,13 @@ export class Tab3Page {
     // this.LineChart();
     window.tab3 = this;
 
+    this.plt.backButton.subscribeWithPriority(-1, () => {
+      if (!this.routerOutlet.canGoBack()) {
+        this.presentConfirm();
+        // App.exitApp();
+        
+      }
+    });
 
   }
 
@@ -117,6 +125,29 @@ export class Tab3Page {
   {
     this.loadLocalAssetToBase64();
     registerLocaleData('es');
+  }
+
+  async presentConfirm() {
+    let alert = await this.alertCtrl.create({
+      
+      subHeader: 'Anda yakin ingin keluar aplikasi?',
+      buttons: [
+        {
+          text: 'Tidak',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'YA',
+          handler: () => {
+            App.exitApp();
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   loadLocalAssetToBase64(){

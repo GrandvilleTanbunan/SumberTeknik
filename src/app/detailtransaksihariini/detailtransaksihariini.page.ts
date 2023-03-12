@@ -29,35 +29,38 @@ export class DetailtransaksihariiniPage implements OnInit {
         this.detailitem = data;
         console.log(this.detailitem)
     });
+
+    // this.getDisc();
+    // this.getPPN()
   }
 
-  getDisc()
-  {
+  // getDisc()
+  // {
     
-    this.db.collection(`Diskon`)
-        .valueChanges()
-        .subscribe((data:any) => {
-            this.diskon = data[0].diskon;
-            console.log('Diskon: '+this.diskon)
-            // return of(this.tmptype);
-        }
+  //   this.db.collection(`Diskon`)
+  //       .valueChanges()
+  //       .subscribe((data:any) => {
+  //           this.diskon = data[0].diskon;
+  //           console.log('Diskon: '+this.diskon)
+  //           // return of(this.tmptype);
+  //       }
         
-    );
-  }
+  //   );
+  // }
 
-  getPPN()
-  {
+  // getPPN()
+  // {
     
-    this.db.collection(`PPN`)
-        .valueChanges()
-        .subscribe((data:any) => {
-            this.PPN = data[0].PPN;
-            console.log('PPN: '+this.PPN)
-            // return of(this.tmptype);
-        }
+  //   this.db.collection(`PPN`)
+  //       .valueChanges()
+  //       .subscribe((data:any) => {
+  //           this.PPN = data[0].PPN;
+  //           console.log('PPN: '+this.PPN)
+  //           // return of(this.tmptype);
+  //       }
         
-    );
-  }
+  //   );
+  // }
 
 
   printNota(){
@@ -158,8 +161,8 @@ export class DetailtransaksihariiniPage implements OnInit {
       // .text('Total Belanja:        ')
       // .line("Rp " + formatNumber(this.grandtotal, 'en-US'))
       .line(alignLeftRight('Grand Total', formatNumber(this.item.grandtotal, 'en-US')))
-      .line(alignLeftRightPPN(`Diskon ${this.diskon}%`, formatNumber(this.item.jumlahdisc, 'en-US')))
-      .line(alignLeftRightPPN(`PPN ${this.PPN}%`, formatNumber(this.item.jumlahppn, 'en-US')))
+      .line(alignLeftRightPPN(`Diskon ${this.item.persendisc}%`, formatNumber(this.item.jumlahDisc, 'en-US')))
+      .line(alignLeftRightPPN(`PPN ${this.item.persenppn}%`, formatNumber(this.item.jumlahPPN, 'en-US')))
       .line(alignLeftRight('Total Belanja', formatNumber(this.item.totalbelanja, 'en-US')))
 
       .line(alignLeftRightBayar('Bayar', formatNumber(parseInt(this.item.jumlahbayar), 'en-US')))

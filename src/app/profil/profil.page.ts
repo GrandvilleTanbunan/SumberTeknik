@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { FormBuilder } from '@angular/forms';
-import { LoadingController, AlertController, ModalController } from '@ionic/angular';
+import { LoadingController, AlertController, ModalController, Platform, IonRouterOutlet } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { CartService } from '../services/cart.service';
 import { AddUserPage } from '../add-user/add-user.page';
@@ -10,6 +10,7 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { DataService } from '../services/data.service';
 import { EditPPNPage } from '../edit-ppn/edit-ppn.page';
 import { EditDiskonPage } from '../edit-diskon/edit-diskon.page';
+import { App } from '@capacitor/app';
 
 @Component({
   selector: 'app-profil',
@@ -21,7 +22,7 @@ export class ProfilPage implements OnInit {
   loggeduser: any;
   selectedImage:any;
   admin: any;
-  constructor(private dataService: DataService,private db: AngularFirestore, private modalCtrl:ModalController,private cartService:CartService,private authService: AuthService, private fb: FormBuilder, private loadingController:LoadingController, private alertController:AlertController, private router: Router) { 
+  constructor(private alertCtrl: AlertController,private routerOutlet: IonRouterOutlet, public platform: Platform,private dataService: DataService,private db: AngularFirestore, private modalCtrl:ModalController,private cartService:CartService,private authService: AuthService, private fb: FormBuilder, private loadingController:LoadingController, private alertController:AlertController, private router: Router) { 
 
   }
 
@@ -37,6 +38,37 @@ export class ProfilPage implements OnInit {
       console.log("Apakah admin: ", this.admin);
     });
 
+    this.platform.backButton.subscribeWithPriority(-1, () => {
+      if (!this.routerOutlet.canGoBack()) {
+        this.presentConfirm();
+        // App.exitApp();
+        
+      }
+    });
+
+  }
+
+  async presentConfirm() {
+    let alert = await this.alertCtrl.create({
+      
+      subHeader: 'Anda yakin ingin keluar aplikasi?',
+      buttons: [
+        {
+          text: 'Tidak',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'YA',
+          handler: () => {
+            App.exitApp();
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   getDP()

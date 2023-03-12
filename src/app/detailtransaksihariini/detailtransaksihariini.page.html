@@ -45,6 +45,12 @@
   </ion-label>
 </ion-item>
 <ion-item lines="none">
+  <ion-label style="font-size: 14pt">Total Belanja</ion-label>
+  <ion-label slot="end" style="font-size: 15pt" lines="none">
+    Rp {{item.totalbelanja| number}}
+  </ion-label>
+</ion-item>
+<ion-item lines="none">
   <ion-label slot="start" style="font-size: 15pt" class="fixedLabel">Jumlah Bayar</ion-label>
   <ion-label slot="end" style="font-size: 15pt" lines="none">
     Rp {{item.jumlahbayar| number}}

@@ -109,14 +109,14 @@ export class CheckoutPage implements OnInit {
         {
           text: 'YA',
           handler: async () => {
-            // if(this.pakaiPPN == true)
-            // {
-            //   this.jumlahppn = ((this.grandtotalkonstan * this.PPN)/100)
-            // }
-            // if(this.pakaiDisc == true)
-            // {
-            //   this.jumlahdisc = ((this.grandtotalkonstan * this.diskon)/100)
-            // }
+            if(this.pakaiPPN == true)
+            {
+              this.jumlahppn = ((this.grandtotalkonstan * this.PPN)/100)
+            }
+            if(this.pakaiDisc == true)
+            {
+              this.jumlahdisc = ((this.grandtotalkonstan * this.diskon)/100)
+            }
             if(this.kembalian != 0 || this.jumlahbayar >= this.grandtotal)
             {
               this.printNota();
@@ -141,7 +141,9 @@ export class CheckoutPage implements OnInit {
                   PPN: this.pakaiPPN,
                   jumlahPPN: this.jumlahppn,
                   jumlahDisc: this.jumlahdisc,
-                  kembalian: this.kembalian
+                  kembalian: this.kembalian,
+                  persenppn: this.PPN,
+                  persendisc: this.diskon
                 }).then(async () => {
                   for (let i = 0; i < this.cart.length; i++) {
                     this.db.collection(`Transaksi/${this.invoicenumber}/Item`).add(this.cart[i]);
