@@ -392,8 +392,9 @@ export class CheckoutPage implements OnInit {
     else if(this.pakaiPPN && this.pakaiDisc)
     {
       console.log("pakai PPN & pakai diskon")
+      this.grandtotal = this.grandtotalkonstan - ((this.grandtotalkonstan * this.diskon)/100);
+      this.grandtotal = this.grandtotal + ((this.grandtotal * this.PPN)/100)
 
-      this.grandtotal = this.grandtotaldiskon + ((this.grandtotaldiskon * this.PPN)/100)
     }
     else if(this.pakaiDisc && !this.pakaiPPN)
     {

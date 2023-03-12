@@ -30,7 +30,7 @@ export class EditDiskonPage implements OnInit {
 
   updateDiskon()
   {
-    this.db.doc(`PPN/${this.iddiskon}`).update({diskon:this.diskonBaru}).then(async ()=>{
+    this.db.doc(`Diskon/${this.iddiskon}`).update({diskon:this.diskonBaru}).then(async ()=>{
       const toast = await this.toastController.create({
         message: 'Diskon berhasil diupdate!',
         duration: 1000,
