@@ -34,6 +34,8 @@ export class CheckoutPage implements OnInit {
   diskon: any;
   grandtotaldiskon:any;
   grandtotalPPN:any;
+  jumlahppn = 0;
+  jumlahdisc = 0;
   constructor(private bluetoothSerial: BluetoothSerial, private loadingCtrl: LoadingController,private alertCtrl: AlertController,private toastController: ToastController,private cartService:CartService,private dataService:DataService,private db: AngularFirestore, private modalCtrl: ModalController) { 
     let encoder = new EscPosEncoder();
     this.img = new Image();
@@ -91,7 +93,8 @@ export class CheckoutPage implements OnInit {
 
   async checkout()
   {
-    
+    this.jumlahppn = 0;
+    this.jumlahdisc = 0;
     let alert = await this.alertCtrl.create({
 
       subHeader: 'Selesaikan transaksi?',
@@ -106,6 +109,14 @@ export class CheckoutPage implements OnInit {
         {
           text: 'YA',
           handler: async () => {
+            if(this.pakaiPPN == true)
+            {
+              this.jumlahppn = ((this.grandtotalkonstan * this.PPN)/100)
+            }
+            if(this.pakaiDisc == true)
+            {
+              this.jumlahdisc = ((this.grandtotalkonstan * this.diskon)/100)
+            }
             if(this.kembalian != 0 || this.jumlahbayar >= this.grandtotal)
             {
               this.printNota();
@@ -126,7 +137,9 @@ export class CheckoutPage implements OnInit {
                   grandtotal: this.grandtotal,
                   jumlahbayar: this.jumlahbayar,
                   jumlahitem:this.totalamount,
-                  PPN: this.pakaiPPN
+                  PPN: this.pakaiPPN,
+                  jumlahPPN: this.jumlahppn,
+                  jumlahDisc: this.jumlahdisc
                 }).then(async () => {
                   for (let i = 0; i < this.cart.length; i++) {
                     this.db.collection(`Transaksi/${this.invoicenumber}/Item`).add(this.cart[i]);
@@ -188,7 +201,6 @@ export class CheckoutPage implements OnInit {
     const tanggal = moment().format("DD/MM/YYYY");
     const waktu = moment().format("HH:mm:ss");
     const invoiceID = this.invoicenumber;
-    let jumlahppn = 0;
     function alignLeftRight(left:any, right:any) {
       let lineWidth = 29;
       let space = " ";
@@ -240,11 +252,7 @@ export class CheckoutPage implements OnInit {
     }
 
 
-    if(this.pakaiPPN == true)
-    {
-      jumlahppn = ((this.grandtotalkonstan * this.PPN)/100)
-    }
-
+ 
     result
     
       .codepage('windows1250')
@@ -280,7 +288,8 @@ export class CheckoutPage implements OnInit {
       // .text('Total Belanja:        ')
       // .line("Rp " + formatNumber(this.grandtotal, 'en-US'))
       .line(alignLeftRight('Grand Total', formatNumber(this.grandtotalkonstan, 'en-US')))
-      .line(alignLeftRightPPN('PPN', formatNumber(jumlahppn, 'en-US')))
+      .line(alignLeftRightPPN(`Diskon ${this.diskon}%`, formatNumber(this.jumlahdisc, 'en-US')))
+      .line(alignLeftRightPPN(`PPN ${this.PPN}%`, formatNumber(this.jumlahppn, 'en-US')))
       .line(alignLeftRight('Total Belanja', formatNumber(this.grandtotal, 'en-US')))
 
       .line(alignLeftRightBayar('Bayar', formatNumber(parseInt(this.jumlahbayar), 'en-US')))
@@ -408,6 +417,8 @@ export class CheckoutPage implements OnInit {
       this.grandtotal = this.grandtotalkonstan;
     }
     console.log(this.grandtotal)
+    this.HitungKembalian();
+
   }
 
   close()
