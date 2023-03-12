@@ -28,8 +28,12 @@ export class CheckoutPage implements OnInit {
   MAC_ADDRESS: any;
   img : any;
   pakaiPPN = false;
+  pakaiDisc = false;
   ThermalPrinterEncoder: any;
   PPN:any;
+  diskon: any;
+  grandtotaldiskon:any;
+  grandtotalPPN:any;
   constructor(private bluetoothSerial: BluetoothSerial, private loadingCtrl: LoadingController,private alertCtrl: AlertController,private toastController: ToastController,private cartService:CartService,private dataService:DataService,private db: AngularFirestore, private modalCtrl: ModalController) { 
     let encoder = new EscPosEncoder();
     this.img = new Image();
@@ -42,7 +46,7 @@ export class CheckoutPage implements OnInit {
     .encode();
 
     this.getPPN();
-
+    this.getDisc();
   }
 
   ngOnInit() {
@@ -54,6 +58,21 @@ export class CheckoutPage implements OnInit {
 
     this.hitungjumlahitem();
 
+  }
+
+  
+  getDisc()
+  {
+    
+    this.db.collection(`Diskon`)
+        .valueChanges()
+        .subscribe((data:any) => {
+            this.diskon = data[0].diskon;
+            console.log('Diskon: '+this.diskon)
+            // return of(this.tmptype);
+        }
+        
+    );
   }
 
   getPPN()
@@ -328,15 +347,66 @@ export class CheckoutPage implements OnInit {
   {
     // console.log(this.grandtotalkonstan)
     
-    if(this.pakaiPPN)
+    if(this.pakaiPPN && !this.pakaiDisc)
     {
       this.grandtotal = this.grandtotalkonstan + ((this.grandtotalkonstan * this.PPN)/100)
+      this.grandtotalPPN = this.grandtotalkonstan + ((this.grandtotalkonstan * this.PPN)/100)
+    }
+    else if(this.pakaiPPN && this.pakaiDisc)
+    {
+      this.grandtotal = this.grandtotaldiskon + ((this.grandtotaldiskon * this.PPN)/100)
     }
     else{
       this.grandtotal = this.grandtotalkonstan;
     }
     console.log(this.grandtotal)
     this.HitungKembalian();
+  }
+
+  hitungDisc()
+  {
+    if(this.pakaiDisc && !this.pakaiPPN)
+    {
+      this.grandtotal = this.grandtotalkonstan - ((this.grandtotalkonstan * this.diskon)/100);
+      this.grandtotaldiskon = this.grandtotalkonstan - ((this.grandtotalkonstan * this.diskon)/100);
+    }
+    else if(this.pakaiPPN && this.pakaiDisc)
+    {
+      this.grandtotal = this.grandtotalPPN - ((this.grandtotalPPN * this.diskon)/100)
+    }
+    else{
+      this.grandtotal = this.grandtotalkonstan;
+    }
+    console.log(this.grandtotal)
+    this.HitungKembalian();
+  }
+
+  hitunggrandtotal()
+  {
+    if(this.pakaiPPN && !this.pakaiDisc)
+    {
+      console.log("pakai PPN & tidak pakai diskon")
+      this.grandtotal = this.grandtotalkonstan + ((this.grandtotalkonstan * this.PPN)/100)
+      this.grandtotalPPN = this.grandtotalkonstan + ((this.grandtotalkonstan * this.PPN)/100)
+    }
+    else if(this.pakaiPPN && this.pakaiDisc)
+    {
+      console.log("pakai PPN & pakai diskon")
+
+      this.grandtotal = this.grandtotaldiskon + ((this.grandtotaldiskon * this.PPN)/100)
+    }
+    else if(this.pakaiDisc && !this.pakaiPPN)
+    {
+      console.log("pakai diskon & tidak pakai PPN")
+
+      this.grandtotal = this.grandtotalkonstan - ((this.grandtotalkonstan * this.diskon)/100);
+      this.grandtotaldiskon = this.grandtotalkonstan - ((this.grandtotalkonstan * this.diskon)/100);
+    }
+    else{
+      console.log("tidak pakai PPN & tidak pakai diskon")
+      this.grandtotal = this.grandtotalkonstan;
+    }
+    console.log(this.grandtotal)
   }
 
   close()

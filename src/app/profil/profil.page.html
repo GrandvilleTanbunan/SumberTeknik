@@ -31,6 +31,16 @@
     </ion-label>
   </div>
 
+  <div class="admin">
+    <ion-label *ngIf="admin == true" style="color: green">
+      ADMIN
+    </ion-label>
+    <ion-label *ngIf="admin == false" style="color: green">
+      USER
+    </ion-label>
+  </div>
+  
+
 
   <div class="login-section ion-padding">
     <!-- <div class="heading ion-padding">
@@ -46,10 +56,16 @@
         Tambah User
       </ion-label>
     </ion-item >
-    <ion-item detail lines="full" class="ion-item-style" *ngIf="admin">
+    <ion-item detail lines="full" class="ion-item-style" *ngIf="admin" (click)="editPPN()">
       <ion-icon name="create" slot="start"></ion-icon>
       <ion-label style="font-size: 14pt">
         Edit PPN
+      </ion-label>
+    </ion-item>
+    <ion-item detail lines="full" class="ion-item-style" *ngIf="admin" (click)="editDiskon()">
+      <ion-icon name="pricetag" slot="start"></ion-icon>
+      <ion-label style="font-size: 14pt">
+        Diskon
       </ion-label>
     </ion-item>
     <!-- <ion-item detail lines="full" class="ion-item-style" *ngIf="admin">

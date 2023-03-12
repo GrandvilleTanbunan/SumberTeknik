@@ -41,3 +41,13 @@
       border-radius: 10px;
     }
 }
+
+.extra-small-modal{
+  &::part(content)
+  {
+    width: 80vh;
+    height: 40%;
+    margin: auto;
+    border-radius: 10px;
+  }
+}

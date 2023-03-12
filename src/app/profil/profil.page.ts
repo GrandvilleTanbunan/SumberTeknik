@@ -8,6 +8,8 @@ import { AddUserPage } from '../add-user/add-user.page';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { DataService } from '../services/data.service';
+import { EditPPNPage } from '../edit-ppn/edit-ppn.page';
+import { EditDiskonPage } from '../edit-diskon/edit-diskon.page';
 
 @Component({
   selector: 'app-profil',
@@ -80,6 +82,24 @@ export class ProfilPage implements OnInit {
       console.log('image: ', image);
 
     })
+  }
+
+  async editPPN()
+  {
+    let modal = await this.modalCtrl.create({
+      component: EditPPNPage,
+      cssClass: 'extra-small-modal'
+    });
+    modal.present();
+  }
+
+  async editDiskon()
+  {
+    let modal = await this.modalCtrl.create({
+      component: EditDiskonPage,
+      cssClass: 'extra-small-modal'
+    });
+    modal.present();
   }
 
   

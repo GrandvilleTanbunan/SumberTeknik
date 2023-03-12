@@ -54,6 +54,14 @@ const routes: Routes = [
     path: 'add-user',
     loadChildren: () => import('./add-user/add-user.module').then( m => m.AddUserPageModule)
   },
+  {
+    path: 'edit-ppn',
+    loadChildren: () => import('./edit-ppn/edit-ppn.module').then( m => m.EditPPNPageModule)
+  },
+  {
+    path: 'edit-diskon',
+    loadChildren: () => import('./edit-diskon/edit-diskon.module').then( m => m.EditDiskonPageModule)
+  },
 
 
   
