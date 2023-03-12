@@ -119,9 +119,11 @@ ion-tabs{
 		ion-tab-button {
 			--background: #ededeb;
 			--color-selected: #5b4243;
+			
 			// border-top-left-radius: 30px;
 //         border-bottom-left-radius: 30px;
 		}
+		
 		ion-tab-button.comments {
 			margin-right: 0px;
 			border-top-right-radius: 18px;
@@ -129,7 +131,9 @@ ion-tabs{
 		ion-tab-button.notifs {
 			margin-left: 0px;
 			border-top-left-radius: 18px;
+			opacity: 1;
 		}
+		
 		svg {    
 			width: 72px;
 			margin-top: 19px;
@@ -138,6 +142,12 @@ ion-tabs{
 			}		
 		}
 	}
+}
+
+.noactualbutton:disabled, noactualbutton[disabled]{
+	color: white;
+	opacity: 1;
+	background: #b3b3b3;
 }
 
 // page-tabs {

@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage-angular';
+// import { Storage } from '@ionic/storage-angular';
 import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 import { BehaviorSubject, switchMap, filter, from, of } from 'rxjs';
 import { collection, orderBy, where} from '@firebase/firestore';
 import { collectionData, docData, Firestore, doc, addDoc, deleteDoc} from '@angular/fire/firestore';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AuthService } from '../services/auth.service';
+import { Storage, ref, getDownloadURL } from '@angular/fire/storage';
+import { uploadString } from 'rxfire/storage';
+import { ModalController, LoadingController, AlertController, ToastController } from '@ionic/angular';
 
 
 
@@ -17,8 +21,20 @@ export class DataService {
   private storageReady = new BehaviorSubject(false);
   public menu: any = [];
   public MenuIDNew : any;
-  constructor(private db: AngularFirestore, private storage: Storage, private firestore: Firestore) {
+  loggeduser:any;
+  loggeduserID:any
+  imageUrl:any;
+  constructor(private toastController: ToastController , private authService: AuthService, private db: AngularFirestore, private storage: Storage, private firestore: Firestore) {
     // this.init();
+    this.authService.loginStatus$.subscribe((user:any) => {
+      this.loggeduser = user;
+      console.log("logged user: ", this.loggeduser);
+    });
+
+    this.authService.observedeuserID.subscribe((user:any) => {
+      this.loggeduserID = user;
+      console.log("logged user: ", this.loggeduser);
+    });
   }
 
   getData(){
@@ -37,6 +53,41 @@ export class DataService {
     // );
     // return of(this.menu);
 
+  }
+
+  async uploadDP(selectedImage: any) {
+    const path = `ProfilePicture/${this.authService.UserID}.jpeg`;
+    const storageRef = ref(this.storage, path);
+    // console.log(this.storage)
+    try {
+      await uploadString(storageRef, selectedImage, 'data_url').toPromise().then(async (snapshot: any) => {
+        console.log('Uploaded a raw string!');
+        this.getURL(storageRef).then(async () => {
+          const toast = await this.toastController.create({
+            message: 'Foto berhasil diganti!',
+            duration: 2000,
+            position: 'bottom'
+          });
+          await toast.present();
+        });
+
+      });
+      return true;
+    }
+    catch (e) {
+      return null;
+    }
+  }
+
+  async getURL(storageRef: any)
+  {
+    console.log(this.authService.UserID)
+    this.imageUrl = await getDownloadURL(storageRef);
+    console.log(this.imageUrl)
+    // console.log(this.selectedImage)
+    console.log("masuk sini")
+
+    this.db.doc(`User/${this.loggeduserID}`).update({imageUrl:this.imageUrl}); //<-- $rating is dynamic
   }
 
 

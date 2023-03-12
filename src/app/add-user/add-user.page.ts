@@ -53,7 +53,7 @@ export class AddUserPage implements OnInit {
       })
       this.modalCtrl.dismiss();
 		} else {
-			this.showAlert('Registrasi gagal!');
+			this.showAlert2('Registrasi gagal!','Email sudah terdaftar!');
     }
     
     console.log(this.credentials.value.admin)
@@ -114,7 +114,15 @@ export class AddUserPage implements OnInit {
 			buttons: ['OK']
 		});
 		await alert.present();
+  }
 
+  async showAlert2(header:any, subheader: any) {
+		const alert = await this.alertController.create({
+      header,
+      subHeader: subheader,
+			buttons: ['OK']
+		});
+		await alert.present();
   }
 
   close()

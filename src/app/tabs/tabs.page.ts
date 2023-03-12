@@ -18,17 +18,26 @@ import { Router } from '@angular/router';
 export class TabsPage {
   cartItemCount!: BehaviorSubject<number>;
   posisitab = 1;
-
-  constructor(private router: Router, private authService: AuthService, private shareXLS: SharexlsService,private alertCtrl:AlertController,private loadingCtrl: LoadingController,private generatePDF: GeneratePDFService,private dataService: DataService, private toastController: ToastController, private cartService: CartService, private modalCtrl: ModalController) {
+  admin: any;
+  constructor(private alertController: AlertController,private router: Router, private authService: AuthService, private shareXLS: SharexlsService,private alertCtrl:AlertController,private loadingCtrl: LoadingController,private generatePDF: GeneratePDFService,private dataService: DataService, private toastController: ToastController, private cartService: CartService, private modalCtrl: ModalController) {
     
     this.dataService.getData().subscribe((res: any)=>{
       this.cartItemCount = this.cartService.getCartItemCount();
     });
+
+    // this.authService.observeadmin.subscribe((admin:any) => {
+    //   this.admin = admin;
+    //   console.log("Apakah admin: ", this.admin);
+    // });
   }
 
   ngOnInit() {
     this.cartItemCount = this.cartService.getCartItemCount();
     // window.screen.orientation.lock('portrait');
+    this.authService.observeadmin.subscribe((admin:any) => {
+      this.admin = admin;
+      console.log("Apakah admin: ", this.admin);
+    });
   }
 
   async openCart(){
@@ -180,7 +189,22 @@ export class TabsPage {
 
   PosisiTab(tab : any)
   {
-    // console.log(tab)
+    // if(tab == 3)
+    // {
+    //   if(this.admin == true)
+    //   {
+    //     this.posisitab = tab;
+    //   }
+    // }
+    // // console.log(tab)
     this.posisitab = tab;
+  }
+
+  async showAlert(header:any) {
+		const alert = await this.alertController.create({
+			header,
+			buttons: ['OK']
+		});
+		await alert.present();
   }
 }
