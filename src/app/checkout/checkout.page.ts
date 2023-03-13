@@ -36,6 +36,8 @@ export class CheckoutPage implements OnInit {
   grandtotalPPN:any;
   jumlahppn = 0;
   jumlahdisc = 0;
+  deviceList: any;
+  apakahbluetoothnyala : any;
   constructor(private bluetoothSerial: BluetoothSerial, private loadingCtrl: LoadingController,private alertCtrl: AlertController,private toastController: ToastController,private cartService:CartService,private dataService:DataService,private db: AngularFirestore, private modalCtrl: ModalController) { 
     let encoder = new EscPosEncoder();
     this.img = new Image();
@@ -95,8 +97,9 @@ export class CheckoutPage implements OnInit {
   {
     this.jumlahppn = 0;
     this.jumlahdisc = 0;
+    let isEnabled : any;
     let alert = await this.alertCtrl.create({
-
+  
       subHeader: 'Selesaikan transaksi?',
       buttons: [
         {
@@ -109,73 +112,7 @@ export class CheckoutPage implements OnInit {
         {
           text: 'YA',
           handler: async () => {
-            if(this.pakaiPPN == true)
-            {
-              this.jumlahppn = ((this.grandtotalkonstan * this.PPN)/100)
-            }
-            if(this.pakaiDisc == true)
-            {
-              this.jumlahdisc = ((this.grandtotalkonstan * this.diskon)/100)
-            }
-            if(this.kembalian != 0 || this.jumlahbayar >= this.grandtotal)
-            {
-              this.printNota();
-
-              const loading = await this.loadingCtrl.create({
-                message: 'Mohon tunggu...',
-              });
-          
-              loading.present().then(async () => {
-                this.db.collection(`Transaksi`).doc(`${this.invoicenumber}`).set({
-                  InvoiceID: this.invoicenumber,
-                  tanggal: moment().format('DD/MM/YYYY'),
-                  hari: moment().format('dddd'),
-                  bulan: moment().format('MM'),
-                  tahun: moment().format('yyyy'),
-                  waktu: moment().format('LTS'),
-                  timestamp: moment().format(),
-                  grandtotal: this.grandtotalkonstan,
-                  totalbelanja:this.grandtotal,
-                  jumlahbayar: this.jumlahbayar,
-                  jumlahitem:this.totalamount,
-                  PPN: this.pakaiPPN,
-                  jumlahPPN: this.jumlahppn,
-                  jumlahDisc: this.jumlahdisc,
-                  kembalian: this.kembalian,
-                  persenppn: this.PPN,
-                  persendisc: this.diskon
-                }).then(async () => {
-                  for (let i = 0; i < this.cart.length; i++) {
-                    this.db.collection(`Transaksi/${this.invoicenumber}/Item`).add(this.cart[i]);
-                  }
-
-                  // this.bluetoothSerial.write('hello world')
-                  loading.dismiss();
-                
-                  this.cartService.clearCart();
-                  this.dataService.getData();
-                  window.tab1.loadData();
-                  const toast = await this.toastController.create({
-                    message: 'Checkout berhasil!',
-                    duration: 700,
-                    position: 'bottom'
-                  });
-                  await toast.present().then(()=>{
-                    this.modalCtrl.dismiss();
-                  });
-                });
-                
-              });
-            }
-            else
-            {
-              const toast = await this.toastController.create({
-                message: 'Masukkan jumlah pembayaran!',
-                duration: 2000,
-                position: 'bottom'
-              });
-              await toast.present();
-            }
+            this.checkbluetoothenabled();
             
           }
         }
@@ -183,6 +120,110 @@ export class CheckoutPage implements OnInit {
     });
     await alert.present();
 
+  }
+
+  checkbluetoothenabled()
+  {
+    this.bluetoothSerial.isEnabled().then(data => {
+      if(data){
+        this.apakahbluetoothnyala = true;
+        this.bluetoothSerial.list().then(async allDevices=> {
+          // set the list to returned value
+          if(allDevices.length > 0){
+            this.deviceList=allDevices;
+            console.log(this.deviceList)
+            this.selesaikantransaksi();
+          }else{
+            let alert = await this.alertCtrl.create({
+              header: 'Bluetooth',
+              subHeader: 'Perangkat tidak ditemukan!',
+              buttons: ['Dismiss']
+            });
+            await alert.present();
+          }
+        });
+      }
+    }).catch(async err=>{
+      let alert = await this.alertCtrl.create({
+        header: 'Bluetooth',
+        subHeader: 'Periksa koneksi bluetooth!',
+        buttons: ['Dismiss']
+      });
+      await alert.present();
+      this.apakahbluetoothnyala = false;
+      
+    });
+  }
+
+  async selesaikantransaksi()
+  {
+    if(this.pakaiPPN == true)
+    {
+      this.jumlahppn = ((this.grandtotalkonstan * this.PPN)/100)
+    }
+    if(this.pakaiDisc == true)
+    {
+      this.jumlahdisc = ((this.grandtotalkonstan * this.diskon)/100)
+    }
+    if(this.kembalian != 0 || this.jumlahbayar >= this.grandtotal)
+    {
+      // this.printNota();
+
+      const loading = await this.loadingCtrl.create({
+        message: 'Mohon tunggu...',
+      });
+  
+      loading.present().then(async () => {
+        this.db.collection(`Transaksi`).doc(`${this.invoicenumber}`).set({
+          InvoiceID: this.invoicenumber,
+          tanggal: moment().format('DD/MM/YYYY'),
+          hari: moment().format('dddd'),
+          bulan: moment().format('MM'),
+          tahun: moment().format('yyyy'),
+          waktu: moment().format('LTS'),
+          timestamp: moment().format(),
+          grandtotal: this.grandtotalkonstan,
+          totalbelanja:this.grandtotal,
+          jumlahbayar: this.jumlahbayar,
+          jumlahitem:this.totalamount,
+          PPN: this.pakaiPPN,
+          jumlahPPN: this.jumlahppn,
+          jumlahDisc: this.jumlahdisc,
+          kembalian: this.kembalian,
+          persenppn: this.PPN,
+          persendisc: this.diskon
+        }).then(async () => {
+          for (let i = 0; i < this.cart.length; i++) {
+            this.db.collection(`Transaksi/${this.invoicenumber}/Item`).add(this.cart[i]);
+          }
+
+          // this.bluetoothSerial.write('hello world')
+          loading.dismiss();
+        
+          this.cartService.clearCart();
+          this.dataService.getData();
+          window.tab1.loadData();
+          const toast = await this.toastController.create({
+            message: 'Checkout berhasil!',
+            duration: 700,
+            position: 'bottom'
+          });
+          await toast.present().then(()=>{
+            this.modalCtrl.dismiss();
+          });
+        });
+        
+      });
+    }
+    else
+    {
+      const toast = await this.toastController.create({
+        message: 'Masukkan jumlah pembayaran!',
+        duration: 2000,
+        position: 'bottom'
+      });
+      await toast.present();
+    }
   }
 
   listDevices(){
