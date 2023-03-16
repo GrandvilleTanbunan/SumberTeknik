@@ -6,6 +6,7 @@ import { EdititemPage } from '../edititem/edititem.page';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from '../services/auth.service';
 import { App } from '@capacitor/app';
+import { TambahstockPage } from '../tambahstock/tambahstock.page';
 
 @Component({
   selector: 'app-tab2',
@@ -70,14 +71,17 @@ export class Tab2Page {
     );
   }
 
-  async openAddMenu()
-  {
+  async openTambahStock(item:any){
     let modal = await this.modalCtrl.create({
-      component: AddMenuPage,
-      // cssClass: 'cart-modal'
+      component: TambahstockPage,
+      cssClass: 'extra-small-modal',
+      componentProps: {
+        item: item
+      }
     });
     modal.present();
   }
+
 
   async removeItem(item: any)
   {

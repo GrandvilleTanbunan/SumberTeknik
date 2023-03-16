@@ -167,7 +167,10 @@ export class CheckoutPage implements OnInit {
     }
     if(this.kembalian != 0 || this.jumlahbayar >= this.grandtotal)
     {
-      // this.printNota();
+      for(let i=0; i<2; i++)
+      {
+        this.printNota();
+      }
 
       const loading = await this.loadingCtrl.create({
         message: 'Mohon tunggu...',

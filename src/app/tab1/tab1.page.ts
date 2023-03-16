@@ -103,7 +103,11 @@ export class Tab1Page {
     this.cartService.decreaseProduct(product);
   }
   increaseCartItem(product: any){
-    this.cartService.addProduct(product);
+    console.log(product)
+    if(product.amount < product.stock)
+    {
+      this.cartService.addProduct(product);
+    }
   }
 
   addToCart(product: any){

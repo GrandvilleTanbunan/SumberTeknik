@@ -70,6 +70,10 @@ const routes: Routes = [
     path: 'detailtransaksihariini',
     loadChildren: () => import('./detailtransaksihariini/detailtransaksihariini.module').then( m => m.DetailtransaksihariiniPageModule)
   },
+  {
+    path: 'tambahstock',
+    loadChildren: () => import('./tambahstock/tambahstock.module').then( m => m.TambahstockPageModule)
+  },
 
 
   
