@@ -112,9 +112,9 @@ export class CheckoutPage implements OnInit {
         {
           text: 'YA',
           handler: async () => {
-            this.selesaikantransaksi();
+            // this.selesaikantransaksi();
 
-            // this.checkbluetoothenabled();
+            this.checkbluetoothenabled();
             
           }
         }
@@ -171,7 +171,7 @@ export class CheckoutPage implements OnInit {
     {
       for(let i=0; i<2; i++)
       {
-        // this.printNota();
+        this.printNota();
       }
 
       const loading = await this.loadingCtrl.create({
@@ -236,14 +236,12 @@ export class CheckoutPage implements OnInit {
   updateStock(item: any)
   {
     this.db.doc(`Menu/${item.MenuID}`).update({stock: item.stock - item.amount}).then(async ()=>{
-      // const toast = await this.toastController.create({
-      //   message: 'PPN berhasil diupdate!',
-      //   duration: 1000,
-      //   position: 'bottom'
-      // });
-      // await toast.present().then(()=>{
-      //   this.modalCtrl.dismiss();
-      // });
+      const toast = await this.toastController.create({
+        message: 'Stock berhasil diupdate!',
+        duration: 1000,
+        position: 'bottom'
+      });
+      await toast.present();
     })
   }
 
