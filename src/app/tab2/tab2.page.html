@@ -12,8 +12,22 @@
         <ion-list>
             <ion-item-sliding *ngFor="let item of listData; let i = index">
               <ion-item class="ion-text-wrap">
+                  <!-- <ion-fab size="small" vertical="top" horizontal="end">
+                      <ion-fab-button size="small" color="danger">
+                                  
+                        <span>{{item.stock}}</span>
+                      </ion-fab-button>
+                    </ion-fab> -->
                   <ion-thumbnail slot="start">
+                      <!-- <ion-fab size="small" vertical="top" horizontal="start">
+                          <ion-fab-button size="small" color="danger">
+                            <ion-icon name="add"></ion-icon>
+                                      
+                            <span>{{item.stock}}</span>
+                          </ion-fab-button>
+                        </ion-fab> -->
                     <img [src]="item.imageUrl" />
+                    
                   </ion-thumbnail>
                 <!-- <ion-label>
                   <p style="font-size: 15pt; padding-bottom: 5px; color: black" class="ion-text-wrap">{{item.nama}}</p>

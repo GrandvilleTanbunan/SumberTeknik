@@ -11,6 +11,8 @@ import { DataService } from '../services/data.service';
 import { EditPPNPage } from '../edit-ppn/edit-ppn.page';
 import { EditDiskonPage } from '../edit-diskon/edit-diskon.page';
 import { App } from '@capacitor/app';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { GantiPasswordPage } from '../ganti-password/ganti-password.page';
 
 @Component({
   selector: 'app-profil',
@@ -22,6 +24,8 @@ export class ProfilPage implements OnInit {
   loggeduser: any;
   selectedImage:any;
   admin: any;
+  email: any;
+
   constructor(private alertCtrl: AlertController,private routerOutlet: IonRouterOutlet, public platform: Platform,private dataService: DataService,private db: AngularFirestore, private modalCtrl:ModalController,private cartService:CartService,private authService: AuthService, private fb: FormBuilder, private loadingController:LoadingController, private alertController:AlertController, private router: Router) { 
 
   }
@@ -142,21 +146,33 @@ export class ProfilPage implements OnInit {
     }
   }
 
-  logout()
+  async gantiPassword()
   {
-    this.authService.logout().then(()=>{
-      this.cartService.clearCart();
-      this.router.navigateByUrl("/", {replaceUrl: true});
+    let modal = await this.modalCtrl.create({
+      component: GantiPasswordPage,
+      cssClass: 'extra-small-modal'
     });
+    modal.present();
   }
 
   async addUser()
   {
     let modal = await this.modalCtrl.create({
       component: AddUserPage,
-      cssClass: 'small-modal'
+      cssClass: 'small-modal',
+      componentProps: {
+        profil: this.profile
+      }
     });
     modal.present();
+  }
+
+  logout()
+  {
+    this.authService.logout().then(()=>{
+      this.cartService.clearCart();
+      this.router.navigateByUrl("/", {replaceUrl: true});
+    });
   }
 
 }

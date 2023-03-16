@@ -74,6 +74,10 @@ const routes: Routes = [
     path: 'tambahstock',
     loadChildren: () => import('./tambahstock/tambahstock.module').then( m => m.TambahstockPageModule)
   },
+  {
+    path: 'ganti-password',
+    loadChildren: () => import('./ganti-password/ganti-password.module').then( m => m.GantiPasswordPageModule)
+  },
 
 
   

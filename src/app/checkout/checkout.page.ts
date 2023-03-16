@@ -112,7 +112,9 @@ export class CheckoutPage implements OnInit {
         {
           text: 'YA',
           handler: async () => {
-            this.checkbluetoothenabled();
+            this.selesaikantransaksi();
+
+            // this.checkbluetoothenabled();
             
           }
         }
@@ -169,7 +171,7 @@ export class CheckoutPage implements OnInit {
     {
       for(let i=0; i<2; i++)
       {
-        this.printNota();
+        // this.printNota();
       }
 
       const loading = await this.loadingCtrl.create({
@@ -198,6 +200,8 @@ export class CheckoutPage implements OnInit {
         }).then(async () => {
           for (let i = 0; i < this.cart.length; i++) {
             this.db.collection(`Transaksi/${this.invoicenumber}/Item`).add(this.cart[i]);
+            console.log(this.cart);
+            this.updateStock(this.cart[i]);
           }
 
           // this.bluetoothSerial.write('hello world')
@@ -227,6 +231,20 @@ export class CheckoutPage implements OnInit {
       });
       await toast.present();
     }
+  }
+
+  updateStock(item: any)
+  {
+    this.db.doc(`Menu/${item.MenuID}`).update({stock: item.stock - item.amount}).then(async ()=>{
+      // const toast = await this.toastController.create({
+      //   message: 'PPN berhasil diupdate!',
+      //   duration: 1000,
+      //   position: 'bottom'
+      // });
+      // await toast.present().then(()=>{
+      //   this.modalCtrl.dismiss();
+      // });
+    })
   }
 
   listDevices(){

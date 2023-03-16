@@ -8,3 +8,21 @@ ion-fab-button {
     margin-inline-start: 200px !important;
     // padding-bottom: 10px
   }
+
+  ion-thumbnail {
+    --size: 250px;
+    --border-radius: 14px;
+  }
+
+  .item ion-thumbnail {
+    min-width: 4.5rem;    
+    min-height: 4.5rem;
+    img {
+        max-width: 4.5rem;    
+        min-width: 4.5rem;
+    }
+}
+
+.ionfabthumbnail{
+  margin-bottom: 5px;
+}
