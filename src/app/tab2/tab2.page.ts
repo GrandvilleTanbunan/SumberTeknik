@@ -72,14 +72,23 @@ export class Tab2Page {
   }
 
   async openTambahStock(item:any){
-    let modal = await this.modalCtrl.create({
-      component: TambahstockPage,
-      cssClass: 'extra-small-modal',
-      componentProps: {
-        item: item
-      }
-    });
-    modal.present();
+    if(this.admin == true)
+    {
+      console.log("apakah admin ini: " + this.admin)
+      let modal = await this.modalCtrl.create({
+        component: TambahstockPage,
+        cssClass: 'extra-small-modal',
+        componentProps: {
+          item: item
+        }
+      });
+      modal.present();
+    }
+    else
+    {
+      this.showAlert("Admin", "Login sebagai admin untuk menggunakan fitur ini")
+    }
+    
   }
 
 
