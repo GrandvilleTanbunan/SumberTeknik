@@ -13,6 +13,8 @@ import { EditDiskonPage } from '../edit-diskon/edit-diskon.page';
 import { App } from '@capacitor/app';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { GantiPasswordPage } from '../ganti-password/ganti-password.page';
+// import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 @Component({
   selector: 'app-profil',
@@ -26,7 +28,7 @@ export class ProfilPage implements OnInit {
   admin: any;
   email: any;
 
-  constructor(private alertCtrl: AlertController,private routerOutlet: IonRouterOutlet, public platform: Platform,private dataService: DataService,private db: AngularFirestore, private modalCtrl:ModalController,private cartService:CartService,private authService: AuthService, private fb: FormBuilder, private loadingController:LoadingController, private alertController:AlertController, private router: Router) { 
+  constructor(private androidPermissions: AndroidPermissions, private alertCtrl: AlertController,private routerOutlet: IonRouterOutlet, public platform: Platform,private dataService: DataService,private db: AngularFirestore, private modalCtrl:ModalController,private cartService:CartService,private authService: AuthService, private fb: FormBuilder, private loadingController:LoadingController, private alertController:AlertController, private router: Router) { 
 
   }
 
@@ -165,6 +167,64 @@ export class ProfilPage implements OnInit {
       }
     });
     modal.present();
+  }
+
+  reqPermission()
+  {
+    // this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.CAMERA).then(
+    //   result => console.log('Has permission?',result.hasPermission),
+    //   err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.CAMERA)
+    // );
+    // this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.CAMERA, this.androidPermissions.PERMISSION.GET_ACCOUNTS]);
+
+    // this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.BLUETOOTH_SCAN).then(
+    //   result => console.log('Has permission?',result.hasPermission),
+    //   err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.BLUETOOTH_SCAN)
+    // );
+    // this.androidPermissions.requestPermissions(this.androidPermissions.PERMISSION.BLUETOOTH_SCAN);
+
+    // this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.BLUETOOTH_CONNECT).then(
+    //   result => console.log('Has permission?',result.hasPermission),
+    //   err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.BLUETOOTH_CONNECT)
+    // );
+    // this.androidPermissions.requestPermissions(this.androidPermissions.PERMISSION.BLUETOOTH_CONNECT);
+
+    // this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.BLUETOOTH_ADMIN).then(
+    //   result => console.log('Has permission?',result.hasPermission),
+    //   err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.BLUETOOTH_ADMIN)
+    // );
+    // this.androidPermissions.requestPermissions(this.androidPermissions.PERMISSION.BLUETOOTH_ADMIN);
+
+    // this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.BLUETOOTH).then(
+    //   result => console.log('Has permission?',result.hasPermission),
+    //   err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.BLUETOOTH)
+    // );
+    // this.androidPermissions.requestPermissions(this.androidPermissions.PERMISSION.BLUETOOTH);
+    this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.BLUETOOTH_CONNECT).then(
+      result => {
+        if(result.hasPermission){
+          //Do nothing and proceed permission exists already
+        }else{
+          //Request for all the permissions in the array
+          this.androidPermissions.requestPermissions(
+            [
+              this.androidPermissions.PERMISSION.BLUETOOTH, 
+              this.androidPermissions.PERMISSION.BLUETOOTH_ADMIN,
+              this.androidPermissions.PERMISSION.BLUETOOTH_CONNECT,
+              this.androidPermissions.PERMISSION.BLUETOOTH_SCAN,
+              this.androidPermissions.PERMISSION.ACCESS_FINE_LOCATION,
+           ])
+        }
+      },
+      err => this.androidPermissions.requestPermissions(
+        [
+          this.androidPermissions.PERMISSION.BLUETOOTH, 
+          this.androidPermissions.PERMISSION.BLUETOOTH_ADMIN,
+          this.androidPermissions.PERMISSION.BLUETOOTH_CONNECT,
+          this.androidPermissions.PERMISSION.BLUETOOTH_SCAN,
+          this.androidPermissions.PERMISSION.ACCESS_FINE_LOCATION
+       ])
+    );
   }
 
   logout()

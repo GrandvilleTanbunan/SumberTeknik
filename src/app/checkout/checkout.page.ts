@@ -38,6 +38,7 @@ export class CheckoutPage implements OnInit {
   jumlahdisc = 0;
   deviceList: any;
   apakahbluetoothnyala : any;
+  bluetoothconnected = false;
   constructor(private bluetoothSerial: BluetoothSerial, private loadingCtrl: LoadingController,private alertCtrl: AlertController,private toastController: ToastController,private cartService:CartService,private dataService:DataService,private db: AngularFirestore, private modalCtrl: ModalController) { 
     let encoder = new EscPosEncoder();
     this.img = new Image();
@@ -56,13 +57,38 @@ export class CheckoutPage implements OnInit {
   ngOnInit() {
     console.log("ini di modal: " , this.invoicenumber)
     this.grandtotalkonstan = this.grandtotal;
+    this.MAC_ADDRESS = "0F:02:18:71:89:08";
+
     // console.log("ini di modal: " , this.grandtotal)
     // console.log("ini di modal: " , this.cart)
     moment.locale('id');
+    this.connectBluetooth();
 
     this.hitungjumlahitem();
 
   }
+
+  connectBluetooth()
+  {
+    this.MAC_ADDRESS = "0F:02:18:71:89:08";
+    // send byte code into the printer
+    this.bluetoothSerial.connect(this.MAC_ADDRESS).subscribe(async (success: any) => {
+      const toast = await this.toastController.create({
+        message: 'Bluetooth Connected!',
+        duration: 1000,
+        position: 'bottom'
+      });
+      await toast.present()
+      this.bluetoothconnected = true;
+
+    },(error:any) => {
+        console.log("Connection Error " +  error);
+        this.bluetoothconnected = false;
+
+      });
+
+  }
+
 
   
   getDisc()
@@ -169,10 +195,8 @@ export class CheckoutPage implements OnInit {
     }
     if(this.kembalian != 0 || this.jumlahbayar >= this.grandtotal)
     {
-      for(let i=0; i<2; i++)
-      {
-        this.printNota();
-      }
+      this.printNota();
+
 
       const loading = await this.loadingCtrl.create({
         message: 'Mohon tunggu...',
@@ -204,7 +228,13 @@ export class CheckoutPage implements OnInit {
             this.updateStock(this.cart[i]);
           }
 
+          // for(let i=0; i<2; i++)
+          // {
+          // }
+
           // this.bluetoothSerial.write('hello world')
+          // this.printNota();
+
           loading.dismiss();
         
           this.cartService.clearCart();
@@ -365,20 +395,38 @@ export class CheckoutPage implements OnInit {
       .cut();
 
     const resultByte = result.encode();
-
+    this.MAC_ADDRESS = "0F:02:18:71:89:08";
     // send byte code into the printer
-    this.bluetoothSerial.connect(this.MAC_ADDRESS).subscribe(() => {
+    // this.bluetoothSerial.connect(this.MAC_ADDRESS).subscribe(() => {
+    //   this.bluetoothSerial.write(resultByte)
+    //     .then(async () => {
+    //       this.bluetoothSerial.clear();
+    //       // this.bluetoothSerial.disconnect();
+    //       console.log('Print success');
+
+    //     })
+    //     .catch((err) => {
+    //       console.error(err);
+    //     });
+    // });
+    
+    this.bluetoothSerial.isConnected().then(async () => {
       this.bluetoothSerial.write(resultByte)
         .then(async () => {
           this.bluetoothSerial.clear();
-          this.bluetoothSerial.disconnect();
+          // this.bluetoothSerial.disconnect();
           console.log('Print success');
-
+          this.modalCtrl.dismiss();
         })
         .catch((err) => {
           console.error(err);
         });
-    });
+    })
+
+    
+
+    
+
   }
 
  
