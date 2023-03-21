@@ -74,9 +74,9 @@ export class CheckoutPage implements OnInit {
     // send byte code into the printer
     this.bluetoothSerial.connect(this.MAC_ADDRESS).subscribe(async (success: any) => {
       const toast = await this.toastController.create({
-        message: 'Bluetooth Connected!',
+        message: 'Printer Connected!',
         duration: 1000,
-        position: 'bottom'
+        position: 'top'
       });
       await toast.present()
       this.bluetoothconnected = true;
@@ -195,7 +195,10 @@ export class CheckoutPage implements OnInit {
     }
     if(this.kembalian != 0 || this.jumlahbayar >= this.grandtotal)
     {
-      this.printNota();
+      for(let i=0; i<2; i++)
+      {
+        this.printNota();
+      }
 
 
       const loading = await this.loadingCtrl.create({
