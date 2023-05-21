@@ -1,10 +1,20 @@
 
 <ion-header [translucent]="true">
   <ion-toolbar color="secondary">
-    <ion-title class="ion-text-center">
+    <ion-title class="ion-text-center" style="padding: 10px">
       Transaksi
     </ion-title>
+
+    <div padding>
+        <ion-segment [scrollable]="true">
+          <ion-segment-button *ngFor="let item of kategori; let i = index" value={{item.namakategori}} (click)="SelectedKategori(item)">
+            {{item.namakategori}}
+          </ion-segment-button>
+        </ion-segment>
+      </div>
   </ion-toolbar>
+
+  
 </ion-header>
 
 <ion-content [fullscreen]="true" >
@@ -19,7 +29,11 @@
     <ion-toolbar>
       <ion-title size="large">Transaksi</ion-title>
     </ion-toolbar>
+
+    
   </ion-header>
+
+  
 
   <!-- <ion-searchbar [debounce]="100" placeholder="Cari" show-clear-button="focus">
   </ion-searchbar> -->

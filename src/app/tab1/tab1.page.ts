@@ -6,6 +6,9 @@ import { CartModalPage } from '../pages/cart-modal/cart-modal.page';
 import { App } from '@capacitor/app';
 import { DataService } from '../services/data.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { collection, orderBy, where} from '@firebase/firestore';
+import { take, takeWhile, takeUntil } from 'rxjs/operators';
+
 declare var window : any;
 @Component({
   selector: 'app-tab1',
@@ -17,8 +20,10 @@ export class Tab1Page {
   jumlahitem = 100;
   ctritem = 0;
   itemkembar = false;
+  kategori : any;
   // cart: any[] = [];
   products: any;
+  tmpproducts: any;
   cart: any[] = [];
   cartItemCount!: BehaviorSubject<number>;
 
@@ -33,6 +38,7 @@ export class Tab1Page {
     });
 
     this.loadData();
+    this.getkategori();
     window.tab1 = this;
   }
 
@@ -81,13 +87,52 @@ export class Tab1Page {
     this.db.collection(`Menu`, ref => ref.orderBy('nama', 'asc'))
       .valueChanges({ idField: 'MenuID' })
       .subscribe((data: any) => {
-        this.products = data;
+        this.tmpproducts = data;
         console.log(this.products)
         this.cart = this.cartService.getCart();
         this.cartItemCount = this.cartService.getCartItemCount();
       }
 
       );
+  }
+
+  getkategori()
+  {
+    this.db.collection(`Kategori`)
+      .valueChanges({ idField: 'KategoriID' })
+      .subscribe((data: any) => {
+        this.kategori = data;
+        console.log(this.kategori)
+      }
+
+      );
+  }
+
+  SelectedKategori(kategori:any)
+  {
+    this.products = [];
+    console.log(kategori)
+    // console.log(item)
+    // this.db.collection(`Menu`, ref => ref.where('kategori', '==', `${item.namakategori}`))
+    //   .valueChanges({ idField: 'MenuID' })
+    //   .pipe(take(1))
+    //   .subscribe((data: any) => {
+    //     this.products = data;
+    //     console.log(this.products)
+    //     this.cart = this.cartService.getCart();
+    //     this.cartItemCount = this.cartService.getCartItemCount();
+    //   }
+
+    //   );
+
+    for(let i=0; i<this.tmpproducts.length; i++)
+    {
+      if(this.tmpproducts[i].kategori == kategori.namakategori)
+      {
+        this.products.push(this.tmpproducts[i])
+      }
+    }
+    console.log(this.products)
   }
 
   // increment () {

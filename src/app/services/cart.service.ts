@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { DataService } from './data.service';
 import { collection, orderBy, where} from '@firebase/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 export interface Product {
   id: number;
@@ -40,7 +41,7 @@ export class CartService {
   private cart: any = [];
   private cartItemCount = new BehaviorSubject(0);
 
-  constructor(private dataService: DataService) { 
+  constructor(private dataService: DataService, private db: AngularFirestore) { 
     this.loadData();
   }
 
@@ -78,31 +79,48 @@ export class CartService {
     this.cartItemCount.next(0);
   }
 
-  addProduct(product: any){
+  // addamount()
+  // {
+
+  // }
+
+  async addProduct(product: any){
+    const UpdateAmount = this.db.collection(`Menu`).doc(`${product.MenuID}`);
+
     // console.log(product)
     let added = false;
     for (let p of this.cart) {
       if (p.MenuID === product.MenuID) {
         p.amount += 1;
         added = true;
+    
+        // const res1 = await UpdateAmount.update({amount: p.amount});
         break;
       }
     }
     if (!added) {
       product.amount = 1;
+      // const res1 = await UpdateAmount.update({amount: 1});
+
       this.cart.push(product);
     }
     this.cartItemCount.next(this.cartItemCount.value + 1);
     console.log(this.cart)
   }
 
-  decreaseProduct(product: any){
+  
+
+  async decreaseProduct(product: any){
+    const UpdateAmount = this.db.collection(`Menu`).doc(`${product.MenuID}`);
+
     console.log(product)
 
     for(let [index, p] of this.cart.entries()){
       if(p.MenuID === product.MenuID)
       {
         p.amount -= 1;
+        // const res1 = await UpdateAmount.update({amount: p.amount});
+
         if(p.amount == 0)
         {
           this.cart.splice(index, 1);
@@ -113,7 +131,9 @@ export class CartService {
     console.log(this.cart)
   }
 
-  removeProduct(product: any){
+  async removeProduct(product: any){
+    const UpdateAmount = this.db.collection(`Menu`).doc(`${product.MenuID}`);
+
     for(let [index, p] of this.cart.entries()){
       if(p.MenuID === product.MenuID)
       {
@@ -121,6 +141,8 @@ export class CartService {
         this.cart.splice(index, 1);
         console.log("Masuk Sini")
         p.amount = 0;
+        // const res1 = await UpdateAmount.update({amount: p.amount});
+
 
         
       }
