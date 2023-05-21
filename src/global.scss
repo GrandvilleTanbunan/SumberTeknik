@@ -42,6 +42,16 @@
     }
 }
 
+.small-modal-addmenu{
+  &::part(content)
+  {
+    width: 80vh;
+    height: 80%;
+    margin: auto;
+    border-radius: 10px;
+  }
+}
+
 .extra-small-modal{
   &::part(content)
   {

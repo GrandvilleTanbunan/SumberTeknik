@@ -51,7 +51,7 @@ export class TabsPage {
   async openAddMenu(){
     let modal = await this.modalCtrl.create({
       component: AddMenuPage,
-      cssClass: 'small-modal'
+      cssClass: 'small-modal-addmenu'
     });
     modal.present();
   }

@@ -28,14 +28,34 @@ export class AddMenuPage implements OnInit {
   tmpnama:any;
   tmpharga:any;
   selectedImage:any;
-
+  kategori: any;
   constructor(private alertCtrl:AlertController, private loadingCtrl:LoadingController, private toastController: ToastController,private db: AngularFirestore, private firestore: Firestore, private storage:Storage, private cartService: CartService,private dataService: DataService, private modalCtrl: ModalController, private fb: FormBuilder, private loadingController:LoadingController, private alertController:AlertController, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
     this.credentials = this.fb.group({
 			nama: ['', [Validators.required]],
-			harga: ['', [Validators.required]]
-		});
+      harga: ['', [Validators.required]],
+      kategori: ['', [Validators.required]]
+    });
+    
+    this.getkategori();
+  }
+
+  getkategori()
+  {
+    this.db.collection(`Kategori`)
+      .valueChanges({ idField: 'KategoriID' })
+      .subscribe((data: any) => {
+        this.kategori = data;
+        console.log(this.kategori)
+      }
+
+      );
+  }
+
+  selectedkategori()
+  {
+    console.log(this.credentials.value.kategori)
   }
 
   get nama(){
@@ -72,7 +92,8 @@ export class AddMenuPage implements OnInit {
                 {
                   nama: this.credentials.value.nama,
                   harga: this.credentials.value.harga,
-                  imageUrl: ""
+                  imageUrl: "",
+                  kategori: this.credentials.value.kategori
                 }
               ];
 
@@ -88,26 +109,43 @@ export class AddMenuPage implements OnInit {
               const path = `FoodImage/${this.dataService.MenuIDNew}.jpeg`;
               const storageRef = ref(this.storage, path);
               // console.log(this.storage)
-              try {
-                await uploadString(storageRef, this.selectedImage, 'data_url').toPromise().then(async (snapshot: any) => {
-                  console.log('Uploaded a raw string!');
-                  this.getURL(storageRef).then(async ()=>{
-                      this.modalCtrl.dismiss();
-                      loading.dismiss();
-                      const toast = await this.toastController.create({
-                        message: 'Menu berhasil ditambahkan!',
-                        duration: 700,
-                        position: 'bottom'
-                      });
-                      await toast.present();
+              if(this.selectedImage != undefined)
+              {
+                try {
+                  await uploadString(storageRef, this.selectedImage, 'data_url').toPromise().then(async (snapshot: any) => {
+                    console.log('Uploaded a raw string!');
+                    this.getURL(storageRef).then(async ()=>{
+                        this.modalCtrl.dismiss();
+                        loading.dismiss();
+                        const toast = await this.toastController.create({
+                          message: 'Menu berhasil ditambahkan!',
+                          duration: 700,
+                          position: 'bottom'
+                        });
+                        await toast.present();
+                    });
+                    
                   });
-                  
+                  return true;
+                }
+                catch (e) {
+                  return null;
+                }
+              }
+              else
+              {
+                this.modalCtrl.dismiss();
+                loading.dismiss();
+                const toast = await this.toastController.create({
+                  message: 'Menu berhasil ditambahkan!',
+                  duration: 700,
+                  position: 'bottom'
                 });
+                await toast.present();
                 return true;
+
               }
-              catch (e) {
-                return null;
-              }
+              
               
 
             });

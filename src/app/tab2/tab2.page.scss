@@ -26,3 +26,8 @@ ion-fab-button {
 .ionfabthumbnail{
   margin-bottom: 5px;
 }
+
+ion-thumbnail {
+  --size: 140px;
+  --border-radius: 14px;
+}

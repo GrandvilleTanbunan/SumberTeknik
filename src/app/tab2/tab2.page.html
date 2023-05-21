@@ -13,7 +13,8 @@
             <ion-item-sliding *ngFor="let item of listData; let i = index">
               <ion-item class="ion-text-wrap">
                   <ion-thumbnail slot="start">
-                    <img [src]="item.imageUrl" />
+                    <img  *ngIf="item.imageUrl!='' " [src]="item.imageUrl" />
+                    <img class="center"  *ngIf="item.imageUrl=='' " src="../assets/icon kecil.png" />
                   </ion-thumbnail>
                 <ion-label>
                     <p style="font-size: 15pt; padding-bottom: 5px; color: black" class="ion-text-wrap">{{item.nama}}</p>
