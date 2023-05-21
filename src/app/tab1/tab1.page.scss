@@ -35,10 +35,12 @@ vertical-align: middle;
 }
 
 .inputbg{
-width: 40px;
+width: 30px;
 font-size: 15pt;
 display: inline-block;
+text-align: center;
 vertical-align: middle;
+
 color: #000000
 }
 
@@ -87,4 +89,25 @@ img {
   // padding: 5px;
   width: 100%;
   height:110px;
+}
+
+.float-container {
+  border: 3px solid #fff;
+  // padding: 20px;
+}
+
+.float-child {
+  width: 50%;
+  float: left;
+  // height: 200px;
+  // padding: 20px;
+  // border: 2px solid red;
+}  
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 0.5fr;
+  grid-gap: 20px;
+  border-bottom: 2px solid #baaea3;
+
 }

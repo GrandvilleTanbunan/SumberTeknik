@@ -24,13 +24,11 @@
   <!-- <ion-searchbar [debounce]="100" placeholder="Cari" show-clear-button="focus">
   </ion-searchbar> -->
   
-  <div class="ion-text-center" style="padding-bottom:70px" >
+  <!-- <div class="ion-text-center" style="padding-bottom:70px" >
       
     <ion-card class="ion-text-center" id="menuitem" *ngFor="let item of products">
         <ion-fab size="small">
           <ion-fab-button size="small" color="danger" class="fab-horizontal-center">
-            <!-- <ion-icon name="add"></ion-icon>
-                       -->
             <span>{{item.stock}}</span>
           </ion-fab-button>
         </ion-fab>
@@ -49,7 +47,69 @@
         <ion-icon class="iconincrease" name="add-circle-outline" (click)="increaseCartItem(item)"></ion-icon>
       </ion-list>
     </ion-card>
-  </div>
+  </div> -->
+<!-- <div class="ion-text-center">
+  <ion-list>
+    <ion-item *ngFor="let item of products">
+      {{item.nama}}
+      <ion-button *ngIf="item.amount == 0" color="secondary" shape="round" fill="outline" (click)="addToCart(item)" [disabled]="item.stock == 0">Add</ion-button>
+      <ion-list *ngIf="item.amount != 0">
+        <ion-icon class="icondecrease" name="remove-circle-outline" (click)="decreaseCartItem(item)"></ion-icon>
+        <ion-text style="font-size: 15pt" class="inputbg">{{item.amount}}</ion-text>
+        <ion-icon class="iconincrease" name="add-circle-outline" (click)="increaseCartItem(item)"></ion-icon>
+      </ion-list>
+    </ion-item>
+  </ion-list>
+</div> -->
+
+
+<div style="padding-bottom:70px" >
+    <div class="grid-container" *ngFor="let item of products">
+
+        <div class="grid-child purple">
+          <ion-item class="ion-text-wrap" lines="none">
+            <ion-label>
+              <p style="font-size: 15pt; padding-bottom: 5px; color: black" class="ion-text-wrap">{{item.nama}}</p>
+              <p style="font-size: 12pt; padding-bottom: 5px; color: black">
+                Rp {{ item.harga | number }}
+              </p>
+              <p style="font-size: 12pt; padding-bottom: 5px; color: black">
+                Stock {{ item.stock | number }} pcs
+              </p>
+            </ion-label>
+      
+          </ion-item>
+        </div>
+      
+        <div class="grid-child green" style="margin:auto">
+            <ion-button *ngIf="item.amount == 0" color="secondary" shape="round" fill="outline" (click)="addToCart(item)" [disabled]="item.stock == 0">Add</ion-button>
+            <ion-list *ngIf="item.amount != 0">
+              <ion-icon class="icondecrease" name="remove-circle-outline" (click)="decreaseCartItem(item)"></ion-icon>
+              <ion-text style="font-size: 15pt" class="inputbg">{{item.amount}}</ion-text>
+              <ion-icon class="iconincrease" name="add-circle-outline" (click)="increaseCartItem(item)"></ion-icon>
+            </ion-list>
+        </div>
+      
+      </div>
+</div>
+
+
+
+
+
+<!-- <ion-item class="ion-text-wrap" *ngFor="let item of products">
+  <ion-label>
+    <p style="font-size: 15pt; padding-bottom: 5px; color: black" class="ion-text-wrap">{{item.nama}}</p>
+    <p style="font-size: 12pt; padding-bottom: 5px; color: black">
+      Rp {{ item.harga | number }}
+    </p>
+    <p style="font-size: 12pt; padding-bottom: 5px; color: black">
+      Stock {{ item.stock | number }} pcs
+    </p>
+  </ion-label>
+
+</ion-item> -->
+ 
 
 </ion-content>
 
