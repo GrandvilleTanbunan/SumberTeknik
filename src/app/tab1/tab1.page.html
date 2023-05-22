@@ -4,16 +4,32 @@
     <ion-title class="ion-text-center" style="padding: 10px">
       Transaksi
     </ion-title>
-
-    <div padding>
-        <ion-segment [scrollable]="true">
-          <ion-segment-button *ngFor="let item of kategori; let i = index" value={{item.namakategori}} (click)="SelectedKategori(item)">
-            {{item.namakategori}}
-          </ion-segment-button>
-        </ion-segment>
-      </div>
+    <!-- <ion-button slot="end" fill="clear" color="light" (click)="refresh()">
+      <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+    </ion-button> -->
+    
+    <!-- <div padding style="background-color:#9a8a83">
+      <ion-segment [scrollable]="true">
+        <ion-segment-button *ngFor="let item of kategori; let i = index" value={{item.namakategori}} (click)="SelectedKategori(item)">
+          {{item.namakategori}}
+        </ion-segment-button>
+      </ion-segment>
+    </div> -->
+    <div padding style="background-color:#9a8a83">
+      <ion-segment [scrollable]="true" color="light">
+        <ion-segment-button *ngFor="let item of kategori; let i = index" value={{item.namakategori}} (click)="SelectedKategori(item)" style="color: lightgray">
+          {{item.namakategori}}
+        </ion-segment-button>
+      </ion-segment>
+    </div>
   </ion-toolbar>
-
+  <!-- <div padding style="background-color:#9a8a83">
+    <ion-segment [scrollable]="true" color="light">
+      <ion-segment-button *ngFor="let item of kategori; let i = index" value={{item.namakategori}} (click)="SelectedKategori(item)" style="color: lightgray">
+        {{item.namakategori}}
+      </ion-segment-button>
+    </ion-segment>
+  </div> -->
   
 </ion-header>
 

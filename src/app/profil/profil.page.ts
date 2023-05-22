@@ -15,6 +15,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { GantiPasswordPage } from '../ganti-password/ganti-password.page';
 // import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { TambahkategoriPage } from '../tambahkategori/tambahkategori.page';
 
 @Component({
   selector: 'app-profil',
@@ -165,6 +166,18 @@ export class ProfilPage implements OnInit {
       componentProps: {
         profil: this.profile
       }
+    });
+    modal.present();
+  }
+
+  async tambahkategori()
+  {
+    let modal = await this.modalCtrl.create({
+      component: TambahkategoriPage,
+      cssClass: 'extra-small-modal',
+      // componentProps: {
+      //   profil: this.profile
+      // }
     });
     modal.present();
   }

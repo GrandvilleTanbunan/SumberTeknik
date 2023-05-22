@@ -148,7 +148,7 @@ export class Tab2Page {
     {
       let modal = await this.modalCtrl.create({
         component: EdititemPage,
-        cssClass: 'small-modal',
+        cssClass: 'small-modal-addmenu',
         componentProps: {
           item: item
         }

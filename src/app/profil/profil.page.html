@@ -56,6 +56,12 @@
         Tambah User
       </ion-label>
     </ion-item >
+    <ion-item detail lines="full" class="ion-item-style" (click)="tambahkategori()" *ngIf="admin">
+      <ion-icon name="grid" slot="start" style="color: #989aa2"></ion-icon>
+      <ion-label  style="font-size: 14pt">
+        Kategori
+      </ion-label>
+    </ion-item >
     <ion-item detail lines="full" class="ion-item-style" *ngIf="admin" (click)="editPPN()">
       <ion-icon name="create" slot="start" style="color: #989aa2"></ion-icon>
       <ion-label style="font-size: 14pt">

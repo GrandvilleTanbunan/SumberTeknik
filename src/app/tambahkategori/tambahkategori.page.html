@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar mode="ios" color="secondary">
+    <ion-title>Kategori</ion-title>
+    <ion-button slot="start" fill="clear" color="light" (click)="close()">
+      <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <ion-item class="ion-text-center" lines="none">
+      <div class="d-flex align-items-center">
+        <span>Tambah</span>
+        <ion-toggle slot="end" [(ngModel)]="togglevalue" (ionChange)="toggleHapusTambah()"></ion-toggle>
+        <span class="ml-10">Hapus</span>
+      </div>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom" fill="outline" style="padding-left:5%; padding-right:5%; padding-top: 5%" *ngIf="togglevalue == false">
+      <ion-label position="floating" style="color: grey">Nama Kategori</ion-label>
+      <ion-input class="inputStyle" [(ngModel)]="namakategori"></ion-input>
+      <!-- <ion-note slot="error" *ngIf="harga?.errors?.['required'] && submitted == true">Masukan harga</ion-note> -->
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom" fill="outline" style="padding-left:5%; padding-right:5%; padding-top: 5%" *ngIf="togglevalue == true">
+      <ion-label>Pilih Kategori</ion-label>
+      <ion-select  class="ion-text-uppercase" [(ngModel)]="selectedkategori">
+        <ion-select-option class="ion-text-uppercase" *ngFor="let item of kategori" [value]="item" >{{item.namakategori}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </div>
+
+  
+</ion-content>
+
+<ion-footer class="ion-no-border ion-padding">
+  <ion-button *ngIf="!togglevalue" type="submit" expand="block" (click)="simpankategori()" color="secondary" shape="round" padding>Simpan</ion-button>
+  <ion-button *ngIf="togglevalue" type="submit" expand="block" (click)="hapusKategori()" color="secondary" shape="round" padding>Hapus</ion-button>
+
+</ion-footer>

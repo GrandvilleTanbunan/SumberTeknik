@@ -115,13 +115,28 @@ export class DataService {
   {
     const UpdateHarga = this.db.collection(`Menu`).doc(`${MenuID}`);
     
-    const res1 = await UpdateHarga.update({harga: item.harga, nama:item.nama, imageUrl:image});
+    const res1 = await UpdateHarga.update({harga: item.harga, nama:item.nama, imageUrl:image, kategori: item.kategori});
     
   }
 
   deleteMenu(MenuID: any)
   {
     const TypeRef = doc(this.firestore, `Menu/${MenuID}`);
+    return deleteDoc(TypeRef);
+  }
+
+  async addKategori(namakategori: any)
+  {
+    let kategori = {
+      namakategori: namakategori
+    }
+
+    const res = await this.db.collection(`Kategori`).add(kategori);
+  }
+
+  hapusKategori(kategori:any){
+    console.log(kategori)
+    const TypeRef = doc(this.firestore, `Kategori/${kategori}`);
     return deleteDoc(TypeRef);
   }
 

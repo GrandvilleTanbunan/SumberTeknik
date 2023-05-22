@@ -14,6 +14,7 @@ import { DetailtransaksihariiniPage } from '../detailtransaksihariini/detailtran
 export class HistoryPage implements OnInit {
   tanggalhariini: any;
   allitem: any;
+  detailitem: any[] = [];
   constructor(private modalCtrl: ModalController, private db: AngularFirestore) { 
     moment().locale('id')
     this.tanggalhariini = moment().format("DD/MM/yyyy")
@@ -44,6 +45,22 @@ export class HistoryPage implements OnInit {
       cssClass: 'cart-modal'
     });
     modal.present();
+  }
+
+  cetakClosingan()
+  {
+    this.detailitem = [];
+    console.log(this.allitem)
+    for(let i=0; i<this.allitem.length; i++)
+    {
+      this.db.collection(`Transaksi/${this.allitem[i].InvoiceID}/Item`)
+      .valueChanges({idField: 'ID'})
+      .subscribe((data:any) => {
+          this.detailitem.push(data);
+          console.log(this.detailitem)
+      });
+    }
+    
   }
 
 

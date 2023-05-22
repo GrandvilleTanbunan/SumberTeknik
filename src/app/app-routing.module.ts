@@ -78,6 +78,10 @@ const routes: Routes = [
     path: 'ganti-password',
     loadChildren: () => import('./ganti-password/ganti-password.module').then( m => m.GantiPasswordPageModule)
   },
+  {
+    path: 'tambahkategori',
+    loadChildren: () => import('./tambahkategori/tambahkategori.module').then( m => m.TambahkategoriPageModule)
+  },
 
 
   

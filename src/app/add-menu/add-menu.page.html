@@ -35,8 +35,8 @@
       </ion-item>
       <ion-item>
         <ion-label>Kategori</ion-label>
-        <ion-select formControlName="kategori"  (ionChange)="selectedkategori()">
-          <ion-select-option *ngFor="let item of kategori" [value]="item.namakategori">{{item.namakategori}}</ion-select-option>
+        <ion-select  class="ion-text-uppercase" formControlName="kategori"  (ionChange)="selectedkategori()">
+          <ion-select-option class="ion-text-uppercase" *ngFor="let item of kategori" [value]="item.namakategori">{{item.namakategori}}</ion-select-option>
         </ion-select>
       </ion-item>
   
@@ -47,7 +47,7 @@
   
 </ion-content>
 
-<ion-footer class="ion-no-border">
+<ion-footer class="ion-no-border ion-padding">
     <ion-button type="submit" expand="block" [disabled]="!credentials.valid" (click)="saveItem()" color="secondary" shape="round">Simpan</ion-button>
 
 </ion-footer>

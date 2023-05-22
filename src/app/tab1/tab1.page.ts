@@ -21,6 +21,7 @@ export class Tab1Page {
   ctritem = 0;
   itemkembar = false;
   kategori : any;
+  tmpkategori: any;
   // cart: any[] = [];
   products: any;
   tmpproducts: any;
@@ -111,7 +112,10 @@ export class Tab1Page {
   SelectedKategori(kategori:any)
   {
     this.products = [];
-    console.log(kategori)
+    this.tmpkategori = kategori;
+    // console.log(kategori)
+    // console.log(this.tmpkategori)
+
     // console.log(item)
     // this.db.collection(`Menu`, ref => ref.where('kategori', '==', `${item.namakategori}`))
     //   .valueChanges({ idField: 'MenuID' })
@@ -134,6 +138,16 @@ export class Tab1Page {
     }
     console.log(this.products)
   }
+
+  public refresh()
+  {
+    console.log("masuk sini")
+    this.SelectedKategori(this.tmpkategori);
+    this.cart = this.cartService.getCart();
+    this.cartItemCount = this.cartService.getCartItemCount();
+  }
+
+
 
   // increment () {
   //   this.jumlahitem++;

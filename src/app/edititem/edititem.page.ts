@@ -11,6 +11,7 @@ import { Capacitor } from '@capacitor/core';
 import { Share } from '@capacitor/share';
 // import { Camera, CameraResultType, CameraOptions } from '@capacitor/camera';
 // import { Camera, CameraOptions} from '@ionic-native/camera';
+declare var window:any;
 
 @Component({
   selector: 'app-edititem',
@@ -21,19 +22,40 @@ export class EdititemPage implements OnInit {
   item: any;
   captureDataUrl: string;
   selectedImage:any;
+  kategori: any;
+  tmpkategori: any;
   constructor(private fb: FormBuilder, private toastController: ToastController,private db: AngularFirestore, private alertCtrl: AlertController, private dataService: DataService, private modalCtrl: ModalController, private loadingCtrl: LoadingController) { }
   
   credentials!: FormGroup;
 
   ngOnInit() {
+    this.getkategori();
     console.log("ini di modal: " , this.item)
     this.credentials = this.fb.group({
 			nama: ['', [Validators.required]],
-			harga: ['', [Validators.required]]
+      harga: ['', [Validators.required]],
+      kategori: ['', [Validators.required]]
     });
     this.selectedImage = this.item.imageUrl;
-    this.credentials.patchValue({nama: this.item.nama, harga: this.item.harga})
+    this.credentials.patchValue({nama: this.item.nama, harga: this.item.harga, kategori: this.item.kategori})
 
+  }
+
+  getkategori()
+  {
+    this.db.collection(`Kategori`)
+      .valueChanges({ idField: 'KategoriID' })
+      .subscribe((data: any) => {
+        this.kategori = data;
+        console.log(this.kategori)
+      }
+
+      );
+  }
+
+  selectedKategori()
+  {
+    console.log(this.credentials.value.kategori)
   }
 
   close()
@@ -63,6 +85,11 @@ export class EdititemPage implements OnInit {
         
             loading.present().then(async () => {
               this.dataService.EditMenu(this.item.MenuID, this.credentials.value, this.selectedImage).then(async ()=>{
+                this.dataService.getData();
+                window.tab1.refresh();
+                window.tab1.loadData();
+                this.modalCtrl.dismiss();
+
                   loading.dismiss();
                   const toast = await this.toastController.create({
                     message: 'Menu berhasil diupdate',

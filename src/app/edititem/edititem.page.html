@@ -35,11 +35,20 @@
         <ion-input type="number" formControlName="harga" class="inputStyle"></ion-input>
         <!-- <ion-note slot="error" *ngIf="harga?.errors?.['required'] && submitted == true">Masukan harga</ion-note> -->
       </ion-item>
+      <ion-item>
+        <ion-label>Kategori</ion-label>
+        <ion-select  class="ion-text-uppercase" formControlName="kategori" (ionChange)="selectedKategori()">
+          <ion-select-option class="ion-text-uppercase" *ngFor="let item of kategori" [value]="item.namakategori">{{item.namakategori}}</ion-select-option>
+        </ion-select>
+      </ion-item>
 
-      <ion-button type="submit" expand="block" [disabled]="!credentials.valid" (click)="update()" color="secondary"
-        shape="round">Update</ion-button>
+      
       <!-- <ion-button type="button" expand="block" color="secondary" (click)="register()"	>Create account</ion-button> -->
 
     </form>
   </div>
 </ion-content>
+
+<ion-footer class="ion-no-border ion-padding">
+  <ion-button type="submit" expand="block" [disabled]="!credentials.valid" (click)="update()" color="secondary" shape="round">Update</ion-button>
+</ion-footer>

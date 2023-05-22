@@ -242,6 +242,7 @@ export class CheckoutPage implements OnInit {
         
           this.cartService.clearCart();
           this.dataService.getData();
+          window.tab1.refresh();
           window.tab1.loadData();
           const toast = await this.toastController.create({
             message: 'Checkout berhasil!',
@@ -269,6 +270,10 @@ export class CheckoutPage implements OnInit {
   updateStock(item: any)
   {
     this.db.doc(`Menu/${item.MenuID}`).update({stock: item.stock - item.amount}).then(async ()=>{
+      this.cartService.clearCart();
+      this.dataService.getData();
+      window.tab1.refresh();
+      window.tab1.loadData();
       const toast = await this.toastController.create({
         message: 'Stock berhasil diupdate!',
         duration: 1000,

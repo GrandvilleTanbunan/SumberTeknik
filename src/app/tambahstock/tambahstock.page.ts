@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, ToastController, AlertController, LoadingController } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { CartService } from '../services/cart.service';
+declare var window:any;
 
 @Component({
   selector: 'app-tambahstock',
@@ -40,6 +41,8 @@ export class TambahstockPage implements OnInit {
               this.db.doc(`Menu/${this.item.MenuID}`).update({ stock: this.stockbaru }).then(async () => {
                 loading.dismiss();
                 this.cartService.clearCart();
+                window.tab1.refresh();
+                window.tab1.loadData();
                 const toast = await this.toastController.create({
                   message: 'Stock berhasil diupdate!',
                   duration: 1000,
