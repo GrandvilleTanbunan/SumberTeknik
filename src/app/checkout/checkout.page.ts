@@ -225,11 +225,18 @@ export class CheckoutPage implements OnInit {
           persenppn: this.PPN,
           persendisc: this.diskon
         }).then(async () => {
-          for (let i = 0; i < this.cart.length; i++) {
-            this.db.collection(`Transaksi/${this.invoicenumber}/Item`).add(this.cart[i]);
-            console.log(this.cart);
-            this.updateStock(this.cart[i]);
-          }
+          // for (let i = 0; i < this.cart.length; i++) {
+          //   this.db.collection(`Transaksi/${this.invoicenumber}/Item`).add(this.cart[i]);
+          //   console.log(this.cart);
+          //   this.updateStock(this.cart[i]);
+          // }
+          this.cart.forEach((data:any)=>{
+            this.db.collection(`Transaksi/${this.invoicenumber}/Item`).add(data);
+            this.updateStock(data);
+
+          });
+
+          
 
           // for(let i=0; i<2; i++)
           // {

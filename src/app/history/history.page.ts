@@ -50,20 +50,27 @@ export class HistoryPage implements OnInit {
 
   cetakClosingan()
   {
+    let completedCount = 0;
     this.detailitem = [];
-    console.log(this.allitem)
+    // console.log(this.allitem)
     for(let i=0; i<this.allitem.length; i++)
     {
       this.db.collection(`Transaksi/${this.allitem[i].InvoiceID}/Item`)
       .valueChanges({idField: 'ID'})
       .subscribe((data:any) => {
+          completedCount ++;
           this.detailitem.push(data);
-          console.log(this.detailitem)
-          this.hitungitem();
+          if(completedCount == this.allitem.length)
+          {
+            this.hitungitem();
+          }
       });
     }
+
+
     
   }
+
 
   hitungitem()
   {
@@ -71,6 +78,7 @@ export class HistoryPage implements OnInit {
     let idxi = 0;
     let idxj = 0;
     let idxz = 0;
+    this.tmpitem = [];
     for(let i=0; i<this.detailitem.length; i++)
     {
       for(let j=0; j<this.detailitem[i].length; j++)
@@ -80,21 +88,25 @@ export class HistoryPage implements OnInit {
           if(this.tmpitem[z].nama == this.detailitem[i][j].nama)
           {
             kembar = true;
-            idxi = i;
-            idxj = j;
             idxz = z;
-
           }
+        }
+        if(kembar == false)
+        {
+          this.tmpitem.push({nama: this.detailitem[i][j].nama, amount: this.detailitem[i][j].amount, harga: this.detailitem[i][j].harga, grandtotal: parseInt(this.detailitem[i][j].harga) * parseInt(this.detailitem[i][j].amount)})
+        }
+        else if(kembar == true)
+        {
+          this.tmpitem[idxz].amount = parseInt(this.tmpitem[idxz].amount) + parseInt(this.detailitem[i][j].amount);
+          this.tmpitem[idxz].grandtotal = parseInt(this.tmpitem[idxz].amount) * parseInt(this.tmpitem[idxz].harga);
+          kembar = false;
+
         }
       }
     }
-    console.log(kembar)
+    console.log(this.tmpitem);
 
-    if(kembar == false)
-    {
-      this.tmpitem.push({nama: this.detailitem[idxi][idxj].nama, amount: this.detailitem[idxi][idxj].amount})
-      console.log(this.tmpitem);
-    }
+    
 
   }
 
