@@ -93,7 +93,8 @@ export class AddMenuPage implements OnInit {
                   nama: this.credentials.value.nama,
                   harga: this.credentials.value.harga,
                   imageUrl: "",
-                  kategori: this.credentials.value.kategori
+                  kategori: this.credentials.value.kategori,
+                  stock: 0
                 }
               ];
 

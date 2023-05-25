@@ -138,9 +138,9 @@ export class CheckoutPage implements OnInit {
         {
           text: 'YA',
           handler: async () => {
-            // this.selesaikantransaksi();
+            this.selesaikantransaksi();
 
-            this.checkbluetoothenabled();
+            // this.checkbluetoothenabled();
             
           }
         }

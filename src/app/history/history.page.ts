@@ -15,6 +15,7 @@ export class HistoryPage implements OnInit {
   tanggalhariini: any;
   allitem: any;
   detailitem: any[] = [];
+  tmpitem: any[] = [];
   constructor(private modalCtrl: ModalController, private db: AngularFirestore) { 
     moment().locale('id')
     this.tanggalhariini = moment().format("DD/MM/yyyy")
@@ -58,9 +59,43 @@ export class HistoryPage implements OnInit {
       .subscribe((data:any) => {
           this.detailitem.push(data);
           console.log(this.detailitem)
+          this.hitungitem();
       });
     }
     
+  }
+
+  hitungitem()
+  {
+    let kembar = false;
+    let idxi = 0;
+    let idxj = 0;
+    let idxz = 0;
+    for(let i=0; i<this.detailitem.length; i++)
+    {
+      for(let j=0; j<this.detailitem[i].length; j++)
+      {
+        for(let z=0; z<this.tmpitem.length; z++)
+        {
+          if(this.tmpitem[z].nama == this.detailitem[i][j].nama)
+          {
+            kembar = true;
+            idxi = i;
+            idxj = j;
+            idxz = z;
+
+          }
+        }
+      }
+    }
+    console.log(kembar)
+
+    if(kembar == false)
+    {
+      this.tmpitem.push({nama: this.detailitem[idxi][idxj].nama, amount: this.detailitem[idxi][idxj].amount})
+      console.log(this.tmpitem);
+    }
+
   }
 
 

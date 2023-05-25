@@ -1,5 +1,5 @@
 
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar color="secondary">
     <ion-title class="ion-text-center" style="padding: 10px">
       Transaksi
@@ -22,7 +22,10 @@
         </ion-segment-button>
       </ion-segment>
     </div>
+    <ion-searchbar [(ngModel)]="input" [debounce]="100" placeholder="Cari" show-clear-button="always" (ionChange)="CariItem($event)">
+    </ion-searchbar>
   </ion-toolbar>
+  
   <!-- <div padding style="background-color:#9a8a83">
     <ion-segment [scrollable]="true" color="light">
       <ion-segment-button *ngFor="let item of kategori; let i = index" value={{item.namakategori}} (click)="SelectedKategori(item)" style="color: lightgray">
@@ -33,7 +36,7 @@
   
 </ion-header>
 
-<ion-content [fullscreen]="true" >
+<ion-content  >
     <!-- <ion-fab vertical="bottom" horizontal="center" translucent="true" slot="fixed">
       <ion-fab-button (click)="openCart()">
         <div class="cart-length">{{ cartItemCount | async }}</div>
@@ -93,7 +96,7 @@
 </div> -->
 
 
-<div style="padding-bottom:70px" >
+<div style="padding-bottom:70px" *ngIf="!input"  >
     <div class="grid-container" *ngFor="let item of products">
 
         <div class="grid-child purple">
@@ -121,6 +124,38 @@
         </div>
       
       </div>
+
+</div>
+
+<div style="padding-bottom:70px" *ngIf="input"  >
+  <div class="grid-container" *ngFor="let item of results">
+
+      <div class="grid-child purple">
+        <ion-item class="ion-text-wrap" lines="none">
+          <ion-label>
+            <p style="font-size: 15pt; padding-bottom: 5px; color: black" class="ion-text-wrap">{{item.nama}}</p>
+            <p style="font-size: 12pt; padding-bottom: 5px; color: black">
+              Rp {{ item.harga | number }}
+            </p>
+            <p style="font-size: 12pt; padding-bottom: 5px; color: black">
+              Stock {{ item.stock | number }} pcs
+            </p>
+          </ion-label>
+    
+        </ion-item>
+      </div>
+    
+      <div class="grid-child green" style="margin:auto">
+          <ion-button *ngIf="item.amount == 0" color="secondary" shape="round" fill="outline" (click)="addToCart(item)" [disabled]="item.stock == 0">Add</ion-button>
+          <ion-list *ngIf="item.amount != 0">
+            <ion-icon class="icondecrease" name="remove-circle-outline" (click)="decreaseCartItem(item)"></ion-icon>
+            <ion-text style="font-size: 15pt" class="inputbg">{{item.amount}}</ion-text>
+            <ion-icon class="iconincrease" name="add-circle-outline" (click)="increaseCartItem(item)"></ion-icon>
+          </ion-list>
+      </div>
+    
+    </div>
+
 </div>
 
 

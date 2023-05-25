@@ -21,11 +21,13 @@ export class Tab1Page {
   ctritem = 0;
   itemkembar = false;
   kategori : any;
-  tmpkategori: any;
+  tmpkategori : any;
   // cart: any[] = [];
   products: any;
   tmpproducts: any;
   cart: any[] = [];
+  input: any;
+  results: any;
   cartItemCount!: BehaviorSubject<number>;
 
   constructor(private alertCtrl: AlertController,private routerOutlet: IonRouterOutlet, public platform: Platform, private db: AngularFirestore, private dataService: DataService, private toastController: ToastController, private cartService: CartService, private modalCtrl: ModalController) {
@@ -112,6 +114,8 @@ export class Tab1Page {
   SelectedKategori(kategori:any)
   {
     this.products = [];
+    this.input = undefined;
+    // this.CariItem(this.input);
     this.tmpkategori = kategori;
     // console.log(kategori)
     // console.log(this.tmpkategori)
@@ -179,5 +183,17 @@ export class Tab1Page {
       cssClass: 'cart-modal'
     });
     modal.present();
+  }
+
+  async CariItem(event: any) {
+    const val = event.target.value;
+    this.results = this.products.filter((item : any) => {
+      return (
+        item.nama.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
+        item.harga.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
+        item.stock.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
+        item.amount.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 
+      )
+    });
   }
 }

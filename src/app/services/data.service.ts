@@ -100,7 +100,8 @@ export class DataService {
       harga: data[0].harga,
       amount: 0,
       imageUrl: "",
-      kategori: data[0].kategori
+      kategori: data[0].kategori,
+      stock: 0
     }
 
     const res = await this.db.collection(`Menu`).add(tmpmenu);

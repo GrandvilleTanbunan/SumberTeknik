@@ -19,7 +19,9 @@ export class Tab2Page {
   tmpnama:any;
   tmpharga:any;
   tmpjumlah:any;
-  admin: any
+  admin: any;
+  input: any;
+  results: any;
   constructor(private routerOutlet: IonRouterOutlet, public platform: Platform,private alertController: AlertController, private authService: AuthService, private toastController: ToastController,private db: AngularFirestore, private alertCtrl: AlertController, private dataService: DataService, private modalCtrl: ModalController, private loadingCtrl: LoadingController) {
     this.loadData();
     this.authService.observeadmin.subscribe((admin:any) => {
@@ -169,6 +171,18 @@ export class Tab2Page {
 			buttons: ['OK']
 		});
 		await alert.present();
+  }
+
+  async CariItem(event: any) {
+    const val = event.target.value;
+    this.results = this.listData.filter((item : any) => {
+      return (
+        item.nama.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
+        item.harga.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
+        item.stock.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
+        item.amount.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 
+      )
+    });
   }
 
 }
