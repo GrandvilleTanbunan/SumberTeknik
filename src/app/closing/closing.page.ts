@@ -27,14 +27,17 @@ export class ClosingPage implements OnInit {
   constructor(private modalCtrl:ModalController, private bluetoothSerial: BluetoothSerial, private db: AngularFirestore, private toastController: ToastController) { 
     let encoder = new EscPosEncoder();
     this.MAC_ADDRESS = "0F:02:18:71:89:08";
-
+    this.connectBluetooth();
     moment().locale('id')
     this.tanggalhariini = moment().format("DD/MM/yyyy")
     console.log(this.tanggalhariini)
   }
 
   ngOnInit() {
+    
     this.MAC_ADDRESS = "0F:02:18:71:89:08";
+    this.connectBluetooth();
+
     this.getTransaksiHariIni();
   }
 
@@ -187,17 +190,18 @@ export class ClosingPage implements OnInit {
       .cut();
 
     const resultByte = result.encode();
-    this.bluetoothSerial.connect(this.MAC_ADDRESS).subscribe(() => {
+    this.bluetoothSerial.isConnected().then(async () => {
       this.bluetoothSerial.write(resultByte)
         .then(async () => {
           this.bluetoothSerial.clear();
-          this.bluetoothSerial.disconnect();
+          // this.bluetoothSerial.disconnect();
           console.log('Print success');
+          this.modalCtrl.dismiss();
         })
         .catch((err) => {
           console.error(err);
         });
-    });
+    })
 
   }
 
