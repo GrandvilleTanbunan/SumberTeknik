@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import * as moment from 'moment';
 import { take } from 'rxjs/operators';
@@ -8,14 +8,13 @@ import { DetailtransaksihariiniPage } from '../detailtransaksihariini/detailtran
 import EscPosEncoder from '@mineminemine/esc-pos-encoder-ionic';
 import {registerLocaleData, formatNumber} from '@angular/common';
 import { BluetoothSerial } from '@awesome-cordova-plugins/bluetooth-serial/ngx';
-import { ClosingPage } from '../closing/closing.page';
 
 @Component({
-  selector: 'app-history',
-  templateUrl: './history.page.html',
-  styleUrls: ['./history.page.scss'],
+  selector: 'app-closing',
+  templateUrl: './closing.page.html',
+  styleUrls: ['./closing.page.scss'],
 })
-export class HistoryPage implements OnInit {
+export class ClosingPage implements OnInit {
   tanggalhariini: any;
   allitem: any;
   detailitem: any[] = [];
@@ -23,8 +22,9 @@ export class HistoryPage implements OnInit {
   totalamount: any;
   MAC_ADDRESS: any;
   grandtotal: any;
+  bluetoothconnected = false;
 
-  constructor(private bluetoothSerial: BluetoothSerial, private modalCtrl: ModalController, private db: AngularFirestore) { 
+  constructor(private modalCtrl:ModalController, private bluetoothSerial: BluetoothSerial, private db: AngularFirestore, private toastController: ToastController) { 
     let encoder = new EscPosEncoder();
     this.MAC_ADDRESS = "0F:02:18:71:89:08";
 
@@ -36,6 +36,26 @@ export class HistoryPage implements OnInit {
   ngOnInit() {
     this.MAC_ADDRESS = "0F:02:18:71:89:08";
     this.getTransaksiHariIni();
+  }
+
+  connectBluetooth()
+  {
+    this.MAC_ADDRESS = "0F:02:18:71:89:08";
+    // send byte code into the printer
+    this.bluetoothSerial.connect(this.MAC_ADDRESS).subscribe(async (success: any) => {
+      const toast = await this.toastController.create({
+        message: 'Printer Connected!',
+        duration: 1000,
+        position: 'top'
+      });
+      await toast.present()
+      this.bluetoothconnected = true;
+
+    },(error:any) => {
+        console.log("Connection Error " +  error);
+        this.bluetoothconnected = false;
+
+      });
 
   }
 
@@ -46,31 +66,12 @@ export class HistoryPage implements OnInit {
       .subscribe((data:any) => {
           this.allitem = data;
           console.log(this.allitem)
+          this.rangkuman();
+
       });
   }
 
-  async toDetail(item: any)
-  {
-    let modal = await this.modalCtrl.create({
-      component: DetailtransaksihariiniPage,
-      componentProps: {
-        item: item,
-      },
-      cssClass: 'cart-modal'
-    });
-    modal.present();
-  }
-
-  async toClosing()
-  {
-    let modal = await this.modalCtrl.create({
-      component: ClosingPage,
-      cssClass: 'cart-modal'
-    });
-    modal.present();
-  }
-
-  cetakClosingan()
+  rangkuman()
   {
     let completedCount = 0;
     this.detailitem = [];
@@ -88,11 +89,8 @@ export class HistoryPage implements OnInit {
           }
       });
     }
-
-
     
   }
-
 
   hitungitem()
   {
@@ -127,14 +125,15 @@ export class HistoryPage implements OnInit {
       }
     }
     console.log(this.tmpitem);
-    this.printClosing();
+    this.hitungjumlahitem();
+
+    // this.printClosing();
     
 
   }
 
   printClosing()
   {
-    this.hitungjumlahitem();
     const encoder = new EscPosEncoder();
     const result = encoder.initialize();
     // this.img = new Image();
@@ -217,8 +216,8 @@ export class HistoryPage implements OnInit {
   }
 
 
-
-  close(){
+  close()
+  {
     this.modalCtrl.dismiss();
   }
 

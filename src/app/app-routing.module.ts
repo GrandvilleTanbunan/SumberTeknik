@@ -82,6 +82,10 @@ const routes: Routes = [
     path: 'tambahkategori',
     loadChildren: () => import('./tambahkategori/tambahkategori.module').then( m => m.TambahkategoriPageModule)
   },
+  {
+    path: 'closing',
+    loadChildren: () => import('./closing/closing.module').then( m => m.ClosingPageModule)
+  },
 
 
   
