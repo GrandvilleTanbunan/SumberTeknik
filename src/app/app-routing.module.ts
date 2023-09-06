@@ -86,6 +86,10 @@ const routes: Routes = [
     path: 'closing',
     loadChildren: () => import('./closing/closing.module').then( m => m.ClosingPageModule)
   },
+  {
+    path: 'ganti-printer',
+    loadChildren: () => import('./ganti-printer/ganti-printer.module').then( m => m.GantiPrinterPageModule)
+  },
 
 
   

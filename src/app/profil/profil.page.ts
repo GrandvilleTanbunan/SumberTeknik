@@ -16,6 +16,7 @@ import { GantiPasswordPage } from '../ganti-password/ganti-password.page';
 // import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { TambahkategoriPage } from '../tambahkategori/tambahkategori.page';
+import { GantiPrinterPage } from '../ganti-printer/ganti-printer.page';
 
 @Component({
   selector: 'app-profil',
@@ -153,6 +154,15 @@ export class ProfilPage implements OnInit {
   {
     let modal = await this.modalCtrl.create({
       component: GantiPasswordPage,
+      cssClass: 'extra-small-modal'
+    });
+    modal.present();
+  }
+
+  async gantiPrinter()
+  {
+    let modal = await this.modalCtrl.create({
+      component: GantiPrinterPage,
       cssClass: 'extra-small-modal'
     });
     modal.present();

@@ -20,7 +20,8 @@ export class DetailtransaksihariiniPage implements OnInit {
   constructor(private bluetoothSerial: BluetoothSerial, private db: AngularFirestore, private modalCtrl: ModalController) { }
 
   ngOnInit() {
-    this.MAC_ADDRESS = "0F:02:18:71:89:08";
+    this.getMAC();
+    
 
     console.log(this.item)
     this.db.collection(`Transaksi/${this.item.InvoiceID}/Item`)
@@ -32,6 +33,19 @@ export class DetailtransaksihariiniPage implements OnInit {
 
     // this.getDisc();
     // this.getPPN()
+  }
+
+  getMAC()
+  {
+    this.db.collection(`MACPrinter`)
+        .valueChanges()
+        .subscribe((data:any) => {
+            this.MAC_ADDRESS = data[0].MAC;
+            console.log('MAC: '+this.MAC_ADDRESS)
+            // return of(this.tmptype);
+        }
+        
+    );
   }
 
   // getDisc()

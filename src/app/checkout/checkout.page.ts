@@ -42,7 +42,6 @@ export class CheckoutPage implements OnInit {
   constructor(private bluetoothSerial: BluetoothSerial, private loadingCtrl: LoadingController,private alertCtrl: AlertController,private toastController: ToastController,private cartService:CartService,private dataService:DataService,private db: AngularFirestore, private modalCtrl: ModalController) { 
     let encoder = new EscPosEncoder();
     this.img = new Image();
-    this.MAC_ADDRESS = "0F:02:18:71:89:08";
     let result = encoder
     .initialize()
     .text('The quick brown fox jumps over the lazy dog')
@@ -57,8 +56,7 @@ export class CheckoutPage implements OnInit {
   ngOnInit() {
     console.log("ini di modal: " , this.invoicenumber)
     this.grandtotalkonstan = this.grandtotal;
-    this.MAC_ADDRESS = "0F:02:18:71:89:08";
-
+    this.getMAC();
     // console.log("ini di modal: " , this.grandtotal)
     // console.log("ini di modal: " , this.cart)
     moment.locale('id');
@@ -68,9 +66,21 @@ export class CheckoutPage implements OnInit {
 
   }
 
+  getMAC()
+  {
+    this.db.collection(`MACPrinter`)
+        .valueChanges()
+        .subscribe((data:any) => {
+            this.MAC_ADDRESS = data[0].MAC;
+            console.log('MAC: '+this.MAC_ADDRESS)
+            // return of(this.tmptype);
+        }
+        
+    );
+  }
+
   connectBluetooth()
   {
-    this.MAC_ADDRESS = "0F:02:18:71:89:08";
     // send byte code into the printer
     this.bluetoothSerial.connect(this.MAC_ADDRESS).subscribe(async (success: any) => {
       const toast = await this.toastController.create({
@@ -88,6 +98,8 @@ export class CheckoutPage implements OnInit {
       });
 
   }
+
+  
 
 
   
@@ -410,7 +422,6 @@ export class CheckoutPage implements OnInit {
       .cut();
 
     const resultByte = result.encode();
-    this.MAC_ADDRESS = "0F:02:18:71:89:08";
     // send byte code into the printer
     // this.bluetoothSerial.connect(this.MAC_ADDRESS).subscribe(() => {
     //   this.bluetoothSerial.write(resultByte)
