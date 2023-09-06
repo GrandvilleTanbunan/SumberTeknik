@@ -86,55 +86,55 @@ export class DetailtransaksihariiniPage implements OnInit {
     const waktu = moment().format("HH:mm:ss");
     const invoiceID = this.item.invoiceID;
     function alignLeftRight(left:any, right:any) {
-      console.log("left: " + left)
-      console.log("right: " + right)
+      // console.log("left: " + left)
+      // console.log("right: " + right)
 
       let lineWidth = 29;
       let space = " ";
-      console.log("kiri: ",left.length);
-      console.log("kanan: ", right.length);
+      // console.log("kiri: ",left.length);
+      // console.log("kanan: ", right.length);
       let pengurangan = lineWidth-left.length-right.length;
-      console.log("pengurangan: ", pengurangan);
+      // console.log("pengurangan: ", pengurangan);
       return left + space.repeat(pengurangan) + "Rp "+right;
     }
 
     function alightLeftRightItem(left:any, right:any){
       let lineWidth = 27;
       let space = " ";
-      console.log("kiri: ",left.length);
-      console.log("kanan: ", right.length);
+      // console.log("kiri: ",left.length);
+      // console.log("kanan: ", right.length);
       let pengurangan = lineWidth-left.length-right.length;
-      console.log("pengurangan: ", pengurangan);
+      // console.log("pengurangan: ", pengurangan);
       return left + space.repeat(pengurangan)+ right;
     }
 
     function alignLeftRightBayar(left:any, right:any){
       let lineWidth = 29;
       let space = " ";
-      console.log("kiri: ",left.length);
-      console.log("kanan: ", right.length);
+      // console.log("kiri: ",left.length);
+      // console.log("kanan: ", right.length);
       let pengurangan = lineWidth-left.length-right.length;
-      console.log("pengurangan: ", pengurangan);
+      // console.log("pengurangan: ", pengurangan);
       return left + space.repeat(pengurangan)+"Rp "+ right;
     }
 
     function alignLeftRightKembalian(left:any, right:any){
       let lineWidth = 29;
       let space = " ";
-      console.log("kiri: ",left.length);
-      console.log("kanan: ", right.length);
+      // console.log("kiri: ",left.length);
+      // console.log("kanan: ", right.length);
       let pengurangan = lineWidth-left.length-right.length;
-      console.log("pengurangan: ", pengurangan);
+      // console.log("pengurangan: ", pengurangan);
       return left + space.repeat(pengurangan)+"Rp "+ right;
     }
     
     function alignLeftRightPPN(left:any, right:any){
       let lineWidth = 29;
       let space = " ";
-      console.log("kiri: ",left.length);
-      console.log("kanan: ", right.length);
+      // console.log("kiri: ",left.length);
+      // console.log("kanan: ", right.length);
       let pengurangan = lineWidth-left.length-right.length;
-      console.log("pengurangan: ", pengurangan);
+      // console.log("pengurangan: ", pengurangan);
       return left + space.repeat(pengurangan)+"Rp "+ right;
     }
 
@@ -188,6 +188,7 @@ export class DetailtransaksihariiniPage implements OnInit {
       .cut();
 
     const resultByte = result.encode();
+    console.log(this.MAC_ADDRESS);
 
     // send byte code into the printer
     this.bluetoothSerial.connect(this.MAC_ADDRESS).subscribe(() => {

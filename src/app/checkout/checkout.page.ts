@@ -48,6 +48,7 @@ export class CheckoutPage implements OnInit {
     .newline()
     .qrcode('https://nielsleenheer.com')
     .encode();
+    this.getMAC();
 
     this.getPPN();
     this.getDisc();
@@ -56,11 +57,12 @@ export class CheckoutPage implements OnInit {
   ngOnInit() {
     console.log("ini di modal: " , this.invoicenumber)
     this.grandtotalkonstan = this.grandtotal;
-    this.getMAC();
     // console.log("ini di modal: " , this.grandtotal)
     // console.log("ini di modal: " , this.cart)
     moment.locale('id');
-    this.connectBluetooth();
+    this.getMAC();
+
+    // this.connectBluetooth();
 
     this.hitungjumlahitem();
 
@@ -73,15 +75,16 @@ export class CheckoutPage implements OnInit {
         .subscribe((data:any) => {
             this.MAC_ADDRESS = data[0].MAC;
             console.log('MAC: '+this.MAC_ADDRESS)
-            // return of(this.tmptype);
+            this.connectBluetooth();
         }
         
     );
   }
 
-  connectBluetooth()
+  async connectBluetooth()
   {
-    // send byte code into the printer
+    console.log(this.MAC_ADDRESS);
+    
     this.bluetoothSerial.connect(this.MAC_ADDRESS).subscribe(async (success: any) => {
       const toast = await this.toastController.create({
         message: 'Printer Connected!',
@@ -427,9 +430,8 @@ export class CheckoutPage implements OnInit {
     //   this.bluetoothSerial.write(resultByte)
     //     .then(async () => {
     //       this.bluetoothSerial.clear();
-    //       // this.bluetoothSerial.disconnect();
+    //       this.bluetoothSerial.disconnect();
     //       console.log('Print success');
-
     //     })
     //     .catch((err) => {
     //       console.error(err);
@@ -448,10 +450,6 @@ export class CheckoutPage implements OnInit {
           console.error(err);
         });
     })
-
-    
-
-    
 
   }
 
